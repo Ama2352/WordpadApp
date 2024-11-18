@@ -6,7 +6,65 @@
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <!-- Menu Bar -->
+        <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
+            <MenuItem Header="File" Background="#FF1979CA" Foreground="White" >
+                <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click"/>
+                <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click"/>
+                <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click"/>
+                <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click"/>
+                <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
+                <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click"/>
+                <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click"/>
+                <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click"/>
+                <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="Home"/>
+        </Menu>
+        <!-- Toolbar (Ribbon) -->
+        <ToolBar Background="#FFF3F3F3" DockPanel.Dock="Top" Panel.ZIndex="10">
+            <Button Content="Bold" Padding="10,5"/>
+            <Button Content="Italic" Padding="10,5"/>
+            <Button Content="Underline" Padding="10,5"/>
+            <Separator/>
+            <ComboBox Width="100" SelectedIndex="0">
+                <ComboBoxItem Content="Arial"/>
+                <ComboBoxItem Content="Calibri"/>
+                <ComboBoxItem Content="Times New Roman"/>
+            </ComboBox>
+            <ComboBox Width="50" SelectedIndex="0">
+                <ComboBoxItem Content="12"/>
+                <ComboBoxItem Content="14"/>
+                <ComboBoxItem Content="16"/>
+            </ComboBox>
+        </ToolBar>
+        <!-- Custom ScrollBar -->
+        <ScrollBar x:Name="customScrollBar"
+                           Orientation="Vertical"
+                           Minimum="0"
+                           Maximum="100"
+                           SmallChange="1"
+                           LargeChange="10"
+                           DockPanel.Dock="Right"/>
+        <!-- Main Content Area -->
+        <Grid Background="#FFCED7E6" Name="editorArea">
+
+            <!-- RichTextBox Container-->
+            <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="743" Height="343" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <!-- RichTextBox Area -->
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20" Margin="0">
+                    <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
+                                 AcceptsReturn="True" BorderBrush="Transparent"
+                                 TextChanged="richTextBox_TextChanged">
+                        <FlowDocument>
+                            <Paragraph>
+                                Start typing your text here...
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                </Border>
+            </DockPanel>
+        </Grid>
+    </DockPanel>
 </Window>
