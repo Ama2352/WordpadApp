@@ -2,8 +2,11 @@
 using System.Windows.Controls; // RichTextBox của WPF
 using Microsoft.Win32; // SaveFileDialog của WPF
 using System.Windows.Documents; // TextRange để xử lý RichTextBox
-using DocumentFormat.OpenXml.Packaging; // Thư viện OpenXML
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle; // Thư viện OpenXML
 using DocumentFormat.OpenXml.Wordprocessing; // OpenXML cho .docx
+using DocumentFormat.OpenXml;
+using System;
 
 namespace Wordpad
 {
@@ -106,23 +109,36 @@ namespace Wordpad
 
         private void SaveAsDocx(string filePath)
         {
+            // Tạo tệp .docx
             using (DocumentFormat.OpenXml.Packaging.WordprocessingDocument wordDocument =
-                DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(filePath,
-                DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                   DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(filePath,
+                   DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
             {
+                // Thêm phần chính (Main Document Part)
                 var mainPart = wordDocument.AddMainDocumentPart();
-                mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(
-                    new DocumentFormat.OpenXml.Wordprocessing.Body(
+                mainPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document(new Body());
+
+                // Lấy nội dung từ RichTextBox
+                string fullText = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd).Text;
+
+                // Chia nội dung thành các dòng bằng cách tách theo ký tự xuống dòng
+                string[] lines = fullText.Split(new[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+
+                // Tạo các đoạn văn (Paragraph) cho mỗi dòng
+                foreach (string line in lines)
+                {
+                    // Sử dụng Paragraph từ namespace DocumentFormat.OpenXml.Wordprocessing
+                    DocumentFormat.OpenXml.Wordprocessing.Paragraph paragraph =
                         new DocumentFormat.OpenXml.Wordprocessing.Paragraph(
                             new DocumentFormat.OpenXml.Wordprocessing.Run(
-                                new DocumentFormat.OpenXml.Wordprocessing.Text(
-                                    new System.Windows.Documents.TextRange(
-                                        richTextBox1.Document.ContentStart,
-                                        richTextBox1.Document.ContentEnd).Text)
-                            )
-                        )
-                    )
-                );
+                                new DocumentFormat.OpenXml.Wordprocessing.Text(line)));
+
+                    // Thêm đoạn văn vào nội dung chính
+                    mainPart.Document.Body.Append(paragraph);
+                }
+
+                // Lưu tài liệu
+                mainPart.Document.Save();
             }
         }
 

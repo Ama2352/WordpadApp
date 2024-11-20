@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <DockPanel>
         <!-- Menu Bar -->
         <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
@@ -14,7 +14,11 @@
                 <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click"/>
                 <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click"/>
                 <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click"/>
-                <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
+                <MenuItem Header="Print" Foreground="Black">
+                    <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
+                    <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click" />
+                    <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click"/>
+                </MenuItem>
                 <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click"/>
                 <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click"/>
                 <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click"/>
@@ -38,6 +42,13 @@
                 <ComboBoxItem Content="14"/>
                 <ComboBoxItem Content="16"/>
             </ComboBox>
+            <Separator/>
+            <ComboBox x:Name="LineSpacingComboBox" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem Content="1.0"/>
+                <ComboBoxItem Content="1.25"/>
+                <ComboBoxItem Content="1.5"/>
+                <ComboBoxItem Content="2.0"/>
+            </ComboBox>
         </ToolBar>
         <!-- Custom ScrollBar -->
         <ScrollBar x:Name="customScrollBar"
@@ -53,17 +64,15 @@
             <!-- RichTextBox Container-->
             <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="743" Height="343" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
                 <!-- RichTextBox Area -->
-                <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20" Margin="0">
-                    <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
+                <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
                                  AcceptsReturn="True" BorderBrush="Transparent"
-                                 TextChanged="richTextBox_TextChanged">
-                        <FlowDocument>
-                            <Paragraph>
-                                Start typing your text here...
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                </Border>
+                                 TextChanged="richTextBox_TextChanged"
+                                 Padding="50">
+                    <FlowDocument >
+                        <Paragraph LineHeight="1" FontFamily="Arial">
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox>
             </DockPanel>
         </Grid>
     </DockPanel>

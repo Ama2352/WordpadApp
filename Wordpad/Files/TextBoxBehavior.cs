@@ -25,7 +25,8 @@ namespace WordPad
             // Gắn sự kiện cho RichTextBox và thanh cuộn tùy chỉnh
             _richTextBox.TextChanged += RichTextBox_TextChanged;
             _customScrollBar.ValueChanged += CustomScrollBar_ValueChanged;
-
+            _richTextBox.PreviewKeyDown += (s, e) => ScrollToCaret();
+            _richTextBox.TextChanged += (s, e) => ScrollToCaret();
 
 
             // Xử lý sự kiện PreviewMouseWheel trên vùng soạn thảo
@@ -89,9 +90,30 @@ namespace WordPad
                 _dockPanel.Height += 1000; // Kéo dài DockPanel
                 UpdateCustomScrollBar(); // Cập nhật thanh cuộn
             }
+            // Cuộn để hiển thị con trỏ khi mở rộng
+            ScrollToCaret();
             //MessageBox.Show($"content height: {contentHeight}\n dock panel height = {_dockPanel.Height}\n RTB height: {actualHeight}");
         }
 
+        //Lăn chuột đến vị trí con trỏ
+        private void ScrollToCaret()
+        {
+            // Lấy vị trí con trỏ tính theo tọa độ RichTextBox
+
+            Rect caretRect = _richTextBox.CaretPosition.GetCharacterRect(LogicalDirection.Forward);
+
+            // Vị trí con trỏ tính trong DockPanel
+            double caretPositionInDockPanel = caretRect.Top + _richTextBox.Padding.Top;
+
+            // Xác định chiều cao hiển thị của DockPanel
+            double viewportHeight = editorArea.ActualHeight;
+
+            //Tỷ lệ % con trỏ đã "chiếm" được bao nhieu $ của panel.
+            //Lấy % đó nhân với scrollbar max để tìm được vị trí phù hợp
+            int cursorToSBValue = (int)(((float)caretPositionInDockPanel / _dockPanel.ActualHeight) * _customScrollBar.Maximum);
+            // Kiểm tra nếu con trỏ nằm ngoài vùng hiển thị
+            _customScrollBar.Value = Math.Max(0, Math.Min(cursorToSBValue, _customScrollBar.Maximum));
+        }
 
         private double GetRichTextBoxContentHeight()
         {
