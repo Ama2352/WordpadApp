@@ -1,12 +1,11 @@
 ﻿using System;
-using con = System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows;
-using System.Drawing.Printing;
-using System.Windows.Forms;
-using System.Windows.Forms.Integration;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing.Printing;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Forms;
+using Wordpad.Files;
+using con = System.Windows.Controls;
 
 namespace WordPad
 {
@@ -39,6 +38,14 @@ namespace WordPad
         {
             if (pageSetupDialog.ShowDialog() == DialogResult.OK)
             {
+                // Mở hộp thoại bổ sung cho các thiết lập khác
+                PrintPageNumberWindow printPageNumberWindow = new PrintPageNumberWindow();
+                if (printPageNumberWindow.ShowDialog() == true) // WPF sử dụng true cho OK
+                {
+                    // Lưu cờ printPageNumber từ ExtraSettingsDialog
+                    printPageNumber = printPageNumberWindow.PrintPageNumberSelected;
+                }
+
                 AdjustDockPanelToPageSetup();
             }
         }
@@ -56,18 +63,16 @@ namespace WordPad
             if (pageSettings.Landscape)
             {
                 dockPanel.Width = pageSettings.PaperSize.Height;
-                dockPanel.Height = pageSettings.PaperSize.Width;
             }
             else
             {
                 dockPanel.Width = pageSettings.PaperSize.Width;
-                dockPanel.Height = pageSettings.PaperSize.Height;
             }
         }
         //Lấy line spacing của từng đoạn văn (paragraph) dựa vào line height và font size của từng đoạn
-        private List<(string Text, System.Drawing.Font Font, double LineSpacing)> GetRichTextBoxParagraphsWithStyles()
+        private List<(string Text, System.Drawing.Font Font, double LineSpacing, double Margin)> GetRichTextBoxParagraphsWithStyles()
         {
-            var paragraphs = new List<(string Text, System.Drawing.Font Font, double LineSpacing)>();
+            var paragraphs = new List<(string Text, System.Drawing.Font Font, double LineSpacing, double Margin)>();
 
             foreach (var block in richTextBox.Document.Blocks)
             {
@@ -94,8 +99,10 @@ namespace WordPad
                     double lineSpacing = paragraph.LineHeight > 1
                         ? paragraph.LineHeight + fontSize
                         : fontSize * 1.2; // Giá trị mặc định nếu không có LineHeight
+                    //Lấy margin
+                    double Margin = paragraph.Margin.Bottom > 1f ? paragraph.Margin.Bottom : 1f;
 
-                    paragraphs.Add((text, font, lineSpacing));
+                    paragraphs.Add((text, font, lineSpacing, Margin));
                 }
             }
 
@@ -113,7 +120,7 @@ namespace WordPad
             float x = pageBounds.Left;
             float y = pageBounds.Top;
 
-            foreach (var (text, font, lineSpacing) in paragraphs)
+            foreach (var (text, font, lineSpacing, margin) in paragraphs)
             {
                 // Chia đoạn văn bản thành các dòng
                 string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);

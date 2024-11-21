@@ -233,6 +233,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Files\PrintPageNumberWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -247,6 +251,9 @@
     <Compile Include="Files\NewManager.cs" />
     <Compile Include="Files\OpenManager.cs" />
     <Compile Include="Files\PrintManager.cs" />
+    <Compile Include="Files\PrintPageNumberWindow.xaml.cs">
+      <DependentUpon>PrintPageNumberWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Files\SaveManager.cs" />
     <Compile Include="Files\SendEmailManager.cs" />
     <Compile Include="Files\TextBoxBehavior.cs" />

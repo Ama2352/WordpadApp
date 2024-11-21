@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
     <DockPanel>
         <!-- Menu Bar -->
         <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
@@ -48,6 +48,7 @@
                 <ComboBoxItem Content="1.25"/>
                 <ComboBoxItem Content="1.5"/>
                 <ComboBoxItem Content="2.0"/>
+                <CheckBox x:Name="addSpaceChB" Content="Add space after paragraphs" Checked="CheckBox_Checked" Unchecked="addSpaceChB_Unchecked"/>
             </ComboBox>
         </ToolBar>
         <!-- Custom ScrollBar -->
@@ -62,14 +63,14 @@
         <Grid Background="#FFCED7E6" Name="editorArea">
 
             <!-- RichTextBox Container-->
-            <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="743" Height="343" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+            <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="743" Height="500" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
                 <!-- RichTextBox Area -->
                 <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
                                  AcceptsReturn="True" BorderBrush="Transparent"
                                  TextChanged="richTextBox_TextChanged"
                                  Padding="50">
                     <FlowDocument >
-                        <Paragraph LineHeight="1" FontFamily="Arial">
+                        <Paragraph LineHeight="1" FontFamily="Arial" Margin="0,0,0,0" FontSize="10">
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>

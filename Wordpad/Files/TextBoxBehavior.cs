@@ -49,7 +49,7 @@ namespace WordPad
         }
 
         // Cập nhật phạm vi và thumb cho thanh cuộn tùy chỉnh
-        private void UpdateCustomScrollBar()
+        public void UpdateCustomScrollBar()
         {
             // Chiều cao hiển thị của vùng editor
             double viewportHeight = editorArea.ActualHeight;
@@ -83,7 +83,7 @@ namespace WordPad
         private void AdjustRichTextBoxHeight()
         {
             double contentHeight = GetRichTextBoxContentHeight();
-            double actualHeight = _richTextBox.ActualHeight;
+            double actualHeight = _richTextBox.ActualHeight - _richTextBox.Padding.Top - _richTextBox.Padding.Bottom;
             if (contentHeight > actualHeight)
             {
                 //1 lần mở rộng nhiều để giảm số lần phải mở rộng
@@ -103,7 +103,7 @@ namespace WordPad
             Rect caretRect = _richTextBox.CaretPosition.GetCharacterRect(LogicalDirection.Forward);
 
             // Vị trí con trỏ tính trong DockPanel
-            double caretPositionInDockPanel = caretRect.Top + _richTextBox.Padding.Top;
+            double caretPositionInDockPanel = caretRect.Top + _richTextBox.Margin.Top;
 
             // Xác định chiều cao hiển thị của DockPanel
             double viewportHeight = editorArea.ActualHeight;

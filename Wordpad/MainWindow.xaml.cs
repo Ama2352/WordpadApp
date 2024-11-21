@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
+using System.Windows.Input;
 using Wordpad.Files;
 using WordPad;
 
@@ -21,7 +22,6 @@ namespace Wordpad
         SendEmailManager _SendEmailManager;
         TextBoxBehavior _TextBoxBehavior;
         public static bool IsTextChanged;
-        public static float lineSpacing = 1.0f;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +34,14 @@ namespace Wordpad
 
         }
         #region SetLineSpacing
+        //Biến kiểm tra chieck box add 10pt được check hay chưa để class print xài
+        //Nếu chung class với set line spacing thì có thể xài addSpaceChB.IsChecked().
+        public static bool isChecked {get; set;}
+        public static float lineSpacing = 1.0f;
+        //Biến đề đồng bộ line height để bằng với wordpad(đoán mò ~~)
+        private float LineHeightMultiplier = 1.3f;
+        //Biến lưu giá trị của margin.bottom của paragraph khi check add 10pt
+        private float marginBot = 17;
         // Hàm Set Line Spacing
         public void SetLineSpacingWithSpacingAfterParagraphs(float lineSpacing, bool addSpacingAfterParagraphs = false)
         {
@@ -53,13 +61,19 @@ namespace Wordpad
                 Paragraph para = selection.Start.Paragraph;
 
                 // Thiết lập khoảng cách dòng cho đoạn văn tại vị trí con trỏ
-                para.LineHeight = para.FontSize * lineSpacing;
+                para.LineHeight = para.FontSize * lineSpacing * LineHeightMultiplier;
 
                 // Nếu addSpacingAfterParagraphs == true, thêm 10pt khoảng cách dưới đoạn văn
                 if (addSpacingAfterParagraphs)
                 {
                     // Đặt Margin.Bottom (khoảng cách dưới đoạn văn) thêm 10pt
-                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right, para.Margin.Bottom + 10);
+                    //magin.Bottom = marginBot + lineheight --> khi điều chỉnh lineheight thì margin cũng sẽ bị điều chỉnh --> spacing đúng
+                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right, marginBot + para.LineHeight);
+                }
+                else
+                {
+                    //Nếu ko check (hoặc unchecked) thì trả lại margin.bottom = 1
+                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right, 1);
                 }
             }
             else
@@ -87,12 +101,18 @@ namespace Wordpad
                 // Áp dụng line spacing cho các đoạn văn trong vùng chọn
                 foreach (var selectedParagraph in selectedParagraphs)
                 {
-                    selectedParagraph.LineHeight = selectedParagraph.FontSize * lineSpacing;
+                    selectedParagraph.LineHeight = selectedParagraph.FontSize * lineSpacing * LineHeightMultiplier;
 
                     // Nếu addSpacingAfterParagraphs == true, thêm 10pt khoảng cách dưới đoạn văn
                     if (addSpacingAfterParagraphs)
                     {
-                        selectedParagraph.Margin = new Thickness(selectedParagraph.Margin.Left, selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, selectedParagraph.Margin.Bottom + 10);
+                        selectedParagraph.Margin= new Thickness(selectedParagraph.Margin.Left,
+                            selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, marginBot + selectedParagraph.LineHeight * 0.05);
+                    }
+                    else
+                    {
+                        selectedParagraph.Margin = new Thickness(selectedParagraph.Margin.Left,
+                            selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, 1);
                     }
                 }
             }
@@ -121,8 +141,18 @@ namespace Wordpad
                 lineSpacing = float.Parse(lineSpacingValue);
 
                 // Gọi hàm để thiết lập khoảng cách dòng cho RichTextBox
-                SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, true); // Thêm khoảng cách dưới đoạn văn
+                SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, isChecked); // Thêm khoảng cách dưới đoạn văn
             }
+        }
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            isChecked = true;
+            SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, isChecked);
+        }
+        private void addSpaceChB_Unchecked(object sender, RoutedEventArgs e)
+        {
+            isChecked = false;
+            SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, isChecked);
         }
         #endregion
 
@@ -134,10 +164,45 @@ namespace Wordpad
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //_PrintManager.AdjustDockPanelToPageSetup();
+            _PrintManager.AdjustDockPanelToPageSetup();
+            SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, isChecked);
         }
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _TextBoxBehavior.UpdateCustomScrollBar();
+        }
+        #region ShortCuts
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //Save
+            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                _SaveManager.Save();
+                e.Handled = true;
+                //System.Windows.MessageBox.Show("Ctrl+S shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                _NewManager.CreateNew();
+                e.Handled = true;
+                //System.Windows.MessageBox.Show("Ctrl+N shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (e.Key == Key.O && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                _OpenManager.Open();
+                e.Handled = true;
+                //System.Windows.MessageBox.Show("Ctrl+O shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                _PrintManager.PrintDoc();
+                e.Handled = true;
+                //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
-        #region
+        }
+        #endregion
+        #region ClickEvent
         private void NewMenuItem_Click(object sender, RoutedEventArgs e)
         {
             _NewManager.CreateNew();
@@ -200,6 +265,9 @@ namespace Wordpad
                 System.Windows.Application.Current.Shutdown(); // Thoát ứng dụng
             }
         }
+
+
+
 
         #endregion
 
