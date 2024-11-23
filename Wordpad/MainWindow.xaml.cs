@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,12 +7,10 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Wordpad.Files;
 using WordPad;
+//using WordPadApp;
 
-namespace Wordpad
+namespace WordPad
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         NewManager _NewManager;
@@ -22,6 +20,8 @@ namespace Wordpad
         SendEmailManager _SendEmailManager;
         TextBoxBehavior _TextBoxBehavior;
         public static bool IsTextChanged;
+        private ViewManagment viewManagment;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +31,21 @@ namespace Wordpad
             _SaveManager = new SaveManager(richTextBox);
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
+            // Khởi tạo ViewManagment
+            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, textBox, unitComboBox);
+        }
 
+        private void UnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewManagment.UpdateRuler();
+        }
+
+        private void ZoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (viewManagment != null)
+            {
+                viewManagment.SetZoom((int)((Slider)sender).Value);
+            }
         }
 
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -144,8 +158,25 @@ namespace Wordpad
             }
         }
 
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ZoomIn();
+        }
 
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ZoomOut();
+        }
 
+        private void ToggleRuler_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void ToggleStatusBar_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
 
         #endregion
 

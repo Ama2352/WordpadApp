@@ -1,4 +1,4 @@
-﻿<Window x:Class="Wordpad.MainWindow"
+﻿<Window x:Class="WordPad.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +26,26 @@
             </MenuItem>
             <MenuItem Header="Home"/>
         </Menu>
- 
+
+         <!-- Toolbar -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="Zoom In" Click="ZoomIn_Click"/>
+            <Button Content="Zoom Out" Click="ZoomOut_Click"/>
+            <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
+                <ComboBoxItem Content="Inch"/>
+                <ComboBoxItem Content="Cm"/>
+                <ComboBoxItem Content="Points"/>
+                <ComboBoxItem Content="Picas"/>
+            </ComboBox>
+            <Button Content="Toggle Ruler" Click="ToggleRuler_Click"/>
+            <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
+        </StackPanel>
+
+        <!-- Ruler -->
+        <Canvas Name="rulerCanvas" DockPanel.Dock="Top" Height="30" Background="LightGray">
+            <!-- Ruler markings will be drawn here -->
+        </Canvas>
+
         <!-- Custom ScrollBar -->
         <ScrollBar x:Name="customScrollBar"
                            Orientation="Vertical"
@@ -35,6 +54,12 @@
                            SmallChange="1"
                            LargeChange="10"
                            DockPanel.Dock="Right"/>
+        <!-- Status Bar -->
+        <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
+            <Slider Name="zoomSlider" Minimum="50" Maximum="200" Value="100" Width="150" TickFrequency="10" 
+                    IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged"/>
+        </StatusBar>
         <!-- Main Content Area -->
         <Grid Background="#FFCED7E6" Name="editorArea">
 
@@ -52,5 +77,4 @@
                 </RichTextBox>
             </DockPanel>
         </Grid>
-    </DockPanel>
 </Window>
