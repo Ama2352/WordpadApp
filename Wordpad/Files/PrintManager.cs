@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Wordpad.Files;
 using con = System.Windows.Controls;
 
-namespace WordPad
+namespace Wordpad
 {
     internal class PrintManager
     {

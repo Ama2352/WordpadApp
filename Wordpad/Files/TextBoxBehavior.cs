@@ -6,7 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace WordPad
+namespace Wordpad
 {
     internal class TextBoxBehavior
     {

@@ -1,41 +1,45 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Shapes;
 using static System.Windows.MessageBox;
 
-namespace WordPadApp
+namespace Wordpad
 {
     public class ViewManagment
     {
         private readonly Canvas rulerCanvas;
         private readonly StatusBar statusBar;
         private readonly StatusBarItem statusBarItem;
-        private readonly TextBox textBox;
+        private readonly RichTextBox richTextBox;
         private readonly ComboBox unitComboBox;
         private int zoomLevel = 100;
 
-        public ViewManagment(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, TextBox textBox, ComboBox unitComboBox)
+        public ViewManagment(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox, ComboBox unitComboBox)
         {
             this.rulerCanvas = rulerCanvas;
             this.statusBar = statusBar;
             this.statusBarItem = statusBarItem;
-            this.textBox = textBox;
+            this.richTextBox = richTextBox;
             this.unitComboBox = unitComboBox;
+
             DrawRuler();
-            textBox.TextChanged += TextBox_TextChanged;
+
+            // Đăng ký sự kiện TextChanged cho RichTextBox
+            richTextBox.TextChanged += RichTextBox_TextChanged;
         }
 
         public void ZoomIn()
         {
             zoomLevel += 10;
-            textBox.FontSize = 12 * zoomLevel / 100;
+            ApplyZoom();
         }
 
         public void ZoomOut()
         {
             zoomLevel -= 10;
-            textBox.FontSize = 12 * zoomLevel / 100;
+            ApplyZoom();
         }
 
         public void UpdateRuler()
@@ -73,32 +77,56 @@ namespace WordPadApp
             statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int lineCount = textBox.LineCount;
-            int charCount = textBox.Text.Length;
+            int charCount = GetCharacterCount();
+            int lineCount = GetLineCount();
+
             statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
         }
 
         public void WordCount_Click(object sender, RoutedEventArgs e)
         {
-            int charCount = textBox.Text.Length;
-            int lineCount = textBox.LineCount;
+            int charCount = GetCharacterCount();
+            int lineCount = GetLineCount();
+
             Show($"Character Count: {charCount}\nLine Count: {lineCount}", "Character and Line Count");
             statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
         }
+
         public void SetZoom(int zoomLevel)
         {
-            // Giới hạn zoomLevel trong khoảng 50% - 200%
             if (zoomLevel < 50 || zoomLevel > 200)
                 return;
 
             this.zoomLevel = zoomLevel;
-
-            // Cập nhật kích thước phông chữ của TextBox
-            textBox.FontSize = 12 * zoomLevel / 100; // Ví dụ: Font size gốc là 12
+            ApplyZoom();
         }
 
+        private void ApplyZoom()
+        {
+            // Cập nhật zoom bằng cách thay đổi kích thước phông chữ trong FlowDocument
+            if (richTextBox.Document != null)
+            {
+                foreach (var block in richTextBox.Document.Blocks)
+                {
+                    block.FontSize = 12 * zoomLevel / 100; // Font size gốc là 12
+                }
+            }
+        }
+
+        private int GetCharacterCount()
+        {
+            // Tính tổng số ký tự trong RichTextBox
+            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            return textRange.Text.TrimEnd('\r', '\n').Length; // Loại bỏ ký tự xuống dòng cuối cùng
+        }
+
+        private int GetLineCount()
+        {
+            // Dựa vào số dòng logic trong FlowDocument
+            return richTextBox.Document.Blocks.Count;
+        }
 
         private void DrawRuler(double scale = 1)
         {

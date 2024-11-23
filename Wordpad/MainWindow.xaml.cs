@@ -6,10 +6,10 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Wordpad.Files;
-using WordPad;
-//using WordPadApp;
+using Wordpad;
+//using WordpadApp;
 
-namespace WordPad
+namespace Wordpad
 {
     public partial class MainWindow : Window
     {
@@ -32,7 +32,7 @@ namespace WordPad
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
             // Khởi tạo ViewManagment
-            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, textBox, unitComboBox);
+            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox);
         }
 
         private void UnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
