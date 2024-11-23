@@ -3,10 +3,139 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Wordpad" Height="450" Width="1000">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <TabControl>
+            <TabItem Header="File"/>
+            <TabItem Header="Home"/>
+            <TabItem Header="View"/>
+        </TabControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".7*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width=".865*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnPaste" Background="FloralWhite" Click="btnPaste_Click">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Image Source="/Images/paste1.png" Width="32" Height="32"/>
+                        <TextBlock Text="Paste" Margin="5,0,0,0" FontSize="15"/>
+
+                    </StackPanel>
+                </Button>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Name="btnCut" Background="FloralWhite" Margin="0,0,2,0" Click="btnCut_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/cut.png" Width="20" Height="20"/>
+                            <TextBlock Text="Cut" Margin="5,0,0,0" FontSize="15"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Row="1" Name="btnCopy" Background="FloralWhite" Margin="0,0,2,0" Click="btnCopy_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/Images/copy.png" Width="20" Height="20"/>
+                            <TextBlock Text="Copy" Margin="5,0,0,0" FontSize="15"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="cbFontFamily" Width="150" SelectionChanged="cbFontFamily_SelectionChanged" />
+                    <ComboBox Name="cbFontSize" Width="70" SelectionChanged="cbFontSize_SelectionChanged" />
+                    <Button x:Name="btnGrowFont" Width="30" Content="A1" Background="Transparent" Margin="1,0,2,0" Click="btnGrowFont_Click"/>
+                    <Button x:Name="btnShrinkFont" Width="30" Content="A2" Background="Transparent" Margin="0,0,1,0" Click="btnShrinkFont_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <ToolBar>
+                        <Button x:Name="btnBold" ToolTip="Bold" Width="30" Click="btnBold_Click">
+                            <Image Source="/Images/bold.png"/>
+                        </Button>
+                        <Button x:Name="btnItalic" ToolTip="Italic" Width="30" Click="btnItalic_Click">
+                            <Image Source="/Images/italic.png"/>
+                        </Button>
+                        <Button x:Name="btnUnderline" ToolTip="Underline" Width="30" Click="btnUnderline_Click">
+                            <Image Source="/Images/underline.png"/>
+                        </Button>
+                        <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" Width="30" Click="btnStrikethrough_Click">
+                            <Image Source="/Images/strikethrough.png"/>
+                        </Button>
+                        <Button x:Name="btnSubscript" ToolTip="Subscript" Width="30" Click="btnSubscript_Click">
+                            <Image Source="/Images/subscript.png"/>
+                        </Button>
+                        <Button x:Name="btnSuperscript" ToolTip="Superscript" Width="30" Click="btnSuperscript_Click">
+                            <Image Source="/Images/superscript.png"/>
+                        </Button>
+                        <xctk:ColorPicker Name="colorPicker" Width="20" SelectedColorChanged="colorPicker_SelectedColorChanged"/>
+                        <xctk:ColorPicker Name="highlightPicker" Width="20" SelectedColorChanged="highlightPicker_SelectedColorChanged"/>
+
+                    </ToolBar>
+                </StackPanel>
+            </Grid>
+
+            <WrapPanel Grid.Column="2">
+                <Button Name="btnDecreaseIndent" Content="DeIndent" Click="btnDecreaseIndent_Click"/>
+                <Button Name="btnIncreaseIndent" Content="InIndent" Click="btnIncreaseIndent_Click"/>
+                <ComboBox Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged">
+                    <ComboBoxItem>1.0</ComboBoxItem>
+                    <ComboBoxItem>1.25</ComboBoxItem>
+                    <ComboBoxItem>1.5</ComboBoxItem>
+                    <ComboBoxItem>2.0</ComboBoxItem>
+                </ComboBox>
+                <CheckBox x:Name="chkAdd10pt" Content="Add 10pt"/>
+                <Button Name="btnLeftAlignment" Content="LeftA" Click="btnLeftAlignment_Click"/>
+                <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
+                <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
+                <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
+                <Button Name="btnParagraph" Content="Paragraph"/>
+            </WrapPanel>
+
+            <WrapPanel Grid.Column="3">
+                <Button Name="btnPicture" Content="Picture" Click="btnPicture_Click"/>
+                <Button Name="btnResizePicture" Content="Resize Picture" Click="btnResizePicture_Click"/>
+                <Button Name="btnChangePicture" Content="Change Picture" Click="btnChangePicture_Click"/>
+                <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
+                <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
+            </WrapPanel>
+        </Grid>
+       
+        
+
+        <!-- Đặt RichTextBox vào dòng 2 -->
+        <RichTextBox Grid.Row="2" Name="richTextBox" Margin="5" SelectionChanged="richTextBox_SelectionChanged"/>
         
     </Grid>
 </Window>
