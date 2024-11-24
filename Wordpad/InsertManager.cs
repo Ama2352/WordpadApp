@@ -12,8 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Wordpad;
+using Image = System.Windows.Controls.Image;
 
-namespace WordPad
+namespace Wordpad
 {
     public class InsertManager
     {

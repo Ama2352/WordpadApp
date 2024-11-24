@@ -44,7 +44,7 @@
             <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
         </StackPanel>
         <!-- Tab home -->
-       <Grid>
+       <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width=".7*"/>
                 <ColumnDefinition Width="1.5*"/>
