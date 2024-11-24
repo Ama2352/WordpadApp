@@ -5,11 +5,17 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace WordPad
+namespace Wordpad
 {
     internal class ParagraphManager
     {
         private RichTextBox _richTextBox;
+        public static float lineSpacing = 1.0f;
+        //Biến đề đồng bộ line height để bằng với wordpad(đoán mò ~~)
+        private float LineHeightMultiplier = 1.3f;
+        //Biến lưu giá trị của margin.bottom của paragraph khi check add 10pt
+        private float marginBot = 17;
+
 
         // Khởi tạo với tham chiếu tới RichTextBox
         public ParagraphManager(RichTextBox richTextBox)
@@ -180,6 +186,7 @@ namespace WordPad
 
 
         // Hàm Set Line Spacing
+        // Hàm Set Line Spacing
         public void SetLineSpacingWithSpacingAfterParagraphs(float lineSpacing, bool addSpacingAfterParagraphs = false)
         {
             // Kiểm tra giá trị lineSpacing có hợp lệ không (chỉ cho phép các giá trị 1.0, 1.25, 1.5, 2.0)
@@ -198,13 +205,20 @@ namespace WordPad
                 Paragraph para = selection.Start.Paragraph;
 
                 // Thiết lập khoảng cách dòng cho đoạn văn tại vị trí con trỏ
-                para.LineHeight = para.FontSize * lineSpacing;
+                para.LineHeight = para.FontSize * lineSpacing * LineHeightMultiplier;
 
                 // Nếu addSpacingAfterParagraphs == true, thêm 10pt khoảng cách dưới đoạn văn
                 if (addSpacingAfterParagraphs)
                 {
                     // Đặt Margin.Bottom (khoảng cách dưới đoạn văn) thêm 10pt
-                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right, para.Margin.Bottom + 10);
+                    //magin.Bottom = marginBot + lineheight --> khi điều chỉnh lineheight thì margin cũng sẽ bị điều chỉnh --> spacing đúng
+                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right,
+                        marginBot + para.LineHeight * 0.05);
+                }
+                else
+                {
+                    //Nếu ko check (hoặc unchecked) thì trả lại margin.bottom = 1
+                    para.Margin = new Thickness(para.Margin.Left, para.Margin.Top, para.Margin.Right, 1);
                 }
             }
             else
@@ -232,17 +246,24 @@ namespace WordPad
                 // Áp dụng line spacing cho các đoạn văn trong vùng chọn
                 foreach (var selectedParagraph in selectedParagraphs)
                 {
-                    selectedParagraph.LineHeight = selectedParagraph.FontSize * lineSpacing;
+                    selectedParagraph.LineHeight = selectedParagraph.FontSize * lineSpacing * LineHeightMultiplier;
 
                     // Nếu addSpacingAfterParagraphs == true, thêm 10pt khoảng cách dưới đoạn văn
                     if (addSpacingAfterParagraphs)
                     {
-                        selectedParagraph.Margin = new Thickness(selectedParagraph.Margin.Left, selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, selectedParagraph.Margin.Bottom + 10);
+                        selectedParagraph.Margin = new Thickness(selectedParagraph.Margin.Left,
+                            selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, marginBot + selectedParagraph.LineHeight * 0.05);
+                    }
+                    else
+                    {
+                        selectedParagraph.Margin = new Thickness(selectedParagraph.Margin.Left,
+                            selectedParagraph.Margin.Top, selectedParagraph.Margin.Right, 1);
                     }
                 }
             }
 
         }
+
 
         // Phương thức kiểm tra xem một đoạn văn có nằm trong vùng chọn hay không
         private bool IsParagraphInSelection(Paragraph paragraph, TextPointer startPosition, TextPointer endPosition)

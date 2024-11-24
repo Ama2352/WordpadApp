@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Linq;
 
-namespace WordPad
+namespace Wordpad
 {
     public class EditingManager
     {

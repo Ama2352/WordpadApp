@@ -190,9 +190,19 @@ namespace Wordpad
 
             MessageBox.Show(checkAdd10pt.ToString());
 
-            float value = float.Parse(selectedValue);
-            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(value, checkAdd10pt);
+            ParagraphManager.lineSpacing = float.Parse(selectedValue);
+            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);
         }
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, true);
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, false);
+        }
+
 
         #region ShortCuts
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -463,6 +473,7 @@ namespace Wordpad
         }
 
         #endregion
+
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Windows;
-using WordPad;
+using Wordpad;
 using System.IO;
 
 namespace Wordpad

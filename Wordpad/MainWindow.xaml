@@ -137,8 +137,8 @@
                     <ComboBoxItem>1.25</ComboBoxItem>
                     <ComboBoxItem>1.5</ComboBoxItem>
                     <ComboBoxItem>2.0</ComboBoxItem>
+                    <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                 </ComboBox>
-                <CheckBox x:Name="chkAdd10pt" Content="Add 10pt"/>
                 <Button Name="btnLeftAlignment" Content="LeftA" Click="btnLeftAlignment_Click"/>
                 <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
                 <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
