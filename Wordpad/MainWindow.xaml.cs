@@ -260,7 +260,15 @@ namespace Wordpad
 
         private void btnInsertObject_Click(object sender, RoutedEventArgs e)
         {
+            InsertObjectWindow insertObjectWindow = new InsertObjectWindow(insertManager,clipboardManager);
+            if(insertObjectWindow.ShowDialog() == true) { }
+                
+        }
 
+
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            insertManager.OpenDocumentIfLinkIconClicked(sender, e);
         }
 
         private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -297,5 +305,6 @@ namespace Wordpad
             float value = float.Parse(selectedValue);
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(value, checkAdd10pt);
         }
+
     }
 }

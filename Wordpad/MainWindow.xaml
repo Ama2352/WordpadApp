@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="Wordpad" Height="450" Width="1000">
+        Title="Wordpad" Height="450" Width="1000" MouseDoubleClick="Window_MouseDoubleClick">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>

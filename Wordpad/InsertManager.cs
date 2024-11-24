@@ -24,7 +24,7 @@ namespace WordPad
 
 
         // Kho lưu trữ vị trí icon để nhận dạng loại icon
-        public static Dictionary<int, string> iconLinks { get; private set; } = new Dictionary<int, string>();
+        public static Dictionary<Image, string> iconLinks { get; private set; } = new Dictionary<Image, string>();
 
         // Khởi tạo với tham chiếu tới RichTextBox
         public InsertManager(RichTextBox richTextBox)
@@ -123,7 +123,7 @@ namespace WordPad
 
                     selection.Text = "";
 
-                    // Gọi hàm để tìm hình ảnh tại vị trí con trỏ
+                    // Gọi hàm để tìm hình ảnh tại vị trí con trỏ (nếu có)
                     DeleteImageAtPosition(selectedContent);
                 }
 
@@ -276,110 +276,119 @@ namespace WordPad
 
         public void InsertObjectAsIcon(string iconType, string directory)
         {
-            string imageName = "";
+            string iconName = "";
+            string appName = "";
             switch (iconType)
             {
                 case "Foxit PhantomPDF Document":
-                    imageName = "pdf.png";
+                    iconName = "pdf.png";
+                    appName = "Foxit PhantomPDF Document";
                     break;
                 case "Microsoft Word Document":
-                    imageName = "word.png";
+                    iconName = "word.png";
+                    appName = "Microsoft Word Document";
                     break;
                 case "Wordpad Document":
-                    imageName = "word.png";
+                    iconName = "word.png";
+                    appName = "Wordpad Document";
                     break;
                 case "Microsoft Excel":
-                    imageName = "excel.png";
+                    iconName = "excel.png";
+                    appName = "Microsoft Excel";
                     break;
                 case "Microsoft PowerPoint Presentation":
-                    imageName = "powerpoint.png";
+                    iconName = "powerpoint.png";
+                    appName = "Microsoft PowerPoint Presentation";
                     break;
                 case "Paint":
-                    imageName = "paint.png";
+                    iconName = "paint.png";
+                    appName = "Paint";
                     break;
                 default:
-                    imageName = "file.png";
+                    iconName = "file.png";
                     break;
             }
 
-            string imagePath = Path.Combine(ClipboardManager.ImageDirectory, imageName);
+            string iconPath = Path.Combine(ClipboardManager.imageDirectory, iconName);
 
-            // Tạo đối tượng BitmapSource từ ImagePath
-            BitmapSource icon = new BitmapImage(new Uri(imagePath));
-
-            // Thay đổi kích thước ảnh
-            BitmapSource resizedIcon = new BitmapImage(new Uri(imagePath));
+            // Thay đổi kích thước icon cho phù hợp (size ảnh gốc to)
+            BitmapSource resizedIcon = new BitmapImage(new Uri(iconPath));
             resizedIcon = new TransformedBitmap(resizedIcon, new ScaleTransform(0.1, 0.1)); // Giảm kích thước
 
-            Clipboard.SetImage(resizedIcon);
-
-            // Chuyển TextPointer thành chỉ số văn bản (int)
-            int iconPosition = _richTextBox.Selection.Start.GetOffsetToPosition(_richTextBox.Selection.End);
-
-            if (directory != null)
-                iconLinks[iconPosition] = directory;
+            // Tạo khung chứa icon
+            Image linkIcon = new Image
+            {
+                Source = resizedIcon,
+                Width = resizedIcon.Width,
+                Height = resizedIcon.Height,
+            };
+            
+            if(directory != null)
+            {
+                iconLinks[linkIcon] = directory; // Nếu là loại file thì lưu đường dẫn đến file đó
+            }    
             else
-                iconLinks[iconPosition] = iconType;
+            {
+                // Nếu là loại app office
+                iconLinks[linkIcon] = appName;
+            }    
+           
 
-            _richTextBox.Paste();
+            // Tạo container chứa khung icon
+            InlineUIContainer container = new InlineUIContainer(linkIcon);
+
+            // Lấy vùng chọn hiện tại
+            TextSelection selection = _richTextBox.Selection;
+            if(!selection.IsEmpty)
+            {
+                // Lấy textPointer từ vị trí con trỏ hiện tại (hoặc vùng chọn)
+                TextPointer selectedText = selection.Start;
+
+                selection.Text = "";
+
+                // Phương thức xóa hình ảnh tại vị trí (vùng chọn) của con trỏ (nếu có)
+                DeleteImageAtPosition(selectedText);
+            }
+
+            var para = selection.Start.Paragraph;
+
+            // Nếu không có đoạn văn, tạo mới một đoạn văn
+            if (para == null)
+            {
+                para = new Paragraph();
+                _richTextBox.Document.Blocks.Add(para);
+            }
+
+            // Chèn InlineUIContainer vào Paragraph
+            para.Inlines.Add(container);
         }
 
         public void OpenDocumentIfLinkIconClicked(object sender, MouseButtonEventArgs e)
         {
-            if (_richTextBox != null)
+            string fileType = null;
+
+            TextPointer selection = _richTextBox.Selection.Start;
+            Paragraph para = selection.Paragraph;
+            if (para != null)
             {
-                var mousePosition = e.GetPosition(_richTextBox);
-
-                // Lấy TextPointer tại vị trí chuột
-                TextPointer textPointer = _richTextBox.GetPositionFromPoint(mousePosition, true);
-
-                // Kiểm tra xem chỉ số ký tự có khớp với vị trí ảnh trong Dictionary iconLinks không
-                if (textPointer != null)
+                var inlines = para.Inlines.ToList();
+                foreach (Inline inline in inlines)
                 {
-                    // Tìm vị trí chỉ số ký tự từ TextPointer
-                    int charIndex = textPointer.GetOffsetToPosition(_richTextBox.Document.ContentStart);
-
-                    // Kiểm tra xem chỉ số ký tự có khớp với vị trí ảnh trong Dictionary iconLinks không
-                    if (iconLinks.ContainsKey(charIndex) || (charIndex > 0 && iconLinks.ContainsKey(charIndex - 1)))
-                    { 
-                        // Chọn ký tự tại vị trí chuột
-                        _richTextBox.Selection.Select(textPointer, textPointer.GetPositionAtOffset(1)); // Chọn ký tự tại vị trí chuột
-                        CheckAndOpenApplication(charIndex);
-                    }
-                }
-            }
-        }
-
-        private void CheckAndOpenApplication(int charIndex)
-        {
-            // Lấy TextPointer tại vị trí nhấp chuột
-            TextPointer pointer = _richTextBox.Document.ContentStart.GetPositionAtOffset(charIndex);
-
-            if (pointer != null)
-            {
-                // Kiểm tra xem phần tử hiện tại có phải là InlineUIContainer không
-                var element = pointer.GetAdjacentElement(LogicalDirection.Forward);
-
-                // Nếu phần tử này là InlineUIContainer và chứa Image
-                if (element is InlineUIContainer inlineUIContainer && inlineUIContainer.Child is System.Windows.Controls.Image image)
-                {
-                    // Kiểm tra xem Image có phải là BitmapImage không
-                    if (image.Source is BitmapImage bitmapImage)
+                    if (inline is InlineUIContainer iconContainer)
                     {
-                        // Lấy iconType từ iconLinks dựa trên charIndex
-                        string iconType = iconLinks.ContainsKey(charIndex) ? iconLinks[charIndex] : null;
-
-                        // Nếu có iconType, mở ứng dụng tương ứng
-                        if (iconType != null)
+                        if (iconContainer.Child is Image selectedIcon)
                         {
-                            OpenApplicationFromIconType(iconType);
+                            if (iconLinks.ContainsKey(selectedIcon))
+                            {
+                                fileType = iconLinks[selectedIcon];
+                                OpenApplicationFromIconType(fileType);
+                                return;
+                            }
                         }
                     }
                 }
             }
         }
-
-
 
         public void OpenApplicationFromIconType(string iconType)
         {
@@ -409,6 +418,7 @@ namespace WordPad
                     break;
             }
 
+            // Mở ứng dụng từ fileName
             Process.Start(new ProcessStartInfo
             {
                 FileName = fileName,

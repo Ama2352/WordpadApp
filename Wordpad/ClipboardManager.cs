@@ -15,18 +15,18 @@ namespace WordPad
     public class ClipboardManager
     {
         private RichTextBox _richTextBox;
-        public static string ImageDirectory { get; private set; }
+        public static string imageDirectory { get; private set; }
         public static bool IsCopiedFromApplication; // Thuộc tính theo dõi nguồn
 
-        public string LinkText { get; private set; }
-        public string TypeOfLink { get; private set; }
+        public string linkText { get; private set; }
+        public string typeOfLink { get; private set; }
 
         // Khởi tạo với tham chiếu tới RichTextBox
         public ClipboardManager(RichTextBox richTextBox)
         {
             _richTextBox = richTextBox;
-            ImageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                "C:/Users/Admin/Documents/GitHub/WordPad/WordPad/WordPad/Images");
+            imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                "C:/File Study/Study/LapTrinhTrucQuan/Project/Wordpad/Wordpad/Images");
             IsCopiedFromApplication = false; // Khởi tạo giá trị mặc định
         }
 
@@ -107,19 +107,65 @@ namespace WordPad
             switch (option)
             {
                 case "Rich Text (RTF)":
-                    imagePath = Path.Combine(ImageDirectory, "paste.png");
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
                     return ("Inserts the contents of the clipboard into your document as text with font and paragraph formatting.",
                             LoadImage(imagePath), null);
 
                 case "Unformatted Text":
-                    imagePath = Path.Combine(ImageDirectory, "paste.png");
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
                     return ("Inserts the contents of the clipboard into your document as text without any formatting.",
                             LoadImage(imagePath), null);
 
+                case "Picture (Metafile)":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    return ("Inserts the contents of the clipboard into your document as a picture.",
+                            LoadImage(imagePath), null);
+
+                case "Device Independent Bitmap":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    return ("Inserts the contents of the clipboard into your document as a device independent bitmap.",
+                            LoadImage(imagePath), null);
+
                 case "Bitmap":
-                    imagePath = Path.Combine(ImageDirectory, "paste.png");
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
                     return ("Inserts the contents of the clipboard into your document as a bitmap.",
                             LoadImage(imagePath), null);
+
+                case "Wordpad Document":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "word.png");
+                    return ("Inserts the contents of the clipboard into your document so that you may activate it using WordPad.",
+                            LoadImage(imagePath), LoadImage(iconPath));
+
+                case "Foxit PhantomPDF Document":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "pdf.png");
+                    return ("Inserts a new Foxit PhantomPDF Document object into your document. It will be displayed as an icon.",
+                            LoadImage(imagePath), LoadImage(iconPath));
+
+                case "Microsoft Word Document":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "word.png");
+                    return ("Inserts a new Microsoft Word Document object into your document.",
+                            LoadImage(imagePath), LoadImage(iconPath));
+
+                case "Microsoft Excel":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "excel.png");
+                    return ("Inserts a new Microsoft Excel object into your document.",
+                            LoadImage(imagePath), LoadImage(iconPath));
+
+                case "Microsoft PowerPoint Presentation":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "powerpoint.png");
+                    return ("Inserts a new Microsoft PowerPoint Presentation object into your document.",
+                            LoadImage(imagePath), LoadImage(iconPath));
+
+                case "Paint":
+                    imagePath = Path.Combine(imageDirectory, "paste.png");
+                    iconPath = Path.Combine(imageDirectory, "paint.png");
+                    return ("Inserts a new Paint object into your document.",
+                        LoadImage(imagePath), LoadImage(iconPath));
 
                 default:
                     return ("No description for this option.", null, null);
@@ -141,7 +187,7 @@ namespace WordPad
 
         public void OpenDocumentIfLinkClicked(MouseButtonEventArgs e)
         {
-            if (_richTextBox != null && LinkText != null)
+            if (_richTextBox != null && linkText != null)
             {
                 TextPointer pointer = _richTextBox.Document.ContentStart;
                 TextPointer clickedPosition = _richTextBox.GetPositionFromPoint(e.GetPosition(_richTextBox), true);
@@ -149,12 +195,12 @@ namespace WordPad
                 if (clickedPosition != null)
                 {
                     int offset = pointer.GetOffsetToPosition(clickedPosition);
-                    if (offset >= 0 && offset < LinkText.Length)
+                    if (offset >= 0 && offset < linkText.Length)
                     {
                         try
                         {
                             string fileName;
-                            switch (TypeOfLink)
+                            switch (typeOfLink)
                             {
                                 case "Wordpad Document":
                                     fileName = "wordpad";
