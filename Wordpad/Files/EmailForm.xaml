@@ -1,0 +1,20 @@
+﻿<Window x:Class="Wordpad.Files.EmailForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wordpad.Files"
+        mc:Ignorable="d"
+        Title="EmailForm" Height="195" Width="522">
+    <Grid Margin="0,0,0,-6">
+        <TextBox x:Name="txtFrom" HorizontalAlignment="Left" Margin="71,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>
+        <TextBox x:Name="txtTo" HorizontalAlignment="Left" Margin="333,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>
+        <CheckBox x:Name="chkShowPassword" Content="Show password" HorizontalAlignment="Left" Margin="251,81,0,0" VerticalAlignment="Top" Width="109" Checked="chkShowPassword_CheckedChanged"/>
+        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="71,115,0,0" VerticalAlignment="Top" Width="40" Click="btnSend_Click"/>
+        <Label Content="From" HorizontalAlignment="Left" Margin="34,39,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="12,75,0,0" VerticalAlignment="Top" Width="59"/>
+        <Label Content="To" HorizontalAlignment="Left" Margin="311,38,0,0" VerticalAlignment="Top" Width="22"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="71,80,0,0" VerticalAlignment="Top" Width="175"/>
+
+    </Grid>
+</Window>

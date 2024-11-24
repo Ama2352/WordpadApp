@@ -1,0 +1,59 @@
+﻿<Window x:Class="Wordpad.ResizeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Wordpad"
+        mc:Ignorable="d"
+        Title="ResizeWindow" Height="220" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".7*"/>
+            <ColumnDefinition Width=".3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".2*"/>
+                <RowDefinition Height=".65*"/>
+                <RowDefinition Height=".15*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Label Content="Resize relative to original picture size" Margin="10,5,0,0"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="20,0,0,0" Orientation="Horizontal">
+                    <Image Source="/Images/horizontal.png" Width="50" Height="50" HorizontalAlignment="Left" Margin="0,0,0,7"/>
+                    <Label Content="Horizontal:" Margin="30,15,0,0"/>
+                    <xctk:IntegerUpDown Name="numericUpDownHorizontal" Height="20" Width="50" Margin="5,2,0,0" />
+                    <Label Content="%" HorizontalAlignment="Right" Margin="0,17,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="20,0,0,0" Orientation="Horizontal">
+                    <Image Source="/Images/vertical.png" Width="50" Height="60" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                    <Label Content="Vertical:" Margin="30,15,0,0"/>
+                    <xctk:IntegerUpDown Name="numericUpDownVertical" Height="20" Width="50" Margin="21,2,0,0"/>
+                    <Label Content="%" HorizontalAlignment="Right" Margin="0,17,0,0"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <CheckBox Name="chkLockAspectRatio" Margin="20,3,10,5" Content="Lock Aspect Ratio" IsChecked="True" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Button Name="btnOK" HorizontalAlignment="Right" VerticalAlignment="Top" Content="OK" Height="25" Width="80" Margin="0,10,10,0" Click="btnOK_Click"/>
+            <Button Name="btnCancel" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Cancel" Height="25" Width="80" Margin="0,40,10,0" Click="btnCancel_Click" />
+        </Grid>
+
+    </Grid>
+</Window>
