@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad.Files"
         mc:Ignorable="d"
-        Title="Additional Setting" Height="100" Width="300">
+        Title="Additional Setting" Height="123" Width="300">
     <Grid Margin="10">
         <!-- Checkbox Print Page Number -->
         <CheckBox x:Name="chkPrintPageNumber" Content="Print Page Number" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>

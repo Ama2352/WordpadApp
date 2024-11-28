@@ -37,9 +37,9 @@ namespace Wordpad
 
         private double CalculateAspectRatio(BitmapImage image)
         {
-            // Lấy kích thước thực tế của RichTextBox
-            double maxWidth = _richTextBox.ActualWidth;
-            double maxHeight = _richTextBox.ActualHeight;
+            // Lấy kích thước thực tế của RichTextBox(- 10 vì khi chỉ trừ 2 padding thì nó vẫn bị tràn 1 xíu)
+            double maxWidth = _richTextBox.ActualWidth - _richTextBox.Padding.Left - _richTextBox.Padding.Right - 10;
+            double maxHeight = _richTextBox.ActualHeight - _richTextBox.Padding.Top;
 
             // Tính toán tỷ lệ chiều rộng và chiều cao
             double widthRatio = maxWidth / image.PixelWidth;

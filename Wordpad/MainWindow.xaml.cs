@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Wordpad.Files;
 using Wordpad;
-//using WordpadApp;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -54,7 +53,7 @@ namespace Wordpad
             SettingFontType(fontManager);
             SettingFontSize(fontManager);
         }
-
+        #region Events
         private void UnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             viewManagment.UpdateRuler();
@@ -84,7 +83,7 @@ namespace Wordpad
             _TextBoxBehavior.UpdateCustomScrollBar();
         }
 
-                private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fontManager.ChangeFontFamily(cbFontFamily.SelectedItem.ToString());
         }
@@ -203,6 +202,12 @@ namespace Wordpad
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, false);
         }
 
+        private void richTextBox_LayoutUpdated(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
 
         #region ShortCuts
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -228,7 +233,7 @@ namespace Wordpad
             }
             if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                _PrintManager.PrintDoc();
+                _PrintManager.PrintRichTextBoxContent();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -236,6 +241,7 @@ namespace Wordpad
         }
 
         #endregion
+
         #region ClickEvent
         private void NewMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -259,7 +265,7 @@ namespace Wordpad
 
         private void PrintMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _PrintManager.PrintDoc();
+            _PrintManager.PrintRichTextBoxContent();
         }
         private void QuickPrintMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -320,7 +326,7 @@ namespace Wordpad
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
 
-                private void btnCut_Click(object sender, RoutedEventArgs e)
+        private void btnCut_Click(object sender, RoutedEventArgs e)
         {
             clipboardManager.Cut();
         }
@@ -345,7 +351,7 @@ namespace Wordpad
             fontManager.ShrinkFont();
         }
 
-               private void btnBold_Click(object sender, RoutedEventArgs e)
+        private void btnBold_Click(object sender, RoutedEventArgs e)
         {
             fontManager.ToggleBold();
         }
@@ -375,7 +381,7 @@ namespace Wordpad
             fontManager.ToggleSuperscript();
         }
 
-               private void btnColor_Click(object sender, RoutedEventArgs e)
+        private void btnColor_Click(object sender, RoutedEventArgs e)
         {
             // Lấy màu đã chọn từ ColorPicker
             var selectedColor = colorPicker.SelectedColor;
@@ -446,8 +452,6 @@ namespace Wordpad
             insertManager.ResizeImage();
         }
 
-        
-
         private void btnDateAndTime_Click(object sender, RoutedEventArgs e)
         {
             DateAndTimeWindow dateAndTimeWindow = new DateAndTimeWindow(insertManager);
@@ -471,6 +475,7 @@ namespace Wordpad
             if(insertObjectWindow.ShowDialog() == true) { }
                 
         }
+
 
         #endregion
 

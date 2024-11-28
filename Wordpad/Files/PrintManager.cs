@@ -1,37 +1,217 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
-using Wordpad.Files;
+using Brushes = System.Drawing.Brushes;
 using con = System.Windows.Controls;
+using PrintDialog = System.Windows.Forms.PrintDialog;
+using MessageBox = System.Windows.MessageBox;
+using Wordpad.Files;
+using System.Printing;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Windows.Documents.Serialization;
+using System.Windows.Xps;
+using System.Windows.Xps.Packaging;
+using System.Windows.Markup;
+using Xceed.Wpf.Toolkit;
 
 namespace Wordpad
 {
     internal class PrintManager
     {
         private PrintDocument printDocument;
-        private PageSetupDialog pageSetupDialog;
         private PrintPreviewDialog printPreviewDialog;
-        private bool printPageNumber = false;
+        private PageSetupDialog pageSetupDialog;
+        private FlowDocument flowDocument;
         private int currentPageNumber = 1;
-        private con.DockPanel dockPanel;
+        private bool printPageNumber = false;
+        private DockPanel dockPanel;
         private con.RichTextBox richTextBox;
+        private InsertManager insertManager;
 
-        public PrintManager(con.DockPanel dockPanel, con.RichTextBox richTextBox)
+        public PrintManager(DockPanel DP, con.RichTextBox richTextBox)
         {
-            this.dockPanel = dockPanel;
-            this.richTextBox = richTextBox;
-
-            // Initialize PrintDocument and dialogs
             printDocument = new PrintDocument();
-            pageSetupDialog = new PageSetupDialog { Document = printDocument };
             printPreviewDialog = new PrintPreviewDialog { Document = printDocument };
+            pageSetupDialog = new PageSetupDialog { Document = printDocument };
+            insertManager = new InsertManager(richTextBox);
 
-            // Attach event handlers
-            printDocument.PrintPage += PrintDocument_PrintPage;
+            this.dockPanel = DP;
+            this.richTextBox = richTextBox;
         }
+
+        public void PrintRichTextBoxContent()
+        {
+            // Hiển thị hộp thoại in của WPF
+            System.Windows.Controls.PrintDialog printDialog = new System.Windows.Controls.PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    // Chuẩn bị nội dung in (FlowDocument)
+                    PreparePrint();
+                    IDocumentPaginatorSource paginator = flowDocument;
+
+                    // Thiết lập các tùy chọn in từ PrintDialog
+                    DocumentPaginator documentPaginator = paginator.DocumentPaginator;
+                    documentPaginator.PageSize = new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight);
+
+                    // Thực hiện in tài liệu
+                    printDialog.PrintDocument(documentPaginator, "Printing RichTextBox Content");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error while printing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void PreparePrint()
+        {
+            // Chuyển nội dung từ RichTextBox sang FlowDocument
+            flowDocument = CreateFlowDocumentFromRichTextBox(richTextBox);
+
+            // Điều chỉnh FlowDocument theo PageSetupDialog
+            var pageSettings = printDocument.DefaultPageSettings;
+            flowDocument.PageHeight = pageSettings.PaperSize.Height;
+            flowDocument.PageWidth = pageSettings.PaperSize.Width;
+            flowDocument.PagePadding = new Thickness(
+                pageSettings.Margins.Left,
+                pageSettings.Margins.Top,
+                pageSettings.Margins.Right,
+                pageSettings.Margins.Bottom
+            );
+            flowDocument.ColumnWidth = flowDocument.PageWidth - flowDocument.PagePadding.Left - flowDocument.PagePadding.Right; // Không chia cột
+
+        }
+
+        private FlowDocument CreateFlowDocumentFromRichTextBox(con.RichTextBox richTextBox)
+        {
+            var flowDocument = new FlowDocument();
+
+            // Chuyển nội dung từ RichTextBox sang FlowDocument
+            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                textRange.Save(memoryStream, System.Windows.DataFormats.XamlPackage);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+                TextRange flowDocumentRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
+                flowDocumentRange.Load(memoryStream, System.Windows.DataFormats.XamlPackage);
+            }
+
+            // Đồng bộ font
+            flowDocument.FontSize = richTextBox.FontSize;
+            flowDocument.FontFamily = richTextBox.FontFamily;
+            flowDocument.FontStretch = richTextBox.FontStretch;
+            flowDocument.FontStyle = richTextBox.FontStyle;
+            flowDocument.FontWeight = richTextBox.FontWeight;
+
+            // Đồng bộ padding
+            flowDocument.PagePadding = richTextBox.Padding;
+
+            //// Điều chỉnh tỷ lệ hình ảnh
+            //foreach (var block in flowDocument.Blocks)
+            //{
+            //    if (block is Paragraph paragraph)
+            //    {
+            //        foreach (var inline in paragraph.Inlines)
+            //        {
+            //            if (inline is InlineUIContainer inlineUIContainer && inlineUIContainer.Child is Image image)
+            //            {
+            //                if (image.Source is BitmapImage bitmapImage)
+            //                {
+            //                    // Tính toán tỷ lệ từ RichTextBox
+            //                    double aspectRatio = insertManager.CalculateAspectRatio(bitmapImage);
+
+            //                    // Điều chỉnh kích thước hình ảnh
+            //                    //AdjustImageSize(image, aspectRatio);
+            //                    MessageBox.Show($"BitMap(H;W): {bitmapImage.PixelHeight}; {bitmapImage.PixelWidth}" +
+            //                        $"\nImage(H;W): {image.Height}; {image.Width}");
+            //                }
+
+            //            }
+            //        }
+            //    }
+            //}
+            return flowDocument;
+        }
+
+        //private void AdjustImageSize(Image image, double aspectRatio)
+        //{
+        //    double convertBM = 0.1;
+        //    image.Width *= (aspectRatio + convertBM);
+        //    image.Height *= (aspectRatio + convertBM);
+        //}
+
+
+
+        public void ShowPrintPreview()
+        {
+            // Chuẩn bị FlowDocument
+            PreparePrint(); // Tạo FlowDocument từ nội dung RichTextBox
+
+            // Tạo FixedDocument từ FlowDocument
+            var paginator = ((IDocumentPaginatorSource)flowDocument).DocumentPaginator;
+            FixedDocument fixedDoc = ConvertPaginatorToFixedDocument(paginator);
+
+            // Tạo DocumentViewer để hiển thị Print Preview
+            var window = new Window
+            {
+                Title = "Print Preview",
+                Width = 800,
+                Height = 600,
+                Content = new DocumentViewer { Document = fixedDoc }
+            };
+
+            window.ShowDialog();
+        }
+
+        private FixedDocument ConvertPaginatorToFixedDocument(DocumentPaginator paginator)
+        {
+            FixedDocument fixedDoc = new FixedDocument();
+            paginator.ComputePageCount(); // Tính tổng số trang
+
+            for (int pageIndex = 0; pageIndex < paginator.PageCount; pageIndex++)
+            {
+                DocumentPage page = paginator.GetPage(pageIndex);
+                FixedPage fixedPage = new FixedPage();
+                fixedPage.Width = page.Size.Width;
+                fixedPage.Height = page.Size.Height;
+
+                // Sử dụng Canvas để chứa nội dung Visual của trang
+                Canvas canvas = new Canvas();
+                canvas.Width = page.Size.Width;
+                canvas.Height = page.Size.Height;
+
+                // Dùng VisualBrush để render nội dung của DocumentPage.Visual
+                VisualBrush visualBrush = new VisualBrush(page.Visual);
+                canvas.Background = visualBrush;
+
+                // Thêm Canvas vào FixedPage
+                fixedPage.Children.Add(canvas);
+
+                // Thêm FixedPage vào FixedDocument
+                PageContent pageContent = new PageContent();
+                ((IAddChild)pageContent).AddChild(fixedPage);
+                fixedDoc.Pages.Add(pageContent);
+            }
+
+            return fixedDoc;
+        }
+
+
+
+        //public void ShowPrintPreview()
+        //{
+        //    // Hiển thị PrintPreview (nếu cần)
+        //    currentPageNumber = 1;
+        //    printPreviewDialog.ShowDialog();
+        //}
 
         // Hiển thị Page Setup
         public void ShowPageSetupDialog()
@@ -60,168 +240,25 @@ namespace Wordpad
                 pageSettings.Margins.Bottom
             );
 
-            if (pageSettings.Landscape)
-            {
-                dockPanel.Width = pageSettings.PaperSize.Height;
-            }
-            else
-            {
-                dockPanel.Width = pageSettings.PaperSize.Width;
-            }
-        }
-        //Lấy line spacing của từng đoạn văn (paragraph) dựa vào line height và font size của từng đoạn
-        private List<(string Text, System.Drawing.Font Font, double LineSpacing, double Margin)> GetRichTextBoxParagraphsWithStyles()
-        {
-            var paragraphs = new List<(string Text, System.Drawing.Font Font, double LineSpacing, double Margin)>();
-
-            foreach (var block in richTextBox.Document.Blocks)
-            {
-                if (block is Paragraph paragraph)
-                {
-                    // Lấy văn bản
-                    var range = new TextRange(paragraph.ContentStart, paragraph.ContentEnd);
-                    string text = range.Text;
-
-                    // Lấy thông tin Font
-                    string fontFamily = paragraph.FontFamily?.Source ?? "Arial";
-                    double fontSize = paragraph.FontSize > 0 ? paragraph.FontSize : 12;
-                    bool isBold = paragraph.FontWeight == FontWeights.Bold;
-                    bool isItalic = paragraph.FontStyle == FontStyles.Italic;
-
-                    // Tạo đối tượng Font
-                    var fontStyle = System.Drawing.FontStyle.Regular;
-                    if (isBold) fontStyle |= System.Drawing.FontStyle.Bold;
-                    if (isItalic) fontStyle |= System.Drawing.FontStyle.Italic;
-
-                    var font = new System.Drawing.Font(fontFamily, (float)fontSize, fontStyle);
-
-                    // Lấy LineSpacing
-                    double lineSpacing = paragraph.LineHeight > 1
-                        ? paragraph.LineHeight + fontSize
-                        : fontSize * 1.2; // Giá trị mặc định nếu không có LineHeight
-                    //Lấy margin
-                    double Margin = paragraph.Margin.Bottom > 1f ? paragraph.Margin.Bottom : 1f;
-
-                    paragraphs.Add((text, font, lineSpacing, Margin));
-                }
-            }
-
-            return paragraphs;
-        }
-        // Xử lý sự kiện PrintPage
-        public void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            var pageBounds = e.MarginBounds;
-            var graphics = e.Graphics;
-
-            // Lấy thông tin từng Paragraph
-            var paragraphs = GetRichTextBoxParagraphsWithStyles();
-
-            float x = pageBounds.Left;
-            float y = pageBounds.Top;
-
-            foreach (var (text, font, lineSpacing, margin) in paragraphs)
-            {
-                // Chia đoạn văn bản thành các dòng
-                string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
-                foreach (var line in lines)
-                {
-
-                    // Vẽ dòng lên trang
-                    graphics.DrawString(line, font, System.Drawing.Brushes.Black, x, y);
-                    y += (float)lineSpacing * 1.75f; // Dịch y xuống theo khoảng cách dòng
-                }
-
-                //// Thêm khoảng cách giữa các Paragraph (nếu cần)
-                //y += (float)lineSpacing / 2;
-            }
-
-            e.HasMorePages = false;
-
-            // In số trang nếu cần
-            if (printPageNumber)
-            {
-                PrintPageNumber(e);
-            }
-        }
-        public void PrintDoc()
-        {
-            currentPageNumber = 1; // Reset page number
-            PrintDialog printDialog = new PrintDialog
-            {
-                Document = printDocument // Gán tài liệu cho hộp thoại in
-            };
-
-            // Hiển thị hộp thoại in, nếu người dùng xác nhận thì thực hiện in
-            if (printDialog.ShowDialog() == DialogResult.OK)
-            {
-                printDocument.Print(); // Thực hiện in tài liệu 
-            }
+            dockPanel.Width = pageSettings.Landscape
+                ? pageSettings.PaperSize.Height
+                : pageSettings.PaperSize.Width;
         }
 
-        private void PrintPageNumber(PrintPageEventArgs e)
-        {
-            var graphics = e.Graphics;
-            using (var font = new System.Drawing.Font("Arial", 10))
-            {
-                string pageNumberText = $"Page {currentPageNumber}";
-                float x = e.MarginBounds.Left + e.MarginBounds.Width / 2 - graphics.MeasureString(pageNumberText, font).Width / 2;
-                float y = e.MarginBounds.Bottom + 10;
 
-                graphics.DrawString(pageNumberText, font, System.Drawing.Brushes.Black, x, y);
-            }
-
-            currentPageNumber++;
-        }
-
-        // Hiển thị Print Preview
-        public void ShowPrintPreview()
-        {
-            currentPageNumber = 1;
-            printPreviewDialog.ShowDialog();
-        }
-
-        // In nhanh
         public void QuickPrint()
         {
-            currentPageNumber = 1;
             try
             {
-                printDocument.Print();
+                currentPageNumber = 1;
+
+                // Thực hiện in nhanh qua FlowDocument
+                PrintRichTextBoxContent();
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Error during Quick Print: {ex.Message}");
+                MessageBox.Show($"Error during Quick Print: {ex.Message}");
             }
         }
-
-        // In với lề bằng PrintDialog
-        /*public void PrintWithMargins()
-        {
-            con.PrintDialog printDialog = new con.PrintDialog();
-
-            if (printDialog.ShowDialog() == true)
-            {
-                // Sao chép nội dung từ RichTextBox
-                FlowDocument printDocument = new FlowDocument();
-                TextRange range = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-                printDocument.Blocks.Add(new Paragraph(new Run(range.Text)));
-
-                // Thiết lập lề
-                printDocument.PagePadding = new Thickness(
-                    dockPanel.Margin.Left,
-                    dockPanel.Margin.Top,
-                    dockPanel.Margin.Right,
-                    dockPanel.Margin.Bottom
-                );
-
-                // Thiết lập khổ giấy
-                printDocument.ColumnWidth = printDialog.PrintableAreaWidth;
-
-                // In tài liệu
-                IDocumentPaginatorSource paginator = printDocument;
-                printDialog.PrintDocument(paginator.DocumentPaginator, "RichTextBox Print");
-            }
-        }*/
     }
 }

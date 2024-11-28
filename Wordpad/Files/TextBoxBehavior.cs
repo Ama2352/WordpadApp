@@ -25,9 +25,8 @@ namespace Wordpad
             // Gắn sự kiện cho RichTextBox và thanh cuộn tùy chỉnh
             _richTextBox.TextChanged += RichTextBox_TextChanged;
             _customScrollBar.ValueChanged += CustomScrollBar_ValueChanged;
-            _richTextBox.PreviewKeyDown += (s, e) => ScrollToCaret();
             _richTextBox.TextChanged += (s, e) => ScrollToCaret();
-
+            _richTextBox.LayoutUpdated += RichTextBox_LayoutUpdated;
 
             // Xử lý sự kiện PreviewMouseWheel trên vùng soạn thảo
             editorArea.PreviewMouseWheel += EditorArea_PreviewMouseWheel;
@@ -39,7 +38,16 @@ namespace Wordpad
             AdjustRichTextBoxHeight();
             UpdateCustomScrollBar();
         }
-
+        private void RichTextBox_LayoutUpdated(object sender, EventArgs e)
+        {
+            double contentHeight = GetRichTextBoxContentHeight();
+            double actualHeight = _richTextBox.ActualHeight - _richTextBox.Padding.Top - _richTextBox.Padding.Bottom;
+            if (contentHeight > actualHeight)
+            {
+                AdjustRichTextBoxHeight(); // Đảm bảo DockPanel mở rộng khi nội dung tràn
+                UpdateCustomScrollBar(); // Cập nhật thanh cuộn tùy chỉnh
+            }
+        }
         // Khi người dùng thay đổi giá trị trên thanh cuộn tùy chỉnh
         private void CustomScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {

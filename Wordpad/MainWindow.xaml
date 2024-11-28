@@ -31,7 +31,7 @@
 
         <!-- Toolbar -->
         <!-- Tab view -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Panel.ZIndex="1" Background="White">
             <Button Content="Zoom In" Click="ZoomIn_Click"/>
             <Button Content="Zoom Out" Click="ZoomOut_Click"/>
             <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
@@ -44,7 +44,7 @@
             <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
         </StackPanel>
         <!-- Tab home -->
-       <Grid DockPanel.Dock="Top">
+       <Grid DockPanel.Dock="Top" Panel.ZIndex="1" Background="#FFF5F6F7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width=".7*"/>
                 <ColumnDefinition Width="1.5*"/>
@@ -175,15 +175,18 @@
             <!-- RichTextBox Container-->
             <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="743" Height="500"
 					   VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                
 				<!-- Ruler -->
 				<Canvas Name="rulerCanvas" DockPanel.Dock="Top" Height="30" Background="LightGray">
 					<!-- Ruler markings will be drawn here -->
 				</Canvas>
+                
                 <!-- RichTextBox Area -->
                 <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
-                                 AcceptsReturn="True" BorderBrush="Transparent"
+                                 AcceptsReturn="True" BorderBrush="{x:Null}"
                                  TextChanged="richTextBox_TextChanged"
-                                 Padding="50">
+                                 Padding="0" 
+                                 FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" >
                     <FlowDocument >
                         <Paragraph LineHeight="1" FontFamily="Arial" Margin="0,0,0,0" FontSize="10">
                         </Paragraph>
