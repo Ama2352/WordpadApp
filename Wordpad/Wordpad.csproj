@@ -254,7 +254,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Files\VisualExtensions.cs" />
+    <Compile Include="Files\PaginatorWithPageNumbers.cs" />
     <Compile Include="ViewManagment.cs" />
     <Compile Include="DateAndTimeWindow.xaml.cs">
       <DependentUpon>DateAndTimeWindow.xaml</DependentUpon>

@@ -56,12 +56,14 @@ namespace Wordpad
                     PreparePrint();
                     IDocumentPaginatorSource paginator = flowDocument;
 
+                    // Gói DocumentPaginator với lớp PaginatorWithPageNumbers
+                    var wrappedPaginator = new PaginatorWithPageNumbers(paginator.DocumentPaginator, new Typeface("Arial"), 12, System.Windows.Media.Brushes.Black, 96, printPageNumber);
+
                     // Thiết lập các tùy chọn in từ PrintDialog
-                    DocumentPaginator documentPaginator = paginator.DocumentPaginator;
-                    documentPaginator.PageSize = new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight);
+                    wrappedPaginator.PageSize = new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight);
 
                     // Thực hiện in tài liệu
-                    printDialog.PrintDocument(documentPaginator, "Printing RichTextBox Content");
+                    printDialog.PrintDocument(wrappedPaginator, "Printing RichTextBox Content");
                 }
                 catch (Exception ex)
                 {
@@ -192,6 +194,24 @@ namespace Wordpad
                 VisualBrush visualBrush = new VisualBrush(page.Visual);
                 canvas.Background = visualBrush;
 
+                // Nếu tùy chọn in số trang được chọn, thêm footer số trang
+                if (printPageNumber)
+                {
+                    TextBlock pageNumberText = new TextBlock
+                    {
+                        Text = $"Page {pageIndex + 1}",
+                        FontSize = 12,
+                        HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Margin = new Thickness(0, 0, 0, 20), // Cách lề dưới 20px
+                        Foreground = System.Windows.Media.Brushes.Black
+                    };
+
+                    FixedPage.SetLeft(pageNumberText, (page.Size.Width - 100) / 2); // Canh giữa
+                    FixedPage.SetTop(pageNumberText, page.Size.Height - 30); // Vị trí cách dưới cùng 30px
+                    fixedPage.Children.Add(pageNumberText);
+                }
+
                 // Thêm Canvas vào FixedPage
                 fixedPage.Children.Add(canvas);
 
@@ -203,6 +223,7 @@ namespace Wordpad
 
             return fixedDoc;
         }
+
 
 
 
