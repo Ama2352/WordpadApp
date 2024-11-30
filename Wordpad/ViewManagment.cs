@@ -28,6 +28,7 @@ namespace Wordpad
 
             // Đăng ký sự kiện
             richTextBox.SizeChanged += (sender, e) => SyncRulerWithRichTextBox();
+            this.richTextBox.TextChanged += RichTextBox_TextChanged;
             this.unitComboBox = unitComboBox;
         }
 
@@ -87,7 +88,7 @@ namespace Wordpad
             // Dựa vào số dòng logic trong FlowDocument
             return richTextBox.Document.Blocks.Count;
         }
-
+        
 
         // Áp dụng zoom và đồng bộ hóa
         private void ApplyZoom()
