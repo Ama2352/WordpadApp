@@ -111,12 +111,10 @@
                         <!-- Zoom Group -->
                         <GroupBox Header="Zoom">
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="30" Click="ZoomIn_Click">
-                                    <Image Source="pack://application:,,,/Images/ZoomIn.png" Width="16" Height="16"/>
+                                <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="30" Click="ZoomIn_Click" Content="Zoom In" FontSize="7">
+                                 
                                 </Button>
-                                <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="30" Click="ZoomOut_Click">
-                                    <Image Source="pack://application:,,,/Images/ZoomOut.png" Width="16" Height="16"/>
-                                </Button>
+                                <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="30" Click="ZoomOut_Click" FontSize="7" Content="Zoom Out"/>
                             </StackPanel>
                         </GroupBox>
                         <!-- Show or Hide Group -->
