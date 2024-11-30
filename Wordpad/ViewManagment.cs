@@ -15,8 +15,9 @@ namespace Wordpad
         private readonly StatusBarItem statusBarItem;
         private readonly RichTextBox richTextBox;
         private double zoomFactor = 1.0;
+        private readonly ComboBox unitComboBox;
 
-        public ViewManagement(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox)
+        public ViewManagement(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox, ComboBox unitComboBox)
         {
             this.rulerCanvas = rulerCanvas;
             this.statusBar = statusBar;
@@ -27,6 +28,7 @@ namespace Wordpad
 
             // Đăng ký sự kiện
             richTextBox.SizeChanged += (sender, e) => SyncRulerWithRichTextBox();
+            this.unitComboBox = unitComboBox;
         }
 
         // Zoom In
@@ -41,6 +43,27 @@ namespace Wordpad
         {
             zoomFactor = Math.Max(zoomFactor - 0.1, 0.5); // Giới hạn zoom tối thiểu là 50%
             ApplyZoom();
+        }
+        public void SetZoom(double factor)
+        {
+            zoomFactor = factor;
+            zoomFactor = Math.Max(zoomFactor - 0.1, 0.5); // Giới hạn zoom tối thiểu là 50%
+            ApplyZoom();
+        }
+
+        public double ZoomFactor
+        {
+            get { return zoomFactor; }
+            set { zoomFactor = value; ApplyZoom(); }
+        }
+        public void ShowRuler(bool show)
+        {
+            rulerCanvas.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void ShowStatusBar(bool show)
+        {
+            statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
         // Áp dụng zoom và đồng bộ hóa
@@ -66,7 +89,7 @@ namespace Wordpad
         }
 
         // Vẽ lại thước đo
-        private void UpdateRuler()
+        public void UpdateRuler()
         {
             double scale = rulerCanvas.Width / 100; // Chia thành 100 phần
             DrawRuler(scale);

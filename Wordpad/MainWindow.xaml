@@ -111,10 +111,12 @@
                         <!-- Zoom Group -->
                         <GroupBox Header="Zoom">
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="30" Click="ZoomIn_Click" Content="Zoom In" FontSize="7">
-                                 
+                                <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="24" Height="24" Click="ZoomIn_Click" Margin="2,0">
+                                    <Image Source="/Images/ZoomIn.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Button>
-                                <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="30" Click="ZoomOut_Click" FontSize="7" Content="Zoom Out"/>
+                                <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="24" Height="24" Click="ZoomOut_Click" Margin="2,0">
+                                    <Image Source="/Images/ZoomOut.png" Width="20" Height="20" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Button>
                             </StackPanel>
                         </GroupBox>
                         <!-- Show or Hide Group -->
@@ -127,7 +129,17 @@
                         <!-- Settings Group -->
                         <GroupBox Header="Settings">
                             <StackPanel Orientation="Horizontal">
-                                <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
+                                <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100" Height="24">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Height="20">
+                                                <Image Source="/Images/MesureUnit.png" Width="20" Height="20" 
+                                                       RenderOptions.BitmapScalingMode="HighQuality" 
+                                                       Margin="0,0,2,0"/>
+                                                <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
                                     <ComboBoxItem Content="Inch"/>
                                     <ComboBoxItem Content="Cm"/>
                                     <ComboBoxItem Content="Points"/>

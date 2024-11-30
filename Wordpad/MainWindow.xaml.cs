@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 using MessageBox = System.Windows.MessageBox;
 
+
 namespace Wordpad
 {
     public partial class MainWindow : Window
@@ -26,7 +27,7 @@ namespace Wordpad
         SendEmailManager _SendEmailManager;
         TextBoxBehavior _TextBoxBehavior;
         public static bool IsTextChanged;
-        private ViewManagment viewManagment;
+        ViewManagement viewManagment;
         ClipboardManager clipboardManager;
         FontManager fontManager;
         ParagraphManager paragraphManager;
@@ -42,7 +43,7 @@ namespace Wordpad
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
             // Khởi tạo ViewManagment
-            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox);
+            viewManagment = new ViewManagement(rulerCanvas, statusBar, statusBarItem, richTextBox,unitComboBox);
             //Home
                         clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
@@ -106,16 +107,16 @@ namespace Wordpad
             richTextBox.FontFamily = new FontFamily("Calibri");
 
             // Đặt font hiển thị mặc định cho cbFontFamily
-            cbFontFamily.Text = "Calibri";
+            cbFontFamily.SelectedItem = "Calibri";
         }
         private void OnFontSizeChanged(double newSize)
         {
             // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước
-            cbFontSize.Text = newSize.ToString();
+            cbFontSize.SelectedItem = newSize;
         }
         private void OnFontFamilyChanged(string newFont)
         {
-            cbFontFamily.Text = newFont;
+            cbFontFamily.SelectedItem = newFont;
         }
 
         private void SettingFontSize(FontManager _fontManager)
@@ -476,6 +477,65 @@ namespace Wordpad
 
         #endregion
 
+        private void BoldMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            fontManager.ToggleBold();
+        }
+
+        private void ItalicMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            fontManager.ToggleItalic();
+        }
+
+        private void UnderlineMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            fontManager.ToggleUnderline();
+        }
+
+        private void FontMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to show font dialog
+        }
+
+        private void RulerMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void StatusBarMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
+
+        private void ToggleBold()
+        {
+            fontManager.ToggleBold();
+        }
+
+        private void ToggleItalic()
+        {
+            fontManager.ToggleItalic();
+        }
+
+        private void ToggleUnderline()
+        {
+            fontManager.ToggleUnderline();
+        }
+
+        private void ShowFontDialog()
+        {
+            // Logic to show font dialog
+        }
+
+        private void ToggleRuler()
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void ToggleStatusBar()
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
 
     }
 }
