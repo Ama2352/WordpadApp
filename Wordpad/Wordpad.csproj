@@ -364,5 +364,11 @@
     <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\word.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ZoomOut.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

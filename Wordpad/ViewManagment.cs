@@ -1,166 +1,81 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Shapes;
 using System.Windows.Media;
-using static System.Windows.MessageBox;
+using System.Windows.Controls.Primitives;
 
 namespace Wordpad
 {
-    public class ViewManagment
+    public class ViewManagement
     {
         private readonly Canvas rulerCanvas;
         private readonly StatusBar statusBar;
         private readonly StatusBarItem statusBarItem;
         private readonly RichTextBox richTextBox;
-        private readonly ComboBox unitComboBox;
         private double zoomFactor = 1.0;
 
-        public ViewManagment(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox, ComboBox unitComboBox)
+        public ViewManagement(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox)
         {
             this.rulerCanvas = rulerCanvas;
             this.statusBar = statusBar;
             this.statusBarItem = statusBarItem;
             this.richTextBox = richTextBox;
-            this.unitComboBox = unitComboBox;
 
             DrawRuler();
 
-            // Đăng ký sự kiện TextChanged cho RichTextBox
-            richTextBox.TextChanged += RichTextBox_TextChanged;
+            // Đăng ký sự kiện
             richTextBox.SizeChanged += (sender, e) => SyncRulerWithRichTextBox();
         }
 
+        // Zoom In
         public void ZoomIn()
         {
-            zoomFactor += 0.1;
+            zoomFactor = Math.Min(zoomFactor + 0.1, 3.0); // Giới hạn zoom tối đa là 300%
             ApplyZoom();
         }
 
+        // Zoom Out
         public void ZoomOut()
         {
-            zoomFactor = Math.Max(0.1, zoomFactor - 0.1);
+            zoomFactor = Math.Max(zoomFactor - 0.1, 0.5); // Giới hạn zoom tối thiểu là 50%
             ApplyZoom();
         }
 
-        public void SetZoom(double factor)
-        {
-            zoomFactor = factor;
-            ApplyZoom();
-        }
-
-        public double ZoomFactor
-        {
-            get { return zoomFactor; }
-            set { zoomFactor = value; ApplyZoom(); }
-        }
-
-        public void UpdateRuler()
-        {
-            // Đồng bộ chiều rộng rulerCanvas với RichTextBox
-            double scaledWidth = richTextBox.ActualWidth / zoomFactor; // Điều chỉnh chiều rộng theo zoom
-            rulerCanvas.Width = scaledWidth;
-
-            double scale = rulerCanvas.Width / 100; // Default scale
-            if (unitComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                string unit = selectedItem.Content.ToString();
-                switch (unit)
-                {
-                    case "Inch":
-                        scale = rulerCanvas.Width / 10; // Scale cho inch
-                        break;
-                    case "Cm":
-                        scale = rulerCanvas.Width / 25; // Scale cho cm
-                        break;
-                    case "Points":
-                        scale = rulerCanvas.Width / 72; // Scale cho points
-                        break;
-                    case "Picas":
-                        scale = rulerCanvas.Width / 6; // Scale cho picas
-                        break;
-                }
-            }
-            DrawRuler(scale);
-        }
-
-
-        public void ShowRuler(bool show)
-        {
-            rulerCanvas.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public void ShowStatusBar(bool show)
-        {
-            statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int charCount = GetCharacterCount();
-            int lineCount = GetLineCount();
-
-            statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
-        }
-
-        public void WordCount_Click(object sender, RoutedEventArgs e)
-        {
-            int charCount = GetCharacterCount();
-            int lineCount = GetLineCount();
-
-            Show($"Character Count: {charCount}\nLine Count: {lineCount}", "Character and Line Count");
-            statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
-        }
-
+        // Áp dụng zoom và đồng bộ hóa
         private void ApplyZoom()
         {
-            // Cập nhật zoom cho RichTextBox
-            if (richTextBox.Document != null)
-            {
-                foreach (var block in richTextBox.Document.Blocks)
-                {
-                    block.FontSize = 12 * zoomFactor; // Phóng to nội dung dựa trên zoomFactor
-                }
-            }
-
-            // Zoom nội dung chính bằng ScaleTransform
-            double scaleX = zoomFactor;
-            double scaleY = zoomFactor;
+            // Sử dụng ScaleTransform để zoom
             TransformGroup transformGroup = new TransformGroup();
-            transformGroup.Children.Add(new ScaleTransform(scaleX, scaleY));
+            transformGroup.Children.Add(new ScaleTransform(zoomFactor, zoomFactor));
             richTextBox.LayoutTransform = transformGroup;
 
-            // Cập nhật lại thước đo
-            SyncRulerWithRichTextBox(); // Đảm bảo thước kẻ được đồng bộ hóa
-            UpdateRuler(); // Cập nhật lại thước đo
+            // Cập nhật trạng thái zoom trên thanh trạng thái
+            statusBarItem.Content = $"Zoom: {(int)(zoomFactor * 100)}%";
+
+            // Đồng bộ hóa thước đo
+            SyncRulerWithRichTextBox();
         }
 
-        private int GetCharacterCount()
-        {
-            // Tính tổng số ký tự trong RichTextBox
-            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-            return textRange.Text.TrimEnd('\r', '\n').Length; // Loại bỏ ký tự xuống dòng cuối cùng
-        }
-
-        private int GetLineCount()
-        {
-            // Dựa vào số dòng logic trong FlowDocument
-            return richTextBox.Document.Blocks.Count;
-        }
-
+        // Cập nhật thước đo theo zoom
         public void SyncRulerWithRichTextBox()
         {
-            // Đồng bộ chiều rộng rulerCanvas với kích thước RichTextBox
-            rulerCanvas.Width = richTextBox.ActualWidth;
-            UpdateRuler(); // Cập nhật lại thước đo
+            rulerCanvas.Width = richTextBox.ActualWidth * zoomFactor;
+            UpdateRuler();
+        }
+
+        // Vẽ lại thước đo
+        private void UpdateRuler()
+        {
+            double scale = rulerCanvas.Width / 100; // Chia thành 100 phần
+            DrawRuler(scale);
         }
 
         private void DrawRuler(double scale = 1)
         {
             rulerCanvas.Children.Clear();
-            int maxMarks = (int)(rulerCanvas.Width / scale); // Số vạch tối đa dựa trên chiều rộng
+            int maxMarks = (int)(rulerCanvas.Width / scale);
 
             for (int i = 0; i <= maxMarks; i++)
             {
@@ -183,12 +98,11 @@ namespace Wordpad
                         Foreground = Brushes.Black,
                         FontSize = 10
                     };
-                    Canvas.SetLeft(text, i * scale - 5); // Dịch sang trái để căn giữa
+                    Canvas.SetLeft(text, i * scale - 5); // Căn giữa text
                     Canvas.SetTop(text, 20);
                     rulerCanvas.Children.Add(text);
                 }
             }
         }
-
     }
 }
