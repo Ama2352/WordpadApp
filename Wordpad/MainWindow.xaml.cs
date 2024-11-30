@@ -303,11 +303,13 @@ namespace Wordpad
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomIn();
+            zoomSlider.Value = viewManagment.ZoomFactor * 100;
         }
 
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomOut();
+            zoomSlider.Value = viewManagment.ZoomFactor * 100;
         }
 
         private void ToggleRuler_Click(object sender, RoutedEventArgs e)
