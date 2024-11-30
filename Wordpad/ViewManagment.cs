@@ -66,6 +66,29 @@ namespace Wordpad
             statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int charCount = GetCharacterCount();
+            int lineCount = GetLineCount();
+
+            statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
+        }
+
+
+        private int GetCharacterCount()
+        {
+            // Tính tổng số ký tự trong RichTextBox
+            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+            return textRange.Text.TrimEnd('\r', '\n').Length; // Loại bỏ ký tự xuống dòng cuối cùng
+        }
+
+        private int GetLineCount()
+        {
+            // Dựa vào số dòng logic trong FlowDocument
+            return richTextBox.Document.Blocks.Count;
+        }
+
+
         // Áp dụng zoom và đồng bộ hóa
         private void ApplyZoom()
         {
