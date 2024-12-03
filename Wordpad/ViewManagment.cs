@@ -28,7 +28,6 @@ namespace Wordpad
 
             // Đăng ký sự kiện
             richTextBox.SizeChanged += (sender, e) => SyncRulerWithRichTextBox();
-            this.richTextBox.TextChanged += RichTextBox_TextChanged;
             this.unitComboBox = unitComboBox;
         }
 
@@ -61,12 +60,6 @@ namespace Wordpad
         {
             rulerCanvas.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        public void ShowStatusBar(bool show)
-        {
-            statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-        }
-
         public void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int charCount = GetCharacterCount();
@@ -75,20 +68,10 @@ namespace Wordpad
             statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
         }
 
-
-        private int GetCharacterCount()
+        public void ShowStatusBar(bool show)
         {
-            // Tính tổng số ký tự trong RichTextBox
-            TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-            return textRange.Text.TrimEnd('\r', '\n').Length; // Loại bỏ ký tự xuống dòng cuối cùng
+            statusBar.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
-
-        private int GetLineCount()
-        {
-            // Dựa vào số dòng logic trong FlowDocument
-            return richTextBox.Document.Blocks.Count;
-        }
-        
 
         // Áp dụng zoom và đồng bộ hóa
         private void ApplyZoom()
