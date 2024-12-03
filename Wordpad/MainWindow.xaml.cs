@@ -91,10 +91,17 @@ namespace Wordpad
 
         private void cbFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
+            try
             {
-                fontManager.ChangeFontSize(fontSize);
+                if (double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
+                {
+                    fontManager.ChangeFontSize(fontSize);
+                }
             }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }              
         }
 
         private void SettingFontType(FontManager _fontManager)
@@ -110,8 +117,14 @@ namespace Wordpad
         }
         private void OnFontSizeChanged(double newSize)
         {
-            // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước
+            // Tạm thời gỡ kết nối sự kiện cập nhật font size
+            cbFontSize.SelectionChanged -= cbFontSize_SelectionChanged;
+
+            // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước (Chỉ thay đổi text của size đang hiển thị)
             cbFontSize.Text = newSize.ToString();
+
+            // Đăng ký lại sự kiện cập nhật font size
+            cbFontSize.SelectionChanged += cbFontSize_SelectionChanged;
         }
         private void OnFontFamilyChanged(string newFont)
         {
@@ -134,30 +147,25 @@ namespace Wordpad
         private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             TextSelection selectedText = richTextBox.Selection;
-            try
+
+            if (selectedText != null)
             {
-                if (selectedText != null)
+                // Kiểm tra xem font size và font family có giá trị hợp lệ không
+                var fontSizeValue = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
+                var fontFamilyValue = selectedText.GetPropertyValue(TextElement.FontFamilyProperty);
+
+                // Kiểm tra các giá trị trả về không phải là UnsetValue và phải là kiểu hợp lệ
+                if (fontSizeValue != DependencyProperty.UnsetValue && fontSizeValue is double currentFontSize)
                 {
-                    // Kiểm tra xem font size và font family có giá trị hợp lệ không
-                    var fontSizeValue = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
-                    var fontFamilyValue = selectedText.GetPropertyValue(TextElement.FontFamilyProperty);
+                    OnFontSizeChanged(currentFontSize);
+                }
 
-                    // Kiểm tra các giá trị trả về không phải là UnsetValue và phải là kiểu hợp lệ
-                    if (fontSizeValue != DependencyProperty.UnsetValue && fontSizeValue is double currentFontSize)
-                    {
-                        OnFontSizeChanged(currentFontSize);
-                    }
-
-                    if (fontFamilyValue != DependencyProperty.UnsetValue && fontFamilyValue is FontFamily currentFontFamily)
-                    {
-                        OnFontFamilyChanged(currentFontFamily.ToString());
-                    }
+                if (fontFamilyValue != DependencyProperty.UnsetValue && fontFamilyValue is FontFamily currentFontFamily)
+                {
+                    OnFontFamilyChanged(currentFontFamily.ToString());
                 }
             }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }         
+       
         }
         private void richTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
