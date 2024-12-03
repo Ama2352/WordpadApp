@@ -27,7 +27,7 @@ namespace Wordpad
         SendEmailManager _SendEmailManager;
         TextBoxBehavior _TextBoxBehavior;
         public static bool IsTextChanged;
-        ViewManagement viewManagment;
+        ViewManagment viewManagment;
         ClipboardManager clipboardManager;
         FontManager fontManager;
         ParagraphManager paragraphManager;
@@ -43,7 +43,7 @@ namespace Wordpad
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
             // Khởi tạo ViewManagment
-            viewManagment = new ViewManagement(rulerCanvas, statusBar, statusBarItem, richTextBox,unitComboBox);
+            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox,unitComboBox);
             //Home
                         clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
@@ -304,13 +304,13 @@ namespace Wordpad
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomIn();
-            zoomSlider.Value = viewManagment.ZoomFactor * 100;
+           
         }
 
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomOut();
-            zoomSlider.Value = viewManagment.ZoomFactor * 100;
+           
         }
 
         private void ToggleRuler_Click(object sender, RoutedEventArgs e)
