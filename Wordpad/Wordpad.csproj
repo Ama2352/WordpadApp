@@ -340,28 +340,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\bold.png" />
-    <Resource Include="Images\italic.png" />
-    <Resource Include="Images\underline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\copy.png" />
     <Resource Include="Images\cut.png" />
+    <Resource Include="Images\excel.png" />
+    <Resource Include="Images\file.png" />
+    <Resource Include="Images\horizontal.png" />
+    <Resource Include="Images\italic.png" />
+    <Resource Include="Images\list-items.png" />
+    <Resource Include="Images\paint.png" />
+    <Resource Include="Images\paragraph.png" />
+    <Resource Include="Images\paste.png" />
     <Resource Include="Images\paste1.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\pdf.png" />
+    <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\strikethrough.png" />
     <Resource Include="Images\subscript.png" />
     <Resource Include="Images\superscript.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\horizontal.png" />
+    <Resource Include="Images\underline.png" />
     <Resource Include="Images\vertical.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\excel.png" />
-    <Resource Include="Images\file.png" />
-    <Resource Include="Images\pdf.png" />
-    <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\word.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

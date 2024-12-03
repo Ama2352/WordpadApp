@@ -25,8 +25,7 @@ namespace Wordpad
         public ClipboardManager(RichTextBox richTextBox)
         {
             _richTextBox = richTextBox;
-            imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                "C:/File Study/Study/LapTrinhTrucQuan/Project/Wordpad/Wordpad/Images");
+            imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
             IsCopiedFromApplication = false; // Khởi tạo giá trị mặc định
         }
 

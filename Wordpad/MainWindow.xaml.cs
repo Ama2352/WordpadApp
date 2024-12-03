@@ -84,7 +84,7 @@ namespace Wordpad
             _TextBoxBehavior.UpdateCustomScrollBar();
         }
 
-                private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fontManager.ChangeFontFamily(cbFontFamily.SelectedItem.ToString());
         }
@@ -131,35 +131,40 @@ namespace Wordpad
             _fontManager.FontSizeChanged += OnFontSizeChanged;
         }
 
-      private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             TextSelection selectedText = richTextBox.Selection;
-            if (selectedText != null)
+            try
             {
-                // Kiểm tra xem font size và font family có giá trị hợp lệ không
-                var fontSizeValue = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
-                var fontFamilyValue = selectedText.GetPropertyValue(TextElement.FontFamilyProperty);
-
-                // Kiểm tra các giá trị trả về không phải là UnsetValue và phải là kiểu hợp lệ
-                if (fontSizeValue != DependencyProperty.UnsetValue && fontSizeValue is double currentFontSize)
+                if (selectedText != null)
                 {
-                    OnFontSizeChanged(currentFontSize);
-                }
+                    // Kiểm tra xem font size và font family có giá trị hợp lệ không
+                    var fontSizeValue = selectedText.GetPropertyValue(TextElement.FontSizeProperty);
+                    var fontFamilyValue = selectedText.GetPropertyValue(TextElement.FontFamilyProperty);
 
-                if (fontFamilyValue != DependencyProperty.UnsetValue && fontFamilyValue is FontFamily currentFontFamily)
-                {
-                    OnFontFamilyChanged(currentFontFamily.ToString());
+                    // Kiểm tra các giá trị trả về không phải là UnsetValue và phải là kiểu hợp lệ
+                    if (fontSizeValue != DependencyProperty.UnsetValue && fontSizeValue is double currentFontSize)
+                    {
+                        OnFontSizeChanged(currentFontSize);
+                    }
+
+                    if (fontFamilyValue != DependencyProperty.UnsetValue && fontFamilyValue is FontFamily currentFontFamily)
+                    {
+                        OnFontFamilyChanged(currentFontFamily.ToString());
+                    }
                 }
             }
-                
+            catch(Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }         
         }
-
-                private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void richTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             insertManager.OpenDocumentIfLinkIconClicked(sender, e);
         }
 
-               private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             if (colorPicker.SelectedColor.HasValue)
             {
@@ -345,7 +350,7 @@ namespace Wordpad
             fontManager.ShrinkFont();
         }
 
-               private void btnBold_Click(object sender, RoutedEventArgs e)
+        private void btnBold_Click(object sender, RoutedEventArgs e)
         {
             fontManager.ToggleBold();
         }
@@ -472,8 +477,9 @@ namespace Wordpad
                 
         }
 
-        #endregion
 
+
+        #endregion
 
     }
 }
