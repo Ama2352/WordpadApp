@@ -40,24 +40,22 @@ namespace Wordpad
                 // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
                 TextPointer caretPosition = _richTextBox.CaretPosition;
 
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
+                // Lưu lại vị trí con trỏ trước khi chèn dấu cách
+                TextPointer startPointer = caretPosition;
 
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
+                // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
+                caretPosition.InsertTextInRun(" ");
 
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
+                // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
+                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
 
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
+                // Lấy vị trí con trỏ sau khi chèn dấu cách
+                TextPointer endPointer = _richTextBox.CaretPosition;
 
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
+                _richTextBox.Selection.Select(startPointer, endPointer);
+
+            } 
 
             // Áp dụng font family cho vùng chọn
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
@@ -75,24 +73,22 @@ namespace Wordpad
                 // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
                 TextPointer caretPosition = _richTextBox.CaretPosition;
 
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
+                // Lưu lại vị trí con trỏ trước khi chèn dấu cách
+                TextPointer startPointer = caretPosition;
 
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
+                // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
+                caretPosition.InsertTextInRun(" ");
 
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
+                // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
+                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
 
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
+                // Lấy vị trí con trỏ sau khi chèn dấu cách
+                TextPointer endPointer = _richTextBox.CaretPosition;
 
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
+                _richTextBox.Selection.Select(startPointer, endPointer);
+
+            } 
 
             // Áp dụng font size cho vùng chọn
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
@@ -578,44 +574,149 @@ namespace Wordpad
             _richTextBox.Focus();
         }
 
+        private Dictionary<string, Tuple<DependencyProperty, object>> SaveExistingFormat(TextRange formatRange)
+        {
+            Dictionary<string, Tuple<DependencyProperty, object>> existingFormats = new Dictionary<string, Tuple<DependencyProperty, object>>();
 
+            // Lưu lại các định dạng đã có
+            existingFormats["existingFontFamily"] = new Tuple<DependencyProperty, object>(TextElement.FontFamilyProperty, formatRange.GetPropertyValue(TextElement.FontFamilyProperty));          
+            existingFormats["existingFontColor"] = new Tuple<DependencyProperty, object>(TextElement.ForegroundProperty, formatRange.GetPropertyValue(TextElement.ForegroundProperty));
+            existingFormats["existingFontHighlight"] = new Tuple<DependencyProperty, object>(TextElement.BackgroundProperty, formatRange.GetPropertyValue(TextElement.BackgroundProperty));
+            existingFormats["existingBold"] = new Tuple<DependencyProperty, object>(TextElement.FontWeightProperty, formatRange.GetPropertyValue(TextElement.FontWeightProperty));
+            existingFormats["existingItalic"] = new Tuple<DependencyProperty, object>(TextElement.FontStyleProperty, formatRange.GetPropertyValue(TextElement.FontStyleProperty));
+            existingFormats["existingUnderline"] = new Tuple<DependencyProperty, object>(Inline.TextDecorationsProperty, formatRange.GetPropertyValue(Inline.TextDecorationsProperty));
+            existingFormats["existingSuScript"] = new Tuple<DependencyProperty, object>(Inline.BaselineAlignmentProperty, formatRange.GetPropertyValue(Inline.BaselineAlignmentProperty));
+
+            return existingFormats;
+        }
+
+        private void ReApplyExistingFormats(Dictionary<string, Tuple<DependencyProperty, object>> existingFormats, TextRange formatRange)
+        {
+            foreach(string formatType in  existingFormats.Keys)
+            {
+                if(existingFormats.ContainsKey(formatType))
+                {
+                    formatRange.ApplyPropertyValue(existingFormats[formatType].Item1, existingFormats[formatType].Item2);
+                }
+            }
+        }
+
+        private void MakeGrowOrShrink(TextRange formatRange, bool isGrow, bool isShrink, out double newSize)
+        {
+            newSize = 11;
+
+            if (isGrow)
+            {
+                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+
+                if (currentIndex >= 0 && currentIndex < fontSize.Length - 1)
+                {
+                    newSize = fontSize[currentIndex + 1];
+                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                }
+            }
+            else
+            {
+                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+
+                if (currentIndex > 0 && currentIndex <= fontSize.Length - 1)
+                {
+                    newSize = fontSize[currentIndex - 1];
+                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                }
+            }                 
+        }
 
         // Tăng kích thước font
         public void GrowFont()
         {
             if (_richTextBox.Selection.IsEmpty)
-                return;
+            {
+                TextPointer startPointer = _richTextBox.CaretPosition;
+                startPointer.InsertTextInRun(" ");
+                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
+                TextPointer endPointer = _richTextBox.CaretPosition;
+                _richTextBox.Selection.Select(startPointer, endPointer);
+            }
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-            var currentFontSize = (double)selection.GetPropertyValue(TextElement.FontSizeProperty);
-            int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+            var start = selection.Start;
+            var end = selection.End;
 
-            if (currentIndex >= 0 && currentIndex < fontSize.Length - 1)
+            double newSize;
+
+            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if(isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
             {
-                double newSize = fontSize[currentIndex + 1];
-                selection.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                while (start.CompareTo(end) < 0)
+                {
+                    var next = start.GetPositionAtOffset(1, LogicalDirection.Forward);
+                    if (next == null)
+                        break;
 
+                    var formatRange = new TextRange(start, next);
+
+                    Dictionary<string, Tuple<DependencyProperty, object>> existingFormats = SaveExistingFormat(formatRange);
+
+                    MakeGrowOrShrink(formatRange, true, false, out newSize);
+
+                    ReApplyExistingFormats(existingFormats, formatRange);
+                    start = next;
+                }
+            }  
+            else
+            {
+                MakeGrowOrShrink(selection, true, false, out newSize);
                 FontSizeChanged?.Invoke(newSize);
-            }
+            }    
+            _richTextBox.Focus();
         }
 
         // Giảm kích thước font
         public void ShrinkFont()
         {
             if (_richTextBox.Selection.IsEmpty)
-                return;
+            {
+                TextPointer startPointer = _richTextBox.CaretPosition;
+                startPointer.InsertTextInRun(" ");
+                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
+                TextPointer endPointer = _richTextBox.CaretPosition;
+                _richTextBox.Selection.Select(startPointer, endPointer);
+            }
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-            var currentFontSize = (double)selection.GetPropertyValue(TextElement.FontSizeProperty);
-            int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+            var start = selection.Start;
+            var end = selection.End;
 
-            if (currentIndex > 0)
+            double newSize;
+
+            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
             {
-                double newSize = fontSize[currentIndex - 1];
-                selection.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                while (start.CompareTo(end) < 0)
+                {
+                    var next = start.GetPositionAtOffset(1, LogicalDirection.Forward);
+                    if (next == null)
+                        break;
 
+                    var formatRange = new TextRange(start, next);
+
+                    Dictionary<string, Tuple<DependencyProperty, object>> existingFormats = SaveExistingFormat(formatRange);
+
+                    MakeGrowOrShrink(formatRange, false, true, out newSize);
+
+                    ReApplyExistingFormats(existingFormats, formatRange);
+                    start = next;
+                }
+            }
+            else
+            {
+                MakeGrowOrShrink(selection, false, true, out newSize);
                 FontSizeChanged?.Invoke(newSize);
             }
+            _richTextBox.Focus();
         }
     }
 }
