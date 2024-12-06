@@ -388,7 +388,7 @@ namespace Wordpad
             fontManager.ToggleSuperscript();
         }
 
-               private void btnColor_Click(object sender, RoutedEventArgs e)
+        private void btnColor_Click(object sender, RoutedEventArgs e)
         {
             // Lấy màu đã chọn từ ColorPicker
             var selectedColor = colorPicker.SelectedColor;
