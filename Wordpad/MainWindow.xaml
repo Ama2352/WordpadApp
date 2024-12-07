@@ -78,13 +78,28 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Click="btnPaste_Click" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/paste1.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/paste1.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Column="1" Click="btnCut_Click" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/cut.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/cut.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Column="2" Click="btnCopy_Click" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/copy.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/copy.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
                         </Grid>
@@ -112,22 +127,52 @@
                                 <ComboBox Grid.Row="0" Grid.Column="3" Name="cbFontSize" Width="70" SelectionChanged="cbFontSize_SelectionChanged" Margin="2" Height="48" />
                                 <!-- Row 1: Formatting Controls -->
                                 <Button Grid.Row="1" Grid.Column="0" x:Name="btnBold" ToolTip="Bold" Style="{StaticResource ToolbarButtonStyle}" Click="btnBold_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/bold.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/bold.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="1" x:Name="btnItalic" ToolTip="Italic" Style="{StaticResource ToolbarButtonStyle}" Click="btnItalic_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/italic.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/italic.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="2" x:Name="btnUnderline" ToolTip="Underline" Style="{StaticResource ToolbarButtonStyle}" Click="btnUnderline_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="3" x:Name="btnStrikethrough" ToolTip="Strikethrough" Style="{StaticResource ToolbarButtonStyle}" Click="btnStrikethrough_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/strikethrough.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/strikethrough.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="0" x:Name="btnSubscript" ToolTip="Subscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSubscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/subscript.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/subscript.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="1" x:Name="btnSuperscript" ToolTip="Superscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSuperscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/superscript.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/superscript.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <xctk:ColorPicker Grid.Row="2" Grid.Column="2" Name="colorPicker" Width="48" Height="48" SelectedColorChanged="colorPicker_SelectedColorChanged" Margin="2"/>
                                 <xctk:ColorPicker Grid.Row="2" Grid.Column="3" Name="highlightPicker" Width="48" Height="48" SelectedColorChanged="highlightPicker_SelectedColorChanged" Margin="2"/>
@@ -152,19 +197,44 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Row="0" Grid.Column="0" Name="btnPicture" ToolTip="Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnPicture_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/picture.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="1" Name="btnResizePicture" ToolTip="Resize Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnResizePicture_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/resize picture.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/resize picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="2" Name="btnChangePicture" ToolTip="Change Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnChangePicture_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Change picture.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Change picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="0" Name="btnDateAndTime" ToolTip="Date and Time" Style="{StaticResource ToolbarButtonStyle}" Click="btnDateAndTime_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Date and Time.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Date and Time.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="1" Name="btnInsertObject" ToolTip="Insert Object" Style="{StaticResource ToolbarButtonStyle}" Click="btnInsertObject_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Insert Object.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Insert Object.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
                         </Grid>
@@ -190,10 +260,20 @@
                                 </Grid.ColumnDefinitions>
                                 <!-- Row 0: Indentation and Spacing -->
                                 <Button Grid.Row="0" Grid.Column="0" Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="1" Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <ComboBox Grid.Row="0" Grid.Column="2" Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="48">
                                     <ComboBoxItem>1.0</ComboBoxItem>
@@ -203,19 +283,44 @@
                                 </ComboBox>
                                 <!-- Row 1: Alignment -->
                                 <Button Grid.Row="1" Grid.Column="0" Name="btnLeftAlignment" ToolTip="Left Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnLeftAlignment_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/LeftA.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/LeftA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="1" Name="btnCenterAlignment" ToolTip="Center Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnCenterAlignment_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/CenterA.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/CenterA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="2" Name="btnRightAlignment" ToolTip="Right Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnRightAlignment_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/RightA.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/RightA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="3" Name="btnJustifyAlignment" ToolTip="Justify" Style="{StaticResource ToolbarButtonStyle}" Click="btnJustifyAlignment_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Justify.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Justify.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="1" Grid.Column="4" Name="btnParagraph" ToolTip="Paragraph Settings" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/paragraph.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/paragraph.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
                         </Grid>
@@ -242,10 +347,20 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" x:Name="btnZoomIn" ToolTip="Zoom In" Width="48" Height="48" Click="ZoomIn_Click" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomIn.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomIn.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Column="1" x:Name="btnZoomOut" ToolTip="Zoom Out" Width="48" Height="48" Click="ZoomOut_Click" Style="{StaticResource ToolbarButtonStyle}">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomOut.png" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomOut.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
                         </Grid>
