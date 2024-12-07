@@ -360,7 +360,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\excel.png" />
-    <Resource Include="Images\file.png" />
+    <Resource Include="Images\New.png" />
     <Resource Include="Images\pdf.png" />
     <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\word.png" />
@@ -409,6 +409,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Save As.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Quick Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Print Preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Page SetUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Send Email.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Exit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
