@@ -39,9 +39,9 @@ namespace Wordpad
             _PrintManager = new PrintManager(RTBContainer, richTextBox);
             _SaveManager = new SaveManager(richTextBox);
             _SendEmailManager = new SendEmailManager(richTextBox);
-            _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
+            _TextBoxBehavior = new TextBoxBehavior(richTextBox, editorArea, RTBContainer);
             // Khởi tạo ViewManagment
-            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox);
+            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider);
             //Home
                         clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
@@ -61,9 +61,15 @@ namespace Wordpad
 
         private void ZoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            //if (zoomSlider.IsLoaded)
+            //{
+            //    double newValue = Math.Round(e.NewValue / 10) * 10; // Làm tròn đến bội số của 10
+            //    zoomSlider.Value = newValue;
+            //}
             if (viewManagment != null)
             {
-                viewManagment.SetZoom((int)((Slider)sender).Value);
+                viewManagment.SetZoom(((Slider)sender).Value / 100.0);
+                zoomPercent.Content = zoomSlider.Value.ToString() + "%";
             }
         }
 
@@ -80,7 +86,7 @@ namespace Wordpad
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _TextBoxBehavior.UpdateCustomScrollBar();
+            //_TextBoxBehavior.UpdateCustomScrollBar();
         }
 
         private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -316,6 +322,21 @@ namespace Wordpad
             viewManagment.ZoomOut();
         }
 
+        private void btnResetZoom_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.Set100();
+        }
+
+        private void btnDecreaseZoom_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ZoomOut();
+        }
+
+        private void btnIncreaseZoom_Click(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ZoomIn();
+        }
+
         private void ToggleRuler_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
@@ -475,6 +496,8 @@ namespace Wordpad
             if(insertObjectWindow.ShowDialog() == true) { }
                 
         }
+
+
 
 
         #endregion

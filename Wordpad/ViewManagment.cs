@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using static System.Windows.MessageBox;
 
@@ -14,15 +15,25 @@ namespace Wordpad
         private readonly StatusBarItem statusBarItem;
         private readonly RichTextBox richTextBox;
         private readonly ComboBox unitComboBox;
-        private int zoomLevel = 100;
+        private DockPanel dockPanel;
+        private Slider zoomSlider;
+        private double zoomScale = 1.0; // Giá trị ban đầu (100%)
+        //Kích thước ban đầu cảu dockpanel
+        private double DPWidthOri;
+        private double DPHeightOri;
 
-        public ViewManagment(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, RichTextBox richTextBox, ComboBox unitComboBox)
+        public ViewManagment(Canvas rulerCanvas, StatusBar statusBar, StatusBarItem statusBarItem, 
+            RichTextBox richTextBox, ComboBox unitComboBox, DockPanel DP, Slider slider)
         {
             this.rulerCanvas = rulerCanvas;
             this.statusBar = statusBar;
             this.statusBarItem = statusBarItem;
             this.richTextBox = richTextBox;
             this.unitComboBox = unitComboBox;
+            this.dockPanel = DP;
+            this.zoomSlider = slider;
+            DPWidthOri = dockPanel.Width;
+            DPHeightOri = dockPanel.Height;
 
             DrawRuler();
 
@@ -30,17 +41,6 @@ namespace Wordpad
             richTextBox.TextChanged += RichTextBox_TextChanged;
         }
 
-        public void ZoomIn()
-        {
-            zoomLevel += 10;
-            ApplyZoom();
-        }
-
-        public void ZoomOut()
-        {
-            zoomLevel -= 10;
-            ApplyZoom();
-        }
 
         public void UpdateRuler()
         {
@@ -94,25 +94,49 @@ namespace Wordpad
             statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
         }
 
-        public void SetZoom(int zoomLevel)
+        public void ZoomIn()
         {
-            if (zoomLevel < 50 || zoomLevel > 200)
+            if (zoomScale < 5) // Đảm bảo mức zoom không xuống dưới 10%
+            {
+                zoomScale += 0.1; // Giảm 10% mức zoom
+                ApplyZoom();
+            }
+        }
+
+        public void ZoomOut()
+        {
+            if (zoomScale > 0.1) // Đảm bảo mức zoom không xuống dưới 10%
+            {
+                zoomScale -= 0.1; // Giảm 10% mức zoom
+                ApplyZoom();
+            }
+        }
+
+        public void Set100()
+        {
+            zoomScale = 1;
+            ApplyZoom();
+        }
+
+        public void SetZoom(double zoomLevel)
+        {
+            if (zoomLevel < 0.1 || zoomLevel > 5)
                 return;
 
-            this.zoomLevel = zoomLevel;
+            zoomScale = zoomLevel;
             ApplyZoom();
         }
 
         private void ApplyZoom()
         {
-            // Cập nhật zoom bằng cách thay đổi kích thước phông chữ trong FlowDocument
-            if (richTextBox.Document != null)
-            {
-                foreach (var block in richTextBox.Document.Blocks)
-                {
-                    block.FontSize = 12 * zoomLevel / 100; // Font size gốc là 12
-                }
-            }
+            // Phóng to cả RichTextBox bằng cách thay đổi kích thước.
+            dockPanel.Width = DPWidthOri * zoomScale; // Kích thước mặc định là 743.
+            dockPanel.Height = DPHeightOri * zoomScale; // Chiều cao mặc định là 500.
+            // Áp dụng zoom cho RichTextBox qua LayoutTransform
+            richTextBox.LayoutTransform = new ScaleTransform(zoomScale, zoomScale);
+
+            // Cập nhật giá trị trên thanh trạng thái
+            zoomSlider.Value = zoomScale * 100;
         }
 
         private int GetCharacterCount()
