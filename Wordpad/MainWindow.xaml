@@ -130,8 +130,11 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -141,7 +144,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Clipboard" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Clipboard" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -175,13 +179,17 @@
                             </Grid>
                         </Grid>
 
+                        <!-- Separator 1 -->
+                        <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
                         <!-- Font Section -->
-                        <Grid Grid.Column="1" Margin="5">
+                        <Grid Grid.Column="2" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Font" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Font" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -250,13 +258,17 @@
                             </Grid>
                         </Grid>
 
+                        <!-- Separator 2 -->
+                        <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
                         <!-- Insert Section -->
-                        <Grid Grid.Column="2" Margin="5">
+                        <Grid Grid.Column="4" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Insert" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Insert" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -310,13 +322,17 @@
                             </Grid>
                         </Grid>
 
+                        <!-- Separator 3 -->
+                        <Rectangle Grid.Column="5" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
                         <!-- Paragraph Section -->
-                        <Grid Grid.Column="3" Margin="5">
+                        <Grid Grid.Column="6" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -401,7 +417,9 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -411,7 +429,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Zoom" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Zoom" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -436,13 +455,17 @@
                             </Grid>
                         </Grid>
 
+                        <!-- Separator 1 -->
+                        <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
                         <!-- Show or Hide Section -->
-                        <Grid Grid.Column="1" Margin="5">
+                        <Grid Grid.Column="2" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Show or Hide" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Show or Hide" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -455,13 +478,17 @@
                             </Grid>
                         </Grid>
 
+                        <!-- Separator 2 -->
+                        <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
                         <!-- Settings Section -->
-                        <Grid Grid.Column="2" Margin="5">
+                        <Grid Grid.Column="4" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Settings" Grid.Row="0" Margin="2" FontWeight="SemiBold"/>
+                            <TextBlock Text="Settings" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" 
                                         Width="120" Height="48" Margin="2">
