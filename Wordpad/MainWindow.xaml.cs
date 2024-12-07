@@ -186,13 +186,8 @@ namespace Wordpad
             // Lấy nội dung của ComboBoxItem
             string selectedValue = selectedItem.Content.ToString();
 
-            // Kiểm tra trạng thái của checkbox (giả sử bạn có `chkAdd10pt`)
-            bool checkAdd10pt = chkAdd10pt.IsChecked ?? false;
+          
 
-            MessageBox.Show(checkAdd10pt.ToString());
-
-            ParagraphManager.lineSpacing = float.Parse(selectedValue);
-            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {

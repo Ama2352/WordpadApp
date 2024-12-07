@@ -374,5 +374,41 @@
   <ItemGroup>
     <Resource Include="Images\MesureUnit.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Date and Time.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CenterA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Change picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\resize picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Insert Object.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RightA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LeftA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Justify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DeIndent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\InIndent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\paragraph.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\picture.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
