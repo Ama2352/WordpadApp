@@ -40,94 +40,109 @@
     </Window.Resources>
     <DockPanel>
         <!-- Menu Bar -->
-        <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
-            <MenuItem Header="File" Background="#FF1979CA" Foreground="White" >
-                <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/New.png" 
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Open.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Save.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Save As.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Print" Foreground="Black">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Print.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                    <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click">
+        <Grid DockPanel.Dock="Top" Background="#E8E8E8">
+            <Grid.ColumnDefinitions>
+                <!-- Cột chứa Menu File -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Cột chứa nút Undo và Redo -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Khoảng trống còn lại -->
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Menu File -->
+            <Menu Grid.Column="0">
+                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" Height="16">
+                    <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/New.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Open.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Save.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Save As.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Print" Foreground="Black">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Wordpad;component/Images/Print.png"
-                                   Width="16" Height="16"
-                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Icon>
+                        <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Print.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Quick Print.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Print Preview.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click">
+                    <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click">
                         <MenuItem.Icon>
-                            <Image Source="pack://application:,,,/Wordpad;component/Images/Quick Print.png"
-                                   Width="16" Height="16"
-                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Page SetUp.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click">
+                    <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click">
                         <MenuItem.Icon>
-                            <Image Source="pack://application:,,,/Wordpad;component/Images/Print Preview.png"
-                                   Width="16" Height="16"
-                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Send Email.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/About.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Exit.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Page SetUp.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Send Email.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/About.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click">
-                    <MenuItem.Icon>
-                        <Image Source="pack://application:,,,/Wordpad;component/Images/Exit.png"
-                               Width="16" Height="16"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
+            </Menu>
+
+            <!-- Undo và Redo Buttons -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
+                <!-- Undo Button -->
+                <Button Name="btnQuickUndo" ToolTip="Undo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickUndo_Click" Height="16" Width="16">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Undo.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+                <!-- Redo Button -->
+                <Button Name="btnQuickRedo" ToolTip="Redo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickRedo_Click" Width="16" Height="16">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Redo.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
 
         <!-- Toolbar -->
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
@@ -244,16 +259,16 @@
                                            UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="0" x:Name="btnSubscript" ToolTip="Subscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSubscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sub.png" 
-                                           Width="32" Height="32" 
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
+                                           Width="35" Height="35" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="1" x:Name="btnSuperscript" ToolTip="Superscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSuperscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sup.png" 
-                                           Width="32" Height="32" 
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
+                                           Width="35" Height="35" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"

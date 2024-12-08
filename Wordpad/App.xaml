@@ -30,5 +30,6 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8,4"/>
         </Style>
+        
     </Application.Resources>
 </Application>

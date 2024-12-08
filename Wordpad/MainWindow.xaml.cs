@@ -531,6 +531,17 @@ namespace Wordpad
         {
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
+        private void QuickUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (richTextBox.CanUndo)
+                richTextBox.Undo();
+        }
+
+        private void QuickRedo_Click(object sender, RoutedEventArgs e)
+        {
+            if (richTextBox.CanRedo)
+                richTextBox.Redo();
+        }
 
     }
 }
