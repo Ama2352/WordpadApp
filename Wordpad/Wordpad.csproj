@@ -261,7 +261,8 @@
     <Compile Include="ReplaceWindow.xaml.cs">
       <DependentUpon>ReplaceWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewManagment.cs" />
+    <Compile Include="View\Ruler.cs" />
+    <Compile Include="View\ViewManagment.cs" />
     <Compile Include="DateAndTimeWindow.xaml.cs">
       <DependentUpon>DateAndTimeWindow.xaml</DependentUpon>
     </Compile>
