@@ -31,6 +31,7 @@ namespace Wordpad
         FontManager fontManager;
         ParagraphManager paragraphManager;
         InsertManager insertManager;
+        EditingManager editingManager;
 
         public MainWindow()
         {
@@ -44,10 +45,11 @@ namespace Wordpad
             // Khởi tạo ViewManagment
             viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox);
             //Home
-                        clipboardManager = new ClipboardManager(richTextBox);
+            clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
             paragraphManager = new ParagraphManager(richTextBox);
             insertManager = new InsertManager(richTextBox); 
+            editingManager = new EditingManager(richTextBox);
 
 
             // Cài đặt kiểu chữ và kích cỡ mặc định
@@ -333,7 +335,7 @@ namespace Wordpad
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
 
-                private void btnCut_Click(object sender, RoutedEventArgs e)
+        private void btnCut_Click(object sender, RoutedEventArgs e)
         {
             clipboardManager.Cut();
         }
@@ -459,23 +461,11 @@ namespace Wordpad
             insertManager.ResizeImage();
         }
 
-        
-
         private void btnDateAndTime_Click(object sender, RoutedEventArgs e)
         {
             DateAndTimeWindow dateAndTimeWindow = new DateAndTimeWindow(insertManager);
             if(dateAndTimeWindow.ShowDialog() == true)
-            {
-                // Get the chosen date and time from the dialog
-                string chosenDateTime = dateAndTimeWindow.chosenDateTime;
-
-                // Select the current text in the RichTextBox
-                TextRange selection = new TextRange(richTextBox.Selection.Start, richTextBox.Selection.End);
-
-                // Replace the selected text with the chosen date and time
-                selection.Text = chosenDateTime;
-            } 
-                
+                insertManager.InsertDateTime(dateAndTimeWindow.chosenDateTime);       
         }
 
         private void btnInsertObject_Click(object sender, RoutedEventArgs e)
@@ -484,10 +474,23 @@ namespace Wordpad
             if(insertObjectWindow.ShowDialog() == true) { }
                 
         }
+        private void btnSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            editingManager.SelectAllText();
+        }
 
+        private void btnFind_Click(object sender, RoutedEventArgs e)
+        {
+            FindWindow findWindow = new FindWindow(editingManager);
+            findWindow.Show();
+        }
 
+        private void btnReplace_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
         #endregion
+
 
     }
 }

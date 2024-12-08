@@ -232,10 +232,16 @@ namespace Wordpad
 
 
         // Phương thức chèn ngày/giờ
-        public void InsertDateTime()
+        public void InsertDateTime(string chosenDateTime)
         {
-            string dateTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            _richTextBox.AppendText(dateTime);
+            if(_richTextBox.Selection.IsEmpty)
+            {
+                FontManager fontManager = new FontManager(_richTextBox);
+                fontManager.SettingForEmptySelectionCase();
+            }
+
+            TextRange selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+            selection.Text = chosenDateTime;
         }
 
         public void DisplayDateTimeFormats(ListBox _listBox)

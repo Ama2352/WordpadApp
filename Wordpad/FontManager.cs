@@ -22,6 +22,30 @@ namespace Wordpad
             _richTextBox = richTextBox;
         }
 
+        // Phương thức thiết lập vùng chọn cho trường hợp không có văn bản được chọn để tận dụng chức năng thao tác trên selection có sẵn của richtextbox
+        public void SettingForEmptySelectionCase()
+        {
+            // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
+            TextPointer caretPosition = _richTextBox.CaretPosition;
+
+            if (caretPosition != null && caretPosition.IsAtInsertionPosition)
+            {
+                // Lưu lại vị trí con trỏ trước khi chèn dấu cách
+                TextPointer startPointer = caretPosition;
+                // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
+                caretPosition.InsertTextInRun(" ");
+
+                // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
+                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
+
+                // Lấy vị trí con trỏ sau khi chèn dấu cách
+                TextPointer endPointer = _richTextBox.CaretPosition;
+
+                // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
+                _richTextBox.Selection.Select(startPointer, endPointer);
+            }
+        }
+
         // Lấy danh sách font chữ
         public List<string> GetFontFamilies()
         {
@@ -37,26 +61,7 @@ namespace Wordpad
         public void ChangeFontFamily(string fontFamily)
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                TextPointer startPointer = caretPosition;
-
-                // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                caretPosition.InsertTextInRun(" ");
-
-                // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                // Lấy vị trí con trỏ sau khi chèn dấu cách
-                TextPointer endPointer = _richTextBox.CaretPosition;
-
-                // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                _richTextBox.Selection.Select(startPointer, endPointer);
-
-            }
+                SettingForEmptySelectionCase();
 
             // Áp dụng font family cho vùng chọn
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
@@ -70,26 +75,7 @@ namespace Wordpad
         public void ChangeFontSize(double fontSize)
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                TextPointer startPointer = caretPosition;
-
-                // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                caretPosition.InsertTextInRun(" ");
-
-                // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                // Lấy vị trí con trỏ sau khi chèn dấu cách
-                TextPointer endPointer = _richTextBox.CaretPosition;
-
-                // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                _richTextBox.Selection.Select(startPointer, endPointer);
-
-            }
+                SettingForEmptySelectionCase();
 
             // Áp dụng font size cho vùng chọn
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
@@ -104,28 +90,7 @@ namespace Wordpad
         public void ChangeFontColor(Color color)
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                SettingForEmptySelectionCase();
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
             selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(color));
@@ -134,31 +99,12 @@ namespace Wordpad
             _richTextBox.Focus();
         }
 
+
         // Thay đổi màu nền (highlight) văn bản
         public void ChangeHighlightColor(Color color)
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                SettingForEmptySelectionCase();
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
             selection.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(color));
@@ -172,28 +118,7 @@ namespace Wordpad
         public void ToggleBold()
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                SettingForEmptySelectionCase();
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
 
@@ -222,28 +147,7 @@ namespace Wordpad
         public void ToggleItalic()
         {
             if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
+                SettingForEmptySelectionCase();
 
             var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
 
@@ -268,62 +172,7 @@ namespace Wordpad
 
         }
 
-        // Chuyển văn bản sang gạch chân
-        public void ToggleUnderline()
-        {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
-
-            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-            string formatOption = "Underline";
-
-            FormatParagraphs(selection, formatOption);
-
-            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
-            _richTextBox.Focus();
-        }
-
-        // Phương thức thao tác định dạng loại TextDecorations (Underline/Strikethrough)
-        private void FormatTextDecorationsForParagraph(TextRange selectedParagraph, bool applied, string formatOption)
-        {
-            // Lấy giá trị TextDecorations của đoạn văn bản
-            var currentTextDecoration = selectedParagraph.GetPropertyValue(Inline.TextDecorationsProperty);
-
-            // Kiểm tra xem giá trị trả về có phải là UnsetValue không (chưa xác định kiểu)
-            if (currentTextDecoration == null
-                || currentTextDecoration.Equals(DependencyProperty.UnsetValue))
-                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
-            else
-            {
-                // Trường hợp != null và UnsetValue tức là định dạng đã được áp dụng trên cả đoạn văn bản được chọn
-                // bool applied = CheckIfFullyApplyTextDecorationsOrNot(selection, formatOption);
-                //ManipulateUnderlineOrStrikethrough(selection, formatOption, applied);
-
-                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
-            }
-        }
-
+        #region Processing Functions for Grow/Shrink Font, TextDecorations(Underline/Strikethrough) 
         // Phương thức đếm số paragraph đã áp dụng định dạng cần thao tác
         private int CountFormattedParagraphs(TextRange originalFormatRange, string formatOption)
         {
@@ -382,6 +231,7 @@ namespace Wordpad
             return formatParagraphs;
         }
 
+        // Phương thức định dạng cho các đoạn văn bản được chọn (Trường hợp vùng chọn có nhiều đoạn văn bản)
         private void FormatParagraphs(TextRange formatRange, string formatOption)
         {
 
@@ -413,282 +263,30 @@ namespace Wordpad
                 }
             }
         }
-
-        // Thay đổi kiểu gạch ngang văn bản
-        public void ToggleStrikethrough()
+        
+        // Phương thức thao tác định dạng loại TextDecorations (Underline/Strikethrough) cho từng paragraph
+        private void FormatTextDecorationsForParagraph(TextRange selectedParagraph, bool applied, string formatOption)
         {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
+            // Lấy giá trị TextDecorations của đoạn văn bản
+            var currentTextDecoration = selectedParagraph.GetPropertyValue(Inline.TextDecorationsProperty);
 
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
-
-            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-            string formatOption = "Strikethrough";
-
-            FormatParagraphs(selection, formatOption);
-
-            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
-            _richTextBox.Focus();
-        }
-
-        // Chuyển văn bản thành chỉ số dưới (Subscript)
-        public void ToggleSubscript()
-        {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
-
-            try
-            {
-                var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-
-                // Lấy kích cỡ văn bản được chọn
-                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
-
-                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
-                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-
-                // Kiểm tra giá trị FontSize hợp lệ
-                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
-                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
-                var scaleSubscript = 0.75;
-
-                // Kiểm tra giá trị Alignment hợp lệ
-                BaselineAlignment alignment = BaselineAlignment.Baseline;
-                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
-                    alignment = (BaselineAlignment)currentAlignment;
-
-                // Thay đổi định dạng
-                if (alignment == BaselineAlignment.Baseline)
-                {
-                    double newFontSize = Math.Max(fontSize * scaleSubscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
-                }
-                else if (alignment == BaselineAlignment.Superscript)
-                {
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
-                }
-                else
-                {
-                    double newFontSize = Math.Min(fontSize / scaleSubscript, 72.0); // Giới hạn font tối đa là 72.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log hoặc xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
-
-            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
-            _richTextBox.Focus();
-        }
-
-
-        // Chuyển văn bản thành chỉ số trên (Superscript)
-        public void ToggleSuperscript()
-        {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                // Nếu không có vùng chọn, áp dụng font size tại vị trí con trỏ
-                TextPointer caretPosition = _richTextBox.CaretPosition;
-
-                if (caretPosition != null && caretPosition.IsAtInsertionPosition)
-                {
-                    // Lưu lại vị trí con trỏ trước khi chèn dấu cách
-                    TextPointer startPointer = caretPosition;
-
-                    // Chèn dấu cách vào vị trí con trỏ (không di chuyển con trỏ chuột)
-                    caretPosition.InsertTextInRun(" ");
-
-                    // Dịch chuyển con trỏ chuột ra sau dấu cách vừa chèn vào
-                    _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-
-                    // Lấy vị trí con trỏ sau khi chèn dấu cách
-                    TextPointer endPointer = _richTextBox.CaretPosition;
-
-                    // Chọn vùng từ startPointer đến endPointer (vùng vừa chèn dấu cách)
-                    _richTextBox.Selection.Select(startPointer, endPointer);
-                }
-            }
-
-            try
-            {
-                var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-
-                // Lấy kích cỡ văn bản được chọn
-                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
-
-                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
-                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-
-                // Kiểm tra giá trị FontSize hợp lệ
-                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
-                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
-                var scaleSuperscript = 0.75;
-
-                // Kiểm tra giá trị Alignment hợp lệ
-                BaselineAlignment alignment = BaselineAlignment.Baseline;
-                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
-                    alignment = (BaselineAlignment)currentAlignment;
-
-                // Thay đổi định dạng
-                if (alignment == BaselineAlignment.Baseline)
-                {
-                    double newFontSize = Math.Max(fontSize * scaleSuperscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
-                }
-                else if (alignment == BaselineAlignment.Subscript)
-                {
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
-                }
-                else
-                {
-                    double newFontSize = Math.Min(fontSize / scaleSuperscript, 72.0); // Giới hạn font tối đa là 72.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log hoặc xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
-
-            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
-            _richTextBox.Focus();
-        }
-
-        // Phương thức chỉnh grow/shrink font
-        private void MakeGrowOrShrink(TextRange formatRange, bool isGrow, bool isShrink, out double newSize)
-        {
-            newSize = 11;
-
-            if (isGrow)
-            {
-                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
-                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
-
-                if (currentIndex >= 0 && currentIndex < fontSize.Length - 1)
-                {
-                    newSize = fontSize[currentIndex + 1];
-                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
-                }
-            }
+            // Kiểm tra xem giá trị trả về có phải là UnsetValue không (chưa xác định kiểu)
+            if (currentTextDecoration == null
+                || currentTextDecoration.Equals(DependencyProperty.UnsetValue))
+                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
             else
             {
-                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
-                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+                // Trường hợp != null và UnsetValue tức là định dạng đã được áp dụng trên cả đoạn văn bản được chọn
+                // bool applied = CheckIfFullyApplyTextDecorationsOrNot(selection, formatOption);
+                //ManipulateUnderlineOrStrikethrough(selection, formatOption, applied);
 
-                if (currentIndex > 0 && currentIndex <= fontSize.Length - 1)
-                {
-                    newSize = fontSize[currentIndex - 1];
-                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
-                }
+                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
             }
         }
 
-        // Tăng kích thước font
-        public void GrowFont()
-        {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                TextPointer startPointer = _richTextBox.CaretPosition;
-                startPointer.InsertTextInRun(" ");
-                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-                TextPointer endPointer = _richTextBox.CaretPosition;
-                _richTextBox.Selection.Select(startPointer, endPointer);
-            }
-
-            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-
-            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
-            if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
-            {
-                string formatOption = "Grow Font";
-                ManipulateFormatForPropertyCases(selection, false, formatOption);
-            }
-            else
-            {
-                MakeGrowOrShrink(selection, true, false, out double newSize);
-                FontSizeChanged?.Invoke(newSize);
-            }
-            _richTextBox.Focus();
-        }
-
-        // Giảm kích thước font
-        public void ShrinkFont()
-        {
-            if (_richTextBox.Selection.IsEmpty)
-            {
-                TextPointer startPointer = _richTextBox.CaretPosition;
-                startPointer.InsertTextInRun(" ");
-                _richTextBox.CaretPosition = _richTextBox.CaretPosition.GetPositionAtOffset(1, LogicalDirection.Forward);
-                TextPointer endPointer = _richTextBox.CaretPosition;
-                _richTextBox.Selection.Select(startPointer, endPointer);
-            }
-
-            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
-
-            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
-            if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
-            {
-                string formatOption = "Shrink Font";
-                ManipulateFormatForPropertyCases(selection, false, formatOption);
-            }
-            else
-            {
-                MakeGrowOrShrink(selection, false, true, out double newSize);
-                FontSizeChanged?.Invoke(newSize);
-            }
-            _richTextBox.Focus();
-        }
-
-        // Phương thức áp dụng định dạng cho các vùng văn bản trong cả trường hợp xác định được kiểu và không xác định được
+        // Phương thức áp dụng định dạng cho các vùng văn bản trong cả trường hợp xác định được và không xác định được kiểu
         private void ManipulateFormatForPropertyCases(TextRange formatField, bool applied, string formatOption)
-        {         
+        {
             var start = formatField.Start;
             var end = formatField.End;
 
@@ -743,8 +341,8 @@ namespace Wordpad
                 {
                     start = next;
                     continue;
-                }    
-                    
+                }
+
                 else
                     formatTextIndex++;
 
@@ -762,7 +360,7 @@ namespace Wordpad
                 {
                     case "Underline":
                         checkedDecorations.Remove(TextDecorations.Strikethrough[0]);
-                        bool hasUnderline = checkedDecorations.Contains(TextDecorations.Underline[0]); 
+                        bool hasUnderline = checkedDecorations.Contains(TextDecorations.Underline[0]);
                         if (hasUnderline)
                             totalAppliedDecorations++;
                         break;
@@ -797,7 +395,7 @@ namespace Wordpad
             else if (formatOption == "Strikethrough")
             {
                 neededDecoration = TextDecorations.Strikethrough[0];
-                removedDecoration= TextDecorations.Underline[0];
+                removedDecoration = TextDecorations.Underline[0];
             }
 
             // Không cần xét định đạng được lấy ra nữa khi gọi hàm này là đã xét != null và UnsetValue rồi
@@ -814,15 +412,228 @@ namespace Wordpad
                  1. Toàn bộ đoạn văn được chọn hoàn toàn chưa được định dạng
                  2. Đoạn văn bản được định dạng vài kí tự nhưng chưa phải toàn bộ
                  --> Trong trường hợp 2: Cần xét nếu kí tự đó đã có định dạng chưa để không gán trùng định dạng nữa lên nó nữa (Tránh tích stack)
-                 */ 
+                 */
                 var checkedDecorations = new TextDecorationCollection(textDecorations);
                 checkedDecorations.Remove(removedDecoration);
                 bool hasDecoration = checkedDecorations.Contains(neededDecoration);
                 if (!hasDecoration)
                     newTextDecorations.Add(neededDecoration);
-            }                   
+            }
 
             formatRange.ApplyPropertyValue(Inline.TextDecorationsProperty, newTextDecorations);
+        }
+
+        // Phương thức chỉnh grow/shrink font
+        private void MakeGrowOrShrink(TextRange formatRange, bool isGrow, bool isShrink, out double newSize)
+        {
+            newSize = 11;
+
+            if (isGrow)
+            {
+                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+
+                if (currentIndex >= 0 && currentIndex < fontSize.Length - 1)
+                {
+                    newSize = fontSize[currentIndex + 1];
+                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                }
+            }
+            else
+            {
+                var currentFontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+                int currentIndex = Array.FindIndex(fontSize, size => size >= currentFontSize);
+
+                if (currentIndex > 0 && currentIndex <= fontSize.Length - 1)
+                {
+                    newSize = fontSize[currentIndex - 1];
+                    formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newSize);
+                }
+            }
+        }
+        #endregion
+
+        // Chuyển văn bản sang gạch chân
+        public void ToggleUnderline()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+            string formatOption = "Underline";
+
+            FormatParagraphs(selection, formatOption);
+
+            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
+            _richTextBox.Focus();
+        }
+
+        // Thay đổi kiểu gạch ngang văn bản
+        public void ToggleStrikethrough()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+            string formatOption = "Strikethrough";
+
+            FormatParagraphs(selection, formatOption);
+
+            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
+            _richTextBox.Focus();
+        }
+
+        // Chuyển văn bản thành chỉ số dưới (Subscript)
+        public void ToggleSubscript()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            try
+            {
+                var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+
+                // Lấy kích cỡ văn bản được chọn
+                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
+
+                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
+                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
+
+                // Kiểm tra giá trị FontSize hợp lệ
+                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
+                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
+                var scaleSubscript = 0.75;
+
+                // Kiểm tra giá trị Alignment hợp lệ
+                BaselineAlignment alignment = BaselineAlignment.Baseline;
+                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
+                    alignment = (BaselineAlignment)currentAlignment;
+
+                // Thay đổi định dạng
+                if (alignment == BaselineAlignment.Baseline)
+                {
+                    double newFontSize = Math.Max(fontSize * scaleSubscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
+                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
+                }
+                else if (alignment == BaselineAlignment.Superscript)
+                {
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
+                }
+                else
+                {
+                    double newFontSize = Math.Min(fontSize / scaleSubscript, 72.0); // Giới hạn font tối đa là 72.0
+                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log hoặc xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+
+            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
+            _richTextBox.Focus();
+        }
+
+
+        // Chuyển văn bản thành chỉ số trên (Superscript)
+        public void ToggleSuperscript()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            try
+            {
+                var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+
+                // Lấy kích cỡ văn bản được chọn
+                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
+
+                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
+                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
+
+                // Kiểm tra giá trị FontSize hợp lệ
+                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
+                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
+                var scaleSuperscript = 0.75;
+
+                // Kiểm tra giá trị Alignment hợp lệ
+                BaselineAlignment alignment = BaselineAlignment.Baseline;
+                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
+                    alignment = (BaselineAlignment)currentAlignment;
+
+                // Thay đổi định dạng
+                if (alignment == BaselineAlignment.Baseline)
+                {
+                    double newFontSize = Math.Max(fontSize * scaleSuperscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
+                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                }
+                else if (alignment == BaselineAlignment.Subscript)
+                {
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
+                }
+                else
+                {
+                    double newFontSize = Math.Min(fontSize / scaleSuperscript, 72.0); // Giới hạn font tối đa là 72.0
+                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log hoặc xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+
+            // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
+            _richTextBox.Focus();
+        }
+
+        // Tăng kích thước font
+        public void GrowFont()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+
+            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
+            {
+                string formatOption = "Grow Font";
+                ManipulateFormatForPropertyCases(selection, false, formatOption);
+            }
+            else
+            {
+                MakeGrowOrShrink(selection, true, false, out double newSize);
+                FontSizeChanged?.Invoke(newSize);
+            }
+            _richTextBox.Focus();
+        }
+
+        // Giảm kích thước font
+        public void ShrinkFont()
+        {
+            if (_richTextBox.Selection.IsEmpty)
+                SettingForEmptySelectionCase();
+
+            var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+
+            var isVariousFormat = selection.GetPropertyValue(TextElement.FontSizeProperty);
+            if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
+            {
+                string formatOption = "Shrink Font";
+                ManipulateFormatForPropertyCases(selection, false, formatOption);
+            }
+            else
+            {
+                MakeGrowOrShrink(selection, false, true, out double newSize);
+                FontSizeChanged?.Invoke(newSize);
+            }
+            _richTextBox.Focus();
         }
     }
 }

@@ -252,6 +252,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="FindWindow.xaml.cs">
+      <DependentUpon>FindWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReplaceWindow.xaml.cs">
+      <DependentUpon>ReplaceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewManagment.cs" />
     <Compile Include="DateAndTimeWindow.xaml.cs">
       <DependentUpon>DateAndTimeWindow.xaml</DependentUpon>
@@ -263,6 +269,10 @@
       <DependentUpon>ResizeWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="DateAndTimeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -299,6 +309,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PasteSpecialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReplaceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

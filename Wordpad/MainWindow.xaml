@@ -152,6 +152,12 @@
                 <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
                 <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
             </WrapPanel>
+
+            <WrapPanel Grid.Column="4">
+                <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
+                <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
+                <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
+            </WrapPanel>
         </Grid>
 
         <!-- Custom ScrollBar -->
