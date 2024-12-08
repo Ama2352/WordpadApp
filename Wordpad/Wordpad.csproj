@@ -255,6 +255,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="Files\PaginatorWithPageNumbers.cs" />
+    <Compile Include="FindWindow.xaml.cs">
+      <DependentUpon>FindWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReplaceWindow.xaml.cs">
+      <DependentUpon>ReplaceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewManagment.cs" />
     <Compile Include="DateAndTimeWindow.xaml.cs">
       <DependentUpon>DateAndTimeWindow.xaml</DependentUpon>
@@ -266,6 +272,10 @@
       <DependentUpon>ResizeWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="DateAndTimeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -302,6 +312,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PasteSpecialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReplaceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -343,28 +357,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\bold.png" />
-    <Resource Include="Images\italic.png" />
-    <Resource Include="Images\underline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\copy.png" />
     <Resource Include="Images\cut.png" />
+    <Resource Include="Images\excel.png" />
+    <Resource Include="Images\file.png" />
+    <Resource Include="Images\horizontal.png" />
+    <Resource Include="Images\italic.png" />
+    <Resource Include="Images\list-items.png" />
+    <Resource Include="Images\paint.png" />
+    <Resource Include="Images\paragraph.png" />
+    <Resource Include="Images\paste.png" />
     <Resource Include="Images\paste1.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\pdf.png" />
+    <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\strikethrough.png" />
     <Resource Include="Images\subscript.png" />
     <Resource Include="Images\superscript.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\horizontal.png" />
+    <Resource Include="Images\underline.png" />
     <Resource Include="Images\vertical.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\excel.png" />
-    <Resource Include="Images\file.png" />
-    <Resource Include="Images\pdf.png" />
-    <Resource Include="Images\powerpoint.png" />
     <Resource Include="Images\word.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

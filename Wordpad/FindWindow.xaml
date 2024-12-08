@@ -1,0 +1,39 @@
+﻿<Window x:Class="Wordpad.FindWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wordpad"
+        mc:Ignorable="d"
+        Title="Find" Height="150" Width="420"
+        KeyDown="Window_KeyDown"
+        Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".8*"/>
+            <ColumnDefinition Width=".2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Label Content="Find what:" Margin="7,15,0,0"/>
+                <TextBox Name="txtSearchText" Width="230" Height="18" Margin="60,0,0,0"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <CheckBox Name="chkMatchWholeWordOnly" Content="Match whole word only" Margin="10,0,0,0"/>
+                <CheckBox Name="chkMatchCase" Content="Match case" Margin="10,20,0,0"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Button x:Name="btnFindNext" Content="Find next" Height="20" Width="70" VerticalAlignment="Top" Margin="0,19,10,0" Click="btnFindNext_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Height="20" Width="70" Margin="0,0,10,0" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>

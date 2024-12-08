@@ -1,0 +1,41 @@
+﻿<Window x:Class="Wordpad.ReplaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wordpad"
+        mc:Ignorable="d"
+       Title="Replace" Height="150" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".8*"/>
+            <ColumnDefinition Width=".2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Label Content="Find what:" Margin="7,7,0,0"/>
+                <TextBox Name="txtFindText" Width="220" Height="18" Margin="80,0,0,21"/>
+                <Label Content="Replace with:" Margin="7,35,0,0"/>
+                <TextBox x:Name="txtReplaceText" Width="220" Height="18" Margin="80,32,0,0"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <CheckBox Name="chkMatchWholeWordOnly" Content="Match whole word only" Margin="10,10,0,0"/>
+                <CheckBox Name="chkMatchCase" Content="Match case" Margin="10,30,0,0"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Button x:Name="btnFindNext" Content="Find next" Height="20" Width="70" VerticalAlignment="Top" Margin="0,13,10,0" Click="btnFindNext_Click"/>
+            <Button x:Name="btnReplace" Content="Replace" Height="20" Width="70" Margin="0,6,10,40" Click="btnReplace_Click"/>
+            <Button x:Name="btnReplaceAll" Content="Replace All" Height="20" Width="70" Margin="0,60,10,40" Click="btnReplaceAll_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Height="20" Width="70" Margin="0,75,10,0" Click="btnCancel_Click"/>
+        </Grid>
+    </Grid>
+</Window>

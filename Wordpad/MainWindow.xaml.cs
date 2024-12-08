@@ -30,6 +30,7 @@ namespace Wordpad
         FontManager fontManager;
         ParagraphManager paragraphManager;
         InsertManager insertManager;
+        EditingManager editingManager;
 
         public MainWindow()
         {
@@ -43,10 +44,11 @@ namespace Wordpad
             // Khởi tạo ViewManagment
             viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider);
             //Home
-                        clipboardManager = new ClipboardManager(richTextBox);
+            clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
             paragraphManager = new ParagraphManager(richTextBox);
             insertManager = new InsertManager(richTextBox); 
+            editingManager = new EditingManager(richTextBox);
 
 
             // Cài đặt kiểu chữ và kích cỡ mặc định
@@ -96,10 +98,17 @@ namespace Wordpad
 
         private void cbFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
+            try
             {
-                fontManager.ChangeFontSize(fontSize);
+                if (double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
+                {
+                    fontManager.ChangeFontSize(fontSize);
+                }
             }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }              
         }
 
         private void SettingFontType(FontManager _fontManager)
@@ -115,8 +124,14 @@ namespace Wordpad
         }
         private void OnFontSizeChanged(double newSize)
         {
-            // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước
+            // Tạm thời gỡ kết nối sự kiện cập nhật font size
+            cbFontSize.SelectionChanged -= cbFontSize_SelectionChanged;
+
+            // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước (Chỉ thay đổi text của size đang hiển thị)
             cbFontSize.Text = newSize.ToString();
+
+            // Đăng ký lại sự kiện cập nhật font size
+            cbFontSize.SelectionChanged += cbFontSize_SelectionChanged;
         }
         private void OnFontFamilyChanged(string newFont)
         {
@@ -136,9 +151,10 @@ namespace Wordpad
             _fontManager.FontSizeChanged += OnFontSizeChanged;
         }
 
-      private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             TextSelection selectedText = richTextBox.Selection;
+
             if (selectedText != null)
             {
                 // Kiểm tra xem font size và font family có giá trị hợp lệ không
@@ -156,15 +172,14 @@ namespace Wordpad
                     OnFontFamilyChanged(currentFontFamily.ToString());
                 }
             }
-                
+       
         }
-
-                private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void richTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             insertManager.OpenDocumentIfLinkIconClicked(sender, e);
         }
 
-               private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             if (colorPicker.SelectedColor.HasValue)
             {
@@ -477,17 +492,7 @@ namespace Wordpad
         {
             DateAndTimeWindow dateAndTimeWindow = new DateAndTimeWindow(insertManager);
             if(dateAndTimeWindow.ShowDialog() == true)
-            {
-                // Get the chosen date and time from the dialog
-                string chosenDateTime = dateAndTimeWindow.chosenDateTime;
-
-                // Select the current text in the RichTextBox
-                TextRange selection = new TextRange(richTextBox.Selection.Start, richTextBox.Selection.End);
-
-                // Replace the selected text with the chosen date and time
-                selection.Text = chosenDateTime;
-            } 
-                
+                insertManager.InsertDateTime(dateAndTimeWindow.chosenDateTime);       
         }
 
         private void btnInsertObject_Click(object sender, RoutedEventArgs e)
@@ -496,10 +501,22 @@ namespace Wordpad
             if(insertObjectWindow.ShowDialog() == true) { }
                 
         }
+        private void btnSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            editingManager.SelectAllText();
+        }
 
+        private void btnFind_Click(object sender, RoutedEventArgs e)
+        {
+            FindWindow findWindow = new FindWindow(editingManager);
+            findWindow.Show();
+        }
 
-
-
+        private void btnReplace_Click(object sender, RoutedEventArgs e)
+        {
+            ReplaceWindow replaceWindow = new ReplaceWindow(editingManager);
+            replaceWindow.Show();
+        }
         #endregion
 
 

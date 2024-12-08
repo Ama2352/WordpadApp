@@ -93,6 +93,7 @@ namespace Wordpad
                 imageDictionary.Remove(entry.Value.Key);
             }
         }
+     
 
         public void InsertImage()
         {
@@ -110,6 +111,10 @@ namespace Wordpad
                 // Tạo một ID duy nhất cho mỗi hình ảnh
                 Guid imageId = Guid.NewGuid();
 
+                // Gắn ID duy nhất của tấm ảnh vào tag của nó
+                imgControl.Tag = imageId;
+
+                // Lưu ảnh vào dictionary với ID duy nhất của nó
                 imageDictionary[imageId] = imgControl;
 
                 // Tạo một InlineUIContainer để chứa hình ảnh
@@ -165,9 +170,9 @@ namespace Wordpad
                         if (imageContainer.Child is Image selectedImage)
                         {
                             foreach (var entry in imageDictionary)
-                            {
-                                if (entry.Value == selectedImage)
-                                {
+                            {                                                           
+                                if (entry.Value.Tag == selectedImage.Tag)
+                                {                              
                                     // Trả về true, para, inline nếu tìm thấy hình ảnh
                                     return (true, para, inline, entry);
                                 }
@@ -227,10 +232,16 @@ namespace Wordpad
 
 
         // Phương thức chèn ngày/giờ
-        public void InsertDateTime()
+        public void InsertDateTime(string chosenDateTime)
         {
-            string dateTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            _richTextBox.AppendText(dateTime);
+            if(_richTextBox.Selection.IsEmpty)
+            {
+                FontManager fontManager = new FontManager(_richTextBox);
+                fontManager.SettingForEmptySelectionCase();
+            }
+
+            TextRange selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+            selection.Text = chosenDateTime;
         }
 
         public void DisplayDateTimeFormats(ListBox _listBox)

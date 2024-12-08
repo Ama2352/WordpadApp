@@ -7,8 +7,7 @@
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" 
-        SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown"
-        MouseDoubleClick="Window_MouseDoubleClick">
+        SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
     <DockPanel>
         <!-- Menu Bar -->
         <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
@@ -154,6 +153,12 @@
                 <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
                 <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
             </WrapPanel>
+
+            <WrapPanel Grid.Column="4">
+                <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
+                <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
+                <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
+            </WrapPanel>
         </Grid>
 
         <!-- Status Bar -->
@@ -184,6 +189,8 @@
                                  TextChanged="richTextBox_TextChanged"
                                  Padding="0" 
                                  FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" >
+                                SelectionChanged="richTextBox_SelectionChanged"
+                                MouseDoubleClick="richTextBox_MouseDoubleClick">
                         <FlowDocument >
                             <Paragraph LineHeight="1" FontFamily="Arial" Margin="0,0,0,0" FontSize="10">
                             </Paragraph>
