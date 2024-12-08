@@ -56,7 +56,7 @@ namespace Wordpad
                 rulerCanvas.Width = dockPanel.Width;
                 DrawMargins(richTextBox.Padding.Left, richTextBox.Padding.Right);
                 DrawRuler(); // Vẽ lại ruler khi kích thước thay đổi
-                MessageBox.Show($"Dock width: {dockPanel.Width}\nRUler canvas length: {rulerCanvas.Width}\nRUler Lenght: {rulerLength}");
+                //MessageBox.Show($"Dock width: {dockPanel.Width}\nRUler canvas length: {rulerCanvas.Width}\nRUler Lenght: {rulerLength}");
 
             };
 
