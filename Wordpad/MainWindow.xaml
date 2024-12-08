@@ -308,11 +308,11 @@
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
 
-                                    <xctk:ColorPicker Name="colorPicker" Width="32" Height="32" 
+                                    <xctk:ColorPicker Name="colorPicker" Width="35" Height="32" 
                                                      SelectedColorChanged="colorPicker_SelectedColorChanged" 
                                                      Margin="2"/>
 
-                                    <xctk:ColorPicker Name="highlightPicker" Width="32" Height="32" 
+                                    <xctk:ColorPicker Name="highlightPicker" Width="35" Height="32" 
                                                      SelectedColorChanged="highlightPicker_SelectedColorChanged" 
                                                      Margin="2"/>
                                 </StackPanel>
@@ -423,7 +423,7 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <ComboBox Grid.Row="0" Grid.Column="2" Name="cbLineSpacing" Width="40" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="24">
+                                <ComboBox Grid.Row="0" Grid.Column="2" Name="cbLineSpacing" Width="55" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="24">
                                     <ComboBoxItem>1.0</ComboBoxItem>
                                     <ComboBoxItem>1.25</ComboBoxItem>
                                     <ComboBoxItem>1.5</ComboBoxItem>
