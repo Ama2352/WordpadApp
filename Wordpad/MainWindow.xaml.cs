@@ -487,7 +487,8 @@ namespace Wordpad
 
         private void btnReplace_Click(object sender, RoutedEventArgs e)
         {
-
+            ReplaceWindow replaceWindow = new ReplaceWindow(editingManager);
+            replaceWindow.Show();
         }
         #endregion
 

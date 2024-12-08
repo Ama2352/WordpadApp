@@ -20,9 +20,9 @@
 
             <Grid Grid.Row="0">
                 <Label Content="Find what:" Margin="7,7,0,0"/>
-                <TextBox Width="220" Height="18" Margin="80,0,0,21"/>
+                <TextBox Name="txtFindText" Width="220" Height="18" Margin="80,0,0,21"/>
                 <Label Content="Replace with:" Margin="7,35,0,0"/>
-                <TextBox Width="220" Height="18" Margin="80,32,0,0"/>
+                <TextBox x:Name="txtReplaceText" Width="220" Height="18" Margin="80,32,0,0"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -32,10 +32,10 @@
         </Grid>
 
         <Grid Grid.Column="1">
-            <Button x:Name="btnFindNext" Content="Find next" Height="20" Width="70" VerticalAlignment="Top" Margin="0,13,10,0"/>
-            <Button x:Name="btnReplace" Content="Replace" Height="20" Width="70" Margin="0,6,10,40"/>
-            <Button x:Name="btnReplaceAll" Content="Replace All" Height="20" Width="70" Margin="0,60,10,40"/>
-            <Button x:Name="btnCancel" Content="Cancel" Height="20" Width="70" Margin="0,75,10,0"/>
+            <Button x:Name="btnFindNext" Content="Find next" Height="20" Width="70" VerticalAlignment="Top" Margin="0,13,10,0" Click="btnFindNext_Click"/>
+            <Button x:Name="btnReplace" Content="Replace" Height="20" Width="70" Margin="0,6,10,40" Click="btnReplace_Click"/>
+            <Button x:Name="btnReplaceAll" Content="Replace All" Height="20" Width="70" Margin="0,60,10,40" Click="btnReplaceAll_Click"/>
+            <Button x:Name="btnCancel" Content="Cancel" Height="20" Width="70" Margin="0,75,10,0" Click="btnCancel_Click"/>
         </Grid>
     </Grid>
 </Window>

@@ -108,5 +108,58 @@ namespace Wordpad
                 _lastSearchPosition = null;
             }
         }
+
+        public void Replace(string searchText, string replaceText, bool matchCase, bool matchWholeWord)
+        {
+            // Xác định vị trí bắt đầu tìm kiếm, có thể là vị trí con trỏ hiện tại hoặc vị trí cuối cùng đã tìm kiếm
+            TextPointer startPosition = _lastSearchPosition ?? _richTextBox.Document.ContentStart;
+
+            // Tìm kiếm văn bản đầu tiên
+            TextRange foundRange = FindText(searchText, startPosition, matchCase, matchWholeWord);
+
+            if (foundRange != null)
+            {
+                // Nếu tìm thấy, thay thế văn bản
+                _richTextBox.Selection.Select(foundRange.Start, foundRange.End);
+                _richTextBox.Selection.Text = replaceText; // Thay thế văn bản
+
+                // Cập nhật vị trí sau khi thay thế để tiếp tục tìm kiếm nếu cần
+                _lastSearchPosition = foundRange.End;
+            }
+            else
+            {
+                // Nếu không tìm thấy từ cần thay thế
+                MessageBox.Show("Không tìm thấy từ khóa để thay thế.", "Thông báo");
+                _lastSearchPosition = null;
+            }
+        }
+
+        public void ReplaceAll(string searchText, string replaceText, bool matchCase, bool matchWholeWord)
+        {
+            // Xác định vị trí bắt đầu tìm kiếm
+            TextPointer startPosition = _richTextBox.Document.ContentStart;
+
+            // Tiến hành tìm kiếm và thay thế trong toàn bộ tài liệu
+            TextRange foundRange = FindText(searchText, startPosition, matchCase, matchWholeWord);
+
+            while (foundRange != null)
+            {
+                // Nếu tìm thấy, thay thế văn bản
+                _richTextBox.Selection.Select(foundRange.Start, foundRange.End);
+                _richTextBox.Selection.Text = replaceText; // Thay thế văn bản
+
+                // Tiếp tục tìm kiếm từ vị trí kết thúc của từ đã thay thế
+                startPosition = foundRange.End;
+                foundRange = FindText(searchText, startPosition, matchCase, matchWholeWord);
+            }
+
+            // Thông báo nếu không có từ nào được thay thế
+            if (_richTextBox.Selection.Text == string.Empty)
+            {
+                MessageBox.Show("Không tìm thấy từ khóa để thay thế.", "Thông báo");
+            }
+        }
+
+
     }
 }
