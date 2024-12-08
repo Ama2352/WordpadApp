@@ -10,7 +10,7 @@
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown"
         MouseDoubleClick="Window_MouseDoubleClick">
     <Window.Resources>
-        <!-- Style cho nút Toolbar -->
+         <!-- Style cho nút Toolbar -->
         <Style x:Key="ToolbarButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="48"/>
             <Setter Property="Height" Value="48"/>
@@ -26,14 +26,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFE0E0E0"/>
-                                <!-- Màu khi hover -->
-                                <Setter Property="BorderBrush" Value="#FFB0B0B0"/>
-                                <!-- Đường viền khi hover -->
+                                <Setter Property="Background" Value="#FFE0E0E0"/> <!-- Màu khi hover -->
+                                <Setter Property="BorderBrush" Value="#FFB0B0B0"/> <!-- Đường viền khi hover -->
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFC0C0C0"/>
-                                <!-- Màu khi click -->
+                                <Setter Property="Background" Value="#FFC0C0C0"/> <!-- Màu khi click -->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -247,7 +244,7 @@
                                            UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="0" x:Name="btnSubscript" ToolTip="Subscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSubscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/subscript.png" 
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sub.png" 
                                            Width="32" Height="32" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
@@ -255,7 +252,7 @@
                                            UseLayoutRounding="True"/>
                                 </Button>
                                 <Button Grid.Row="2" Grid.Column="1" x:Name="btnSuperscript" ToolTip="Superscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSuperscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/superscript.png" 
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sup.png" 
                                            Width="32" Height="32" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"

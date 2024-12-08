@@ -446,5 +446,14 @@
   <ItemGroup>
     <Resource Include="Images\Redo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\subscript1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Sub.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Sup.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
