@@ -52,7 +52,7 @@
 
             <!-- Menu File -->
             <Menu Grid.Column="0">
-                <MenuItem Header="File" Background="#FF1979CA" Foreground="White">
+                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" Height="17">
                     <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Wordpad;component/Images/New.png"
