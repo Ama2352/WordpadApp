@@ -168,15 +168,26 @@
         </StatusBar>
         <!-- Main Content Area -->
         <Grid Background="#FFCED7E6" Name="editorArea">
+            <!-- Ruler -->
+            <Canvas DockPanel.Dock="Top" x:Name="rulerCanvas" Height="20" Width="705" Background ="#FFE53434" 
+                            HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+                <!-- Tick Marks -->
+                <Canvas x:Name="tickMarksCanvas" Height="30" Background="Transparent" />
 
+                <!-- Margins -->
+                <Thumb x:Name="leftMarginThumb" Width="10" Height="20" Canvas.Left="50" Canvas.Top="10"  />
+                <Thumb x:Name="rightMarginThumb" Width="10" Height="20" Canvas.Left="400" Canvas.Top="10"  />
+
+                <!-- First Line Indent -->
+                <Thumb x:Name="firstLineIndentThumb" Width="10" Height="20" Canvas.Left="60" Canvas.Top="20"  />
+
+                <!-- Tab Stops -->
+                <Canvas x:Name="tabStopsCanvas" Height="10" Canvas.Top="35" />
+            </Canvas>
+            <!-- Rich text box -->
             <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <!-- RichTextBox Container-->
                 <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="705" Height="500" RenderTransformOrigin="0.5,0.5">
-
-                    <!-- Ruler -->
-                    <Canvas Name="rulerCanvas" DockPanel.Dock="Top" Height="30" Background="LightGray">
-                        <!-- Ruler markings will be drawn here -->
-                    </Canvas>
 
                     <!-- RichTextBox Area -->
                     <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"

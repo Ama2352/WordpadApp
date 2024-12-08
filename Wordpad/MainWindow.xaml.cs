@@ -18,6 +18,7 @@ namespace Wordpad
 {
     public partial class MainWindow : Window
     {
+        //File
         NewManager _NewManager;
         OpenManager _OpenManager;
         PrintManager _PrintManager;
@@ -25,7 +26,10 @@ namespace Wordpad
         SendEmailManager _SendEmailManager;
         TextBoxBehavior _TextBoxBehavior;
         public static bool IsTextChanged;
-        private ViewManagment viewManagment;
+        //View
+        ViewManagment viewManagment;
+        Ruler ruler;
+        //Home
         ClipboardManager clipboardManager;
         FontManager fontManager;
         ParagraphManager paragraphManager;
@@ -34,16 +38,19 @@ namespace Wordpad
         public MainWindow()
         {
             InitializeComponent();
+            // Khởi tạo ViewManagment
+            ruler = new Ruler(rulerCanvas, richTextBox, RTBContainer);
+            viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
+            //Home
             _NewManager = new NewManager(richTextBox, this);
             _OpenManager = new OpenManager(richTextBox);
-            _PrintManager = new PrintManager(RTBContainer, richTextBox);
+            _PrintManager = new PrintManager(RTBContainer, richTextBox, ruler);
             _SaveManager = new SaveManager(richTextBox);
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, editorArea, RTBContainer);
-            // Khởi tạo ViewManagment
-            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider);
+
             //Home
-                        clipboardManager = new ClipboardManager(richTextBox);
+            clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
             paragraphManager = new ParagraphManager(richTextBox);
             insertManager = new InsertManager(richTextBox); 
@@ -56,7 +63,12 @@ namespace Wordpad
         #region Events
         private void UnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewManagment.UpdateRuler();
+            // Lấy đơn vị được chọn từ ComboBox
+            if (unitComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedUnit = selectedItem.Content.ToString();
+                ruler.UpdateUnit(selectedUnit);
+            }
         }
 
         private void ZoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -82,7 +94,9 @@ namespace Wordpad
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _PrintManager.AdjustDockPanelToPageSetup();
-          
+            //Vẽ ruler lần đầu
+            ruler.DrawRuler();
+            ruler.InitializeThumbs();
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {

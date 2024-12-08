@@ -32,8 +32,9 @@ namespace Wordpad
         private DockPanel dockPanel;
         private con.RichTextBox richTextBox;
         private InsertManager insertManager;
+        private Ruler ruler;
 
-        public PrintManager(DockPanel DP, con.RichTextBox richTextBox)
+        public PrintManager(DockPanel DP, con.RichTextBox richTextBox, Ruler ruler)
         {
             printDocument = new PrintDocument();
             printPreviewDialog = new PrintPreviewDialog { Document = printDocument };
@@ -42,6 +43,9 @@ namespace Wordpad
 
             this.dockPanel = DP;
             this.richTextBox = richTextBox;
+            this.ruler = ruler;
+
+
         }
 
         public void PrintRichTextBoxContent()
@@ -249,6 +253,7 @@ namespace Wordpad
 
                 AdjustDockPanelToPageSetup();
             }
+
         }
 
         public void AdjustDockPanelToPageSetup()
@@ -264,6 +269,9 @@ namespace Wordpad
             dockPanel.Width = pageSettings.Landscape
                 ? pageSettings.PaperSize.Height
                 : pageSettings.PaperSize.Width;
+
+            // Cập nhật margin trên ruler
+            ruler.DrawMargins(pageSettings.Margins.Left, pageSettings.Margins.Right);
         }
 
 
