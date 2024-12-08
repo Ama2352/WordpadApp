@@ -43,12 +43,12 @@ namespace Wordpad
             _SendEmailManager = new SendEmailManager(richTextBox);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, customScrollBar, editorArea, RTBContainer);
             // Khởi tạo ViewManagment
-            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox,unitComboBox);
+            viewManagment = new ViewManagment(rulerCanvas, statusBar, statusBarItem, richTextBox, unitComboBox);
             //Home
-                        clipboardManager = new ClipboardManager(richTextBox);
+            clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
             paragraphManager = new ParagraphManager(richTextBox);
-            insertManager = new InsertManager(richTextBox); 
+            insertManager = new InsertManager(richTextBox);
 
 
             // Cài đặt kiểu chữ và kích cỡ mặc định
@@ -78,14 +78,14 @@ namespace Wordpad
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _PrintManager.AdjustDockPanelToPageSetup();
-          
+
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             _TextBoxBehavior.UpdateCustomScrollBar();
         }
 
-                private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fontManager.ChangeFontFamily(cbFontFamily.SelectedItem.ToString());
         }
@@ -132,7 +132,7 @@ namespace Wordpad
             _fontManager.FontSizeChanged += OnFontSizeChanged;
         }
 
-      private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void richTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             TextSelection selectedText = richTextBox.Selection;
             if (selectedText != null)
@@ -152,15 +152,15 @@ namespace Wordpad
                     OnFontFamilyChanged(currentFontFamily.ToString());
                 }
             }
-                
+
         }
 
-                private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             insertManager.OpenDocumentIfLinkIconClicked(sender, e);
         }
 
-               private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        private void colorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             if (colorPicker.SelectedColor.HasValue)
             {
@@ -186,7 +186,7 @@ namespace Wordpad
             // Lấy nội dung của ComboBoxItem
             string selectedValue = selectedItem.Content.ToString();
 
-          
+
 
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -299,13 +299,13 @@ namespace Wordpad
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomIn();
-           
+
         }
 
         private void ZoomOut_Click(object sender, RoutedEventArgs e)
         {
             viewManagment.ZoomOut();
-           
+
         }
 
         private void ToggleRuler_Click(object sender, RoutedEventArgs e)
@@ -318,7 +318,7 @@ namespace Wordpad
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
 
-                private void btnCut_Click(object sender, RoutedEventArgs e)
+        private void btnCut_Click(object sender, RoutedEventArgs e)
         {
             clipboardManager.Cut();
         }
@@ -330,7 +330,7 @@ namespace Wordpad
 
         private void btnPaste_Click(object sender, RoutedEventArgs e)
         {
-            clipboardManager.Paste();   
+            clipboardManager.Paste();
         }
 
         private void btnGrowFont_Click(object sender, RoutedEventArgs e)
@@ -343,7 +343,7 @@ namespace Wordpad
             fontManager.ShrinkFont();
         }
 
-               private void btnBold_Click(object sender, RoutedEventArgs e)
+        private void btnBold_Click(object sender, RoutedEventArgs e)
         {
             fontManager.ToggleBold();
         }
@@ -373,7 +373,7 @@ namespace Wordpad
             fontManager.ToggleSuperscript();
         }
 
-               private void btnColor_Click(object sender, RoutedEventArgs e)
+        private void btnColor_Click(object sender, RoutedEventArgs e)
         {
             // Lấy màu đã chọn từ ColorPicker
             var selectedColor = colorPicker.SelectedColor;
@@ -444,12 +444,12 @@ namespace Wordpad
             insertManager.ResizeImage();
         }
 
-        
+
 
         private void btnDateAndTime_Click(object sender, RoutedEventArgs e)
         {
             DateAndTimeWindow dateAndTimeWindow = new DateAndTimeWindow(insertManager);
-            if(dateAndTimeWindow.ShowDialog() == true)
+            if (dateAndTimeWindow.ShowDialog() == true)
             {
                 // Get the chosen date and time from the dialog
                 string chosenDateTime = dateAndTimeWindow.chosenDateTime;
@@ -459,15 +459,15 @@ namespace Wordpad
 
                 // Replace the selected text with the chosen date and time
                 selection.Text = chosenDateTime;
-            } 
-                
+            }
+
         }
 
         private void btnInsertObject_Click(object sender, RoutedEventArgs e)
         {
-            InsertObjectWindow insertObjectWindow = new InsertObjectWindow(insertManager,clipboardManager);
-            if(insertObjectWindow.ShowDialog() == true) { }
-                
+            InsertObjectWindow insertObjectWindow = new InsertObjectWindow(insertManager, clipboardManager);
+            if (insertObjectWindow.ShowDialog() == true) { }
+
         }
 
         #endregion
@@ -542,6 +542,9 @@ namespace Wordpad
             if (richTextBox.CanRedo)
                 richTextBox.Redo();
         }
-
+        private void QuickSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAsMenuItem_Click(sender, e);
+        }
     }
 }

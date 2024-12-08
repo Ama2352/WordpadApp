@@ -44,7 +44,7 @@
             <Grid.ColumnDefinitions>
                 <!-- Cột chứa Menu File -->
                 <ColumnDefinition Width="Auto" />
-                <!-- Cột chứa nút Undo và Redo -->
+                <!-- Cột chứa nút Save, Undo và Redo -->
                 <ColumnDefinition Width="Auto" />
                 <!-- Khoảng trống còn lại -->
                 <ColumnDefinition Width="*" />
@@ -52,7 +52,7 @@
 
             <!-- Menu File -->
             <Menu Grid.Column="0">
-                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" Height="16">
+                <MenuItem Header="File" Background="#FF1979CA" Foreground="White">
                     <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click">
                         <MenuItem.Icon>
                             <Image Source="pack://application:,,,/Wordpad;component/Images/New.png"
@@ -128,15 +128,20 @@
                 </MenuItem>
             </Menu>
 
-            <!-- Undo và Redo Buttons -->
+            <!-- Save, Undo và Redo Buttons -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
+                <!-- Save Button -->
+                <Button Name="btnQuickSave" ToolTip="Save" Style="{StaticResource ToolbarButtonStyle}" Click="QuickSave_Click" Width="16" Height="15">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Save.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
                 <!-- Undo Button -->
-                <Button Name="btnQuickUndo" ToolTip="Undo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickUndo_Click" Height="16" Width="16">
+                <Button Name="btnQuickUndo" ToolTip="Undo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickUndo_Click" Height="15" Width="16">
                     <Image Source="pack://application:,,,/Wordpad;component/Images/Undo.png"
                    Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
                 <!-- Redo Button -->
-                <Button Name="btnQuickRedo" ToolTip="Redo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickRedo_Click" Width="16" Height="16">
+                <Button Name="btnQuickRedo" ToolTip="Redo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickRedo_Click" Width="16" Height="15">
                     <Image Source="pack://application:,,,/Wordpad;component/Images/Redo.png"
                    Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
