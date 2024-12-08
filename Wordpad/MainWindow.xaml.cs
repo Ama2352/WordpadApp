@@ -50,7 +50,6 @@ namespace Wordpad
             paragraphManager = new ParagraphManager(richTextBox);
             insertManager = new InsertManager(richTextBox);
 
-
             // Cài đặt kiểu chữ và kích cỡ mặc định
             SettingFontType(fontManager);
             SettingFontSize(fontManager);
@@ -72,13 +71,10 @@ namespace Wordpad
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             IsTextChanged = true;
-
-
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _PrintManager.AdjustDockPanelToPageSetup();
-
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -152,7 +148,6 @@ namespace Wordpad
                     OnFontFamilyChanged(currentFontFamily.ToString());
                 }
             }
-
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -185,9 +180,6 @@ namespace Wordpad
 
             // Lấy nội dung của ComboBoxItem
             string selectedValue = selectedItem.Content.ToString();
-
-
-
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -198,7 +190,6 @@ namespace Wordpad
         {
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, false);
         }
-
 
         #region ShortCuts
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -443,8 +434,6 @@ namespace Wordpad
         {
             insertManager.ResizeImage();
         }
-
-
 
         private void btnDateAndTime_Click(object sender, RoutedEventArgs e)
         {

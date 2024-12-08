@@ -1,4 +1,4 @@
-﻿<Window x:Class="Wordpad.MainWindow"
+<Window x:Class="Wordpad.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -36,6 +36,25 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="FontComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="CustomColorPickerStyle" TargetType="xctk:ColorPicker">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="ShowDropDownButton" Value="False"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -214,73 +233,86 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            
                             <TextBlock Text="Font" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
                                      Foreground="#666666" HorizontalAlignment="Center"/>
+                            
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <!-- Row 0: Font Controls -->
-                                <ComboBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Name="cbFontFamily" Width="100" SelectionChanged="cbFontFamily_SelectionChanged" Margin="4,-1,0,5" Height="24" />
-                                <ComboBox Grid.Row="0" Grid.Column="2" Name="cbFontSize" Width="60" SelectionChanged="cbFontSize_SelectionChanged" Margin="46,1,10,3" Height="24" Grid.ColumnSpan="2" />
-                                <!-- Row 1: Formatting Controls -->
-                                <Button Grid.Row="1" Grid.Column="0" x:Name="btnBold" ToolTip="Bold" Style="{StaticResource ToolbarButtonStyle}" Click="btnBold_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/bold.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <Button Grid.Row="1" Grid.Column="1" x:Name="btnItalic" ToolTip="Italic" Style="{StaticResource ToolbarButtonStyle}" Click="btnItalic_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/italic.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <Button Grid.Row="1" Grid.Column="2" x:Name="btnUnderline" ToolTip="Underline" Style="{StaticResource ToolbarButtonStyle}" Click="btnUnderline_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnStrikethrough" ToolTip="Strikethrough" Style="{StaticResource ToolbarButtonStyle}" Click="btnStrikethrough_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/strikethrough.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <Button Grid.Row="2" Grid.Column="0" x:Name="btnSubscript" ToolTip="Subscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSubscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
-                                           Width="35" Height="35" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <Button Grid.Row="2" Grid.Column="1" x:Name="btnSuperscript" ToolTip="Superscript" Style="{StaticResource ToolbarButtonStyle}" Click="btnSuperscript_Click">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
-                                           Width="35" Height="35" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
-                                </Button>
-                                <xctk:ColorPicker Grid.Row="2" Grid.Column="2" Name="colorPicker" Width="48" Height="48" SelectedColorChanged="colorPicker_SelectedColorChanged" Margin="2"/>
-                                <xctk:ColorPicker Grid.Row="2" Grid.Column="3" Name="highlightPicker" Width="48" Height="48" SelectedColorChanged="highlightPicker_SelectedColorChanged" Margin="2"/>
+                                
+                                <!-- Font Controls -->
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+                                    <ComboBox Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
+                                            Height="24" Margin="0,0,5,0" />
+                                    <ComboBox Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
+                                            Height="24" Margin="0,0,5,0" />
+                                </StackPanel>
+
+                                <!-- Formatting Controls -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Button x:Name="btnBold" ToolTip="Bold (Ctrl+B)" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnBold_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/bold.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+                                    
+                                    <Button x:Name="btnItalic" ToolTip="Italic (Ctrl+I)" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnItalic_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/italic.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+                                    
+                                    <Button x:Name="btnUnderline" ToolTip="Underline (Ctrl+U)" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnUnderline_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+                                    
+                                    <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnStrikethrough_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/strikethrough.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+                                </StackPanel>
+
+                                <!-- Additional Controls -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <Button x:Name="btnSubscript" ToolTip="Subscript" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnSubscript_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <Button x:Name="btnSuperscript" ToolTip="Superscript" 
+                                            Style="{StaticResource ToolbarButtonStyle}" 
+                                            Click="btnSuperscript_Click" Width="32" Height="32">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
+                                               Width="16" Height="16" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <xctk:ColorPicker Name="colorPicker" Width="32" Height="32" 
+                                                     SelectedColorChanged="colorPicker_SelectedColorChanged" 
+                                                     Margin="2"/>
+                                                     
+                                    <xctk:ColorPicker Name="highlightPicker" Width="32" Height="32" 
+                                                     SelectedColorChanged="highlightPicker_SelectedColorChanged" 
+                                                     Margin="2"/>
+                                </StackPanel>
                             </Grid>
                         </Grid>
 
