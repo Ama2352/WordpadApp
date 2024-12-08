@@ -188,7 +188,7 @@
                                  AcceptsReturn="True" BorderBrush="{x:Null}"
                                  TextChanged="richTextBox_TextChanged"
                                  Padding="0" 
-                                 FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" >
+                                 FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" 
                                 SelectionChanged="richTextBox_SelectionChanged"
                                 MouseDoubleClick="richTextBox_MouseDoubleClick">
                         <FlowDocument >
