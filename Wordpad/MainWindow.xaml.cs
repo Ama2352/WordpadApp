@@ -511,15 +511,7 @@ namespace Wordpad
             // Logic to show font dialog
         }
 
-        private void ToggleRuler()
-        {
-            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
-        }
-
-        private void ToggleStatusBar()
-        {
-            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
-        }
+     
         private void QuickUndo_Click(object sender, RoutedEventArgs e)
         {
             if (richTextBox.CanUndo)
@@ -535,5 +527,16 @@ namespace Wordpad
         {
             SaveAsMenuItem_Click(sender, e);
         }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
+    
     }
 }

@@ -10,7 +10,7 @@
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown"
         MouseDoubleClick="Window_MouseDoubleClick">
     <Window.Resources>
-         <!-- Style cho nút Toolbar -->
+        <!-- Style cho nút Toolbar -->
         <Style x:Key="ToolbarButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="48"/>
             <Setter Property="Height" Value="48"/>
@@ -26,11 +26,14 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFE0E0E0"/> <!-- Màu khi hover -->
-                                <Setter Property="BorderBrush" Value="#FFB0B0B0"/> <!-- Đường viền khi hover -->
+                                <Setter Property="Background" Value="#FFE0E0E0"/>
+                                <!-- Màu khi hover -->
+                                <Setter Property="BorderBrush" Value="#FFB0B0B0"/>
+                                <!-- Đường viền khi hover -->
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#FFC0C0C0"/> <!-- Màu khi click -->
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <!-- Màu khi click -->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -233,17 +236,17 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            
+
                             <TextBlock Text="Font" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
                                      Foreground="#666666" HorizontalAlignment="Center"/>
-                            
+
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                
+
                                 <!-- Font Controls -->
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
                                     <ComboBox Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
@@ -261,7 +264,7 @@
                                                Width="16" Height="16" 
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
-                                    
+
                                     <Button x:Name="btnItalic" ToolTip="Italic (Ctrl+I)" 
                                             Style="{StaticResource ToolbarButtonStyle}" 
                                             Click="btnItalic_Click" Width="32" Height="32">
@@ -269,7 +272,7 @@
                                                Width="16" Height="16" 
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
-                                    
+
                                     <Button x:Name="btnUnderline" ToolTip="Underline (Ctrl+U)" 
                                             Style="{StaticResource ToolbarButtonStyle}" 
                                             Click="btnUnderline_Click" Width="32" Height="32">
@@ -277,7 +280,7 @@
                                                Width="16" Height="16" 
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
-                                    
+
                                     <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" 
                                             Style="{StaticResource ToolbarButtonStyle}" 
                                             Click="btnStrikethrough_Click" Width="32" Height="32">
@@ -308,7 +311,7 @@
                                     <xctk:ColorPicker Name="colorPicker" Width="32" Height="32" 
                                                      SelectedColorChanged="colorPicker_SelectedColorChanged" 
                                                      Margin="2"/>
-                                                     
+
                                     <xctk:ColorPicker Name="highlightPicker" Width="32" Height="32" 
                                                      SelectedColorChanged="highlightPicker_SelectedColorChanged" 
                                                      Margin="2"/>
@@ -420,7 +423,7 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <ComboBox Grid.Row="0" Grid.Column="2" Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="48">
+                                <ComboBox Grid.Row="0" Grid.Column="2" Name="cbLineSpacing" Width="40" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="24">
                                     <ComboBoxItem>1.0</ComboBoxItem>
                                     <ComboBoxItem>1.25</ComboBoxItem>
                                     <ComboBoxItem>1.5</ComboBoxItem>
@@ -529,10 +532,6 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Toggle Ruler" Click="ToggleRuler_Click" 
-                                        Width="90" Height="48" Margin="2" Style="{StaticResource ToolbarButtonStyle}"/>
-                                <Button Grid.Column="1" Content="Toggle Status Bar" Click="ToggleStatusBar_Click"
-                                        Width="90" Height="48" Margin="2" Style="{StaticResource ToolbarButtonStyle}"/>
                             </Grid>
                         </Grid>
 
@@ -568,6 +567,8 @@
                                 </ComboBox>
                             </Grid>
                         </Grid>
+                        <CheckBox Content="Ruler" Margin="8,29,0,35" Grid.Column="2" Checked="CheckBox_Checked_1"/>
+                        <CheckBox Content="Status Bar" Margin="8,52,10,15" Grid.Column="2" Checked="CheckBox_Checked_2"/>
                     </Grid>
                 </TabItem>
             </TabControl>
