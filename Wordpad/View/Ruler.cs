@@ -54,9 +54,9 @@ namespace Wordpad
             {
                 rulerLength = dockPanel.Width;
                 rulerCanvas.Width = dockPanel.Width;
-                DrawMargins(richTextBox.Padding.Left, richTextBox.Padding.Right);
-                DrawRuler(); // Vẽ lại ruler khi kích thước thay đổi
-                MessageBox.Show($"Dock width: {dockPanel.Width}\nRUler canvas length: {rulerCanvas.Width}\nRUler Lenght: {rulerLength}");
+                //DrawMargins(richTextBox.Padding.Left, richTextBox.Padding.Right);
+                //DrawRuler(); // Vẽ lại ruler khi kích thước thay đổi
+                //MessageBox.Show($"Dock width: {dockPanel.Width}\nRUler canvas length: {rulerCanvas.Width}\nRUler Lenght: {rulerLength}");
 
             };
 
@@ -239,11 +239,11 @@ namespace Wordpad
             // Vẽ vùng margin phải
             Rectangle rightMargin = new Rectangle
             {
-                Width = rulerCanvas.ActualWidth - (rulerCanvas.ActualWidth - leftMarginPx - rightMarginPx) - leftMarginPx,
+                Width = rightMarginPx,
                 Height = rulerCanvas.Height,
                 Fill = Brushes.Green
             };
-            Canvas.SetRight(rightMargin, rightMarginPx);
+            Canvas.SetRight(rightMargin, 0);
             rulerCanvas.Children.Add(rightMargin);
             marginElements.Add(rightMargin);
         }
@@ -360,6 +360,28 @@ namespace Wordpad
             rulerCanvas.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        public void ScaleRuler(double zoomScale)
+        {
+            // Scale toàn bộ rulerCanvas
+            rulerCanvas.RenderTransform = new ScaleTransform(zoomScale, 1);
+
+            // Điều chỉnh kích thước rulerCanvas theo dockPanel nếu cần
+            rulerCanvas.Width = dockPanel.Width / zoomScale;
+
+            // Điều chỉnh vị trí các thành phần Thumb
+            if (firstLineIndentThumb != null)
+            {
+                Canvas.SetLeft(firstLineIndentThumb, leftMargin * zoomScale + 30 * zoomScale);
+            }
+            if (hangingIndentThumb != null)
+            {
+                Canvas.SetLeft(hangingIndentThumb, leftMargin * zoomScale + 60 * zoomScale);
+            }
+            if (paragraphIndentThumb != null)
+            {
+                Canvas.SetLeft(paragraphIndentThumb, leftMargin * zoomScale + 90 * zoomScale);
+            }
+        }
 
     }
 }

@@ -107,6 +107,8 @@ namespace Wordpad
             dockPanel.Height = DPHeightOri * zoomScale; // Chiều cao mặc định là 500.
             // Áp dụng zoom cho RichTextBox qua LayoutTransform
             richTextBox.LayoutTransform = new ScaleTransform(zoomScale, zoomScale);
+            //Scale ruler theo zoom
+            ruler.ScaleRuler(zoomScale);
 
             // Cập nhật giá trị trên thanh trạng thái
             zoomSlider.Value = zoomScale * 100;
