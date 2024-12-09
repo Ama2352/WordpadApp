@@ -40,7 +40,7 @@ namespace Wordpad
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(rulerCanvas, richTextBox, RTBContainer);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -96,9 +96,12 @@ namespace Wordpad
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _PrintManager.AdjustDockPanelToPageSetup();
+            //MessageBox.Show($"Dock width: {RTBContainer.Width}");
             //Vẽ ruler lần đầu
             ruler.DrawRuler();
             ruler.InitializeThumbs();
+            // Scale toàn bộ rulerCanvas cho bằng dock panel
+            rulerCanvas.Width = RTBContainer.Width;
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -240,6 +243,15 @@ namespace Wordpad
         private void richTextBox_LayoutUpdated(object sender, EventArgs e)
         {
 
+        }
+        //Điều khiển thanh ruler khi lân chuột ngang
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            // Đồng bộ scroll ngang của ruler với ScrollViewer
+            if (e.HorizontalChange != 0)
+            {
+                rulerCanvas.RenderTransform = new TranslateTransform(-e.HorizontalOffset, 0);
+            }
         }
 
         #endregion
@@ -531,8 +543,10 @@ namespace Wordpad
             ReplaceWindow replaceWindow = new ReplaceWindow(editingManager);
             replaceWindow.Show();
         }
-        #endregion
 
+
+
+        #endregion
 
     }
 }

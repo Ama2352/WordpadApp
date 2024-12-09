@@ -15,12 +15,15 @@ namespace Wordpad
 {
     internal class Ruler
     {
+        private Canvas marginCanvas;
+        private Canvas tickCanvas;
+        private Canvas thumbCanvas;
         private Canvas rulerCanvas;
         private Thumb firstLineIndentThumb;
         private Thumb hangingIndentThumb;
         private Thumb paragraphIndentThumb;
 
-        private double rulerLength;
+        public double rulerLength;
         private double leftMargin;
         private double rightMargin;
 
@@ -35,9 +38,12 @@ namespace Wordpad
         private List<UIElement> marginElements = new List<UIElement>(); // Các thành phần thuộc margins
 
 
-        public Ruler(Canvas canvas, RichTextBox richTextBox, DockPanel dockPanel)
+        public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, RichTextBox richTextBox, DockPanel dockPanel)
         {
-            rulerCanvas = canvas;
+            marginCanvas = margin;
+            tickCanvas = tick;
+            thumbCanvas = thumb;
+            rulerCanvas = ruler;
             this.richTextBox = richTextBox;
             this.dockPanel = dockPanel;
 
@@ -53,10 +59,10 @@ namespace Wordpad
             dockPanel.SizeChanged += (s, e) =>
             {
                 rulerLength = dockPanel.Width;
-                rulerCanvas.Width = dockPanel.Width;
+
                 //DrawMargins(richTextBox.Padding.Left, richTextBox.Padding.Right);
                 //DrawRuler(); // Vẽ lại ruler khi kích thước thay đổi
-                //MessageBox.Show($"Dock width: {dockPanel.Width}\nRUler canvas length: {rulerCanvas.Width}\nRUler Lenght: {rulerLength}");
+                //
 
             };
 
@@ -78,60 +84,58 @@ namespace Wordpad
         // Vẽ ruler dựa trên đơn vị đo
         public void DrawRuler()
         {
-            // Xóa các phần tử thuộc ruler
-            foreach (var element in rulerElements)
-            {
-                rulerCanvas.Children.Remove(element);
-            }
-            rulerElements.Clear();
+            // Xóa các thành phần cũ trong tickCanvas
+            //MessageBox.Show($"Dock width: {dockPanel.Width}\nTick canvas length: {tickCanvas.Width}\nRuler Lenght: {rulerLength}");
+            tickCanvas.Children.Clear();
 
             double pixelsPerUnit = unitConversion[currentUnit];
-            double totalUnits = rulerCanvas.ActualWidth / pixelsPerUnit;
+            double totalUnits = tickCanvas.ActualWidth / pixelsPerUnit;
 
-            double canvasCenterY = rulerCanvas.Height / 2;
+            double canvasCenterY = tickCanvas.Height / 2;
 
             // Vẽ các nhãn số và các vạch phụ
-            for (int i = 0; i <= totalUnits && i * pixelsPerUnit < rulerLength; i++)
+            for (int i = 0; i <= (totalUnits + 1) && i * pixelsPerUnit < rulerLength; i++)
             {
                 double xPosition = i * pixelsPerUnit;
-
-                // Vạch chính
-                Line mainTick = new Line
+                //Tại vạch -đầu tiên của ruler thì k in số và vạch chính.
+                if(i != 0)
                 {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2,
-                    X1 = xPosition,
-                    X2 = xPosition,
-                    Y1 = 0,
-                    Y2 = 4
-                };
+                   // Vạch chính
+                    Line mainTick = new Line
+                    {
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 2,
+                        X1 = xPosition,
+                        X2 = xPosition,
+                        Y1 = 0,
+                        Y2 = 4
+                    };
 
-                Line mainTick2 = new Line
-                {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2,
-                    X1 = xPosition,
-                    X2 = xPosition,
-                    Y1 = 16,
-                    Y2 = 20
-                };
-                rulerCanvas.Children.Add(mainTick);
-                rulerCanvas.Children.Add(mainTick2);
-                rulerElements.Add(mainTick);
-                rulerElements.Add(mainTick2);
+                    Line mainTick2 = new Line
+                    {
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 2,
+                        X1 = xPosition,
+                        X2 = xPosition,
+                        Y1 = 16,
+                        Y2 = 20
+                    };
+                    tickCanvas.Children.Add(mainTick);
+                    tickCanvas.Children.Add(mainTick2);
 
-                // Nhãn chính (Số thay thế vạch chính)
-                TextBlock label = new TextBlock
-                {
-                    Text = i.ToString(), // Nhãn chính
-                    FontSize = 12,
-                    Foreground = Brushes.Black
-                };
+                    // Nhãn chính (Số thay thế vạch chính)
+                    TextBlock label = new TextBlock
+                    {
+                        Text = (i - 1).ToString(), // Nhãn chính
+                        FontSize = 12,
+                        Foreground = Brushes.Black
+                    };
 
-                Canvas.SetLeft(label, xPosition - 3);
-                Canvas.SetTop(label, canvasCenterY - 9);
-                rulerCanvas.Children.Add(label);
-                rulerElements.Add(label);
+                    Canvas.SetLeft(label, xPosition - 3);
+                    Canvas.SetTop(label, canvasCenterY - 9);
+                    tickCanvas.Children.Add(label);
+                }
+ 
 
                 // Vạch phụ (Sub Ticks) giữa các đơn vị chính
                 int subDivisions = GetSubDivisions(currentUnit); // Số lượng vạch phụ giữa các nhãn số
@@ -148,8 +152,7 @@ namespace Wordpad
                         Y1 = canvasCenterY - 5, // Vạch phụ ngắn hơn, căn giữa
                         Y2 = canvasCenterY + 5
                     };
-                    rulerCanvas.Children.Add(subTick);
-                    rulerElements.Add(subTick);
+                    tickCanvas.Children.Add(subTick);
                 }
             }
         }
@@ -185,25 +188,22 @@ namespace Wordpad
 
         public void InitializeThumbs()
         {
-            // First Line Indent Thumb
+            // Tạo các Thumb và thêm chúng vào thumbCanvas
             firstLineIndentThumb = CreateThumb();
-            Canvas.SetLeft(firstLineIndentThumb, leftMargin + 30); // Khoảng cách mặc định
-            firstLineIndentThumb.DragDelta += FirstLineIndentThumb_DragDelta;
+            Canvas.SetLeft(firstLineIndentThumb, leftMargin + 30);
+            thumbCanvas.Children.Add(firstLineIndentThumb);
 
-            // Hanging Indent Thumb
             hangingIndentThumb = CreateThumb();
             Canvas.SetLeft(hangingIndentThumb, leftMargin + 60);
-            hangingIndentThumb.DragDelta += HangingIndentThumb_DragDelta;
+            thumbCanvas.Children.Add(hangingIndentThumb);
 
-            // Paragraph Indent Thumb
             paragraphIndentThumb = CreateThumb();
             Canvas.SetLeft(paragraphIndentThumb, leftMargin + 90);
-            paragraphIndentThumb.DragDelta += ParagraphIndentThumb_DragDelta;
+            thumbCanvas.Children.Add(paragraphIndentThumb);
 
-            // Thêm các Thumb vào rulerCanvas
-            rulerCanvas.Children.Add(firstLineIndentThumb);
-            rulerCanvas.Children.Add(hangingIndentThumb);
-            rulerCanvas.Children.Add(paragraphIndentThumb);
+            firstLineIndentThumb.DragDelta += FirstLineIndentThumb_DragDelta;
+            hangingIndentThumb.DragDelta += HangingIndentThumb_DragDelta;
+            paragraphIndentThumb.DragDelta += ParagraphIndentThumb_DragDelta;
         }
 
         private Thumb CreateThumb()
@@ -218,35 +218,31 @@ namespace Wordpad
 
         public void DrawMargins(double leftMarginPx, double rightMarginPx)
         {
-            // Xóa các phần tử thuộc margins
-            foreach (var element in marginElements)
-            {
-                rulerCanvas.Children.Remove(element);
-            }
-            marginElements.Clear();
+            //MessageBox.Show($"Dock width: {dockPanel.Width}\nMargin canvas length: {marginCanvas.Width}\nRuler Lenght: {rulerLength}");
+            // Xóa các thành phần cũ trong marginCanvas
+            marginCanvas.Children.Clear();
 
             // Vẽ vùng margin trái
             Rectangle leftMargin = new Rectangle
             {
                 Width = leftMarginPx,
-                Height = rulerCanvas.Height,
+                Height = marginCanvas.Height,
                 Fill = Brushes.Yellow
             };
             Canvas.SetLeft(leftMargin, 0);
-            rulerCanvas.Children.Add(leftMargin);
-            marginElements.Add(leftMargin);
+            marginCanvas.Children.Add(leftMargin);
 
             // Vẽ vùng margin phải
             Rectangle rightMargin = new Rectangle
             {
                 Width = rightMarginPx,
-                Height = rulerCanvas.Height,
+                Height = marginCanvas.Height,
                 Fill = Brushes.Green
             };
             Canvas.SetRight(rightMargin, 0);
-            rulerCanvas.Children.Add(rightMargin);
-            marginElements.Add(rightMargin);
+            marginCanvas.Children.Add(rightMargin);
         }
+
 
         private void FirstLineIndentThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
@@ -367,21 +363,26 @@ namespace Wordpad
 
             // Điều chỉnh kích thước rulerCanvas theo dockPanel nếu cần
             rulerCanvas.Width = dockPanel.Width / zoomScale;
-
-            // Điều chỉnh vị trí các thành phần Thumb
-            if (firstLineIndentThumb != null)
-            {
-                Canvas.SetLeft(firstLineIndentThumb, leftMargin * zoomScale + 30 * zoomScale);
-            }
-            if (hangingIndentThumb != null)
-            {
-                Canvas.SetLeft(hangingIndentThumb, leftMargin * zoomScale + 60 * zoomScale);
-            }
-            if (paragraphIndentThumb != null)
-            {
-                Canvas.SetLeft(paragraphIndentThumb, leftMargin * zoomScale + 90 * zoomScale);
-            }
+            //MessageBox.Show($"Dock width: {dockPanel.Width}\nRuler canvas length: {rulerCanvas.Width}\nRuler Lenght: {rulerLength}");
+            //// Điều chỉnh vị trí các thành phần Thumb
+            //if (firstLineIndentThumb != null)
+            //{
+            //    Canvas.SetLeft(firstLineIndentThumb, leftMargin * zoomScale + 30 * zoomScale);
+            //}
+            //if (hangingIndentThumb != null)
+            //{
+            //    Canvas.SetLeft(hangingIndentThumb, leftMargin * zoomScale + 60 * zoomScale);
+            //}
+            //if (paragraphIndentThumb != null)
+            //{
+            //    Canvas.SetLeft(paragraphIndentThumb, leftMargin * zoomScale + 90 * zoomScale);
+            //}
         }
-
+        public void UpdateCanvasSize()
+        {
+            marginCanvas.Width = rulerLength;
+            tickCanvas.Width = rulerLength;
+            thumbCanvas.Width = rulerLength;
+        }
     }
 }

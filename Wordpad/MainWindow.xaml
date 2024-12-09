@@ -171,28 +171,25 @@
                     SmallChange="5" LargeChange="50"/>
             <Button x:Name="btnIncreaseZoom" Content="+" Width="20" Click="btnIncreaseZoom_Click" />
         </StatusBar>
-        <!-- Main Content Area -->
-        <Grid Background="#FFCED7E6" Name="editorArea">
-            <!-- Ruler -->
-            <Canvas DockPanel.Dock="Top" x:Name="rulerCanvas" Height="20" Width="705" Background ="#FFE53434" 
-                            HorizontalAlignment="Stretch" VerticalAlignment="Top" >
-                <!-- Tick Marks -->
-                <Canvas x:Name="tickMarksCanvas" Height="30" Background="Transparent" />
-
-                <!-- Margins -->
-                <Thumb x:Name="leftMarginThumb" Width="10" Height="20" Canvas.Left="50" Canvas.Top="10"  />
-                <Thumb x:Name="rightMarginThumb" Width="10" Height="20" Canvas.Left="400" Canvas.Top="10"  />
-
-                <!-- First Line Indent -->
-                <Thumb x:Name="firstLineIndentThumb" Width="10" Height="20" Canvas.Left="60" Canvas.Top="20"  />
-
-                <!-- Tab Stops -->
-                <Canvas x:Name="tabStopsCanvas" Height="10" Canvas.Top="35" />
+        <!-- Ruler -->
+        <Grid Name="rulerArea" DockPanel.Dock="Top" Background="#FFCED7E6" Height="30" >
+            <Canvas x:Name="rulerCanvas" Width="705" Height="20" Background="White">
+                <!-- Canvas cho Margin -->
+                <Canvas x:Name="marginCanvas" Width="705" Height="20" />
+                <!-- Canvas cho Tick (Ruler) -->
+                <Canvas x:Name="tickCanvas" Width="705" Height="20" />
+                <!-- Canvas cho Thumb -->
+                <Canvas x:Name="thumbCanvas" Width="705" Height="20" />
             </Canvas>
+        </Grid>
+
+
+        <!-- Main Content Area -->
+        <Grid Background="#FFCED7E6" Name="editorArea" >
             <!-- Rich text box -->
-            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged">
                 <!-- RichTextBox Container-->
-                <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,20,10,0" Width="705" Height="500" RenderTransformOrigin="0.5,0.5">
+                <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,2,10,0" Width="705" Height="500" RenderTransformOrigin="0.5,0.5">
 
                     <!-- RichTextBox Area -->
                     <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
