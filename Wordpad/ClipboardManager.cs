@@ -35,8 +35,14 @@ namespace Wordpad
             TextRange textRange = _richTextBox.Selection;
             if (!textRange.IsEmpty)
             {
-                Clipboard.SetText(textRange.Text);
-                textRange.Text = string.Empty; // Xóa nội dung được cắt
+                // Copy RTF text
+                MemoryStream stream = new MemoryStream();
+                textRange.Save(stream, DataFormats.Rtf);
+                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
+
+                // Set to Clipboard and remove text
+                Clipboard.SetData(DataFormats.Rtf, rtfText);
+                textRange.Text = string.Empty;  // Delete selected text
                 IsCopiedFromApplication = true;
             }
             else
@@ -45,13 +51,20 @@ namespace Wordpad
             }
         }
 
+
         // Phương thức Sao chép
         public void Copy()
         {
             TextRange textRange = _richTextBox.Selection;
             if (!textRange.IsEmpty)
             {
-                Clipboard.SetText(textRange.Text);
+                // Save RTF format
+                MemoryStream stream = new MemoryStream();
+                textRange.Save(stream, DataFormats.Rtf);
+                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
+
+                // Set to Clipboard
+                Clipboard.SetData(DataFormats.Rtf, rtfText);
                 IsCopiedFromApplication = true;
             }
             else
@@ -60,20 +73,31 @@ namespace Wordpad
             }
         }
 
+
         // Phương thức Dán
         public void Paste()
         {
-            if (Clipboard.ContainsText())
+            if (Clipboard.ContainsData(DataFormats.Rtf))
             {
+                string rtfText = (string)Clipboard.GetData(DataFormats.Rtf);
+                TextRange textRange = _richTextBox.Selection;
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(rtfText)))
+                {
+                    textRange.Load(stream, DataFormats.Rtf);
+                }
+            }
+            else if (Clipboard.ContainsText())
+            {
+                // Fallback to plain text if RTF is unavailable
                 TextRange textRange = _richTextBox.Selection;
                 textRange.Text = Clipboard.GetText();
-                IsCopiedFromApplication = false;
             }
             else
             {
-                MessageBox.Show("Clipboard is empty.");
+                MessageBox.Show("Clipboard does not contain valid text.");
             }
         }
+
 
         // Phương thức lấy các tùy chọn dán từ clipboard
         public List<string> GetPasteOptions()
