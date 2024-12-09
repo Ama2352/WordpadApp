@@ -372,9 +372,6 @@
     <Resource Include="Images\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\MesureUnit.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Date and Time.png" />
   </ItemGroup>
   <ItemGroup>
@@ -469,6 +466,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Select All.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\100%25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WordWrap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Unit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
