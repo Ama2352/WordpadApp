@@ -461,5 +461,14 @@
   <ItemGroup>
     <Resource Include="Images\Sup2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Find.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Replace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Select All.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

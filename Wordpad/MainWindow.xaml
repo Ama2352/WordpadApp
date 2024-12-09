@@ -175,7 +175,7 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
             <TabControl>
                 <TabItem Header="Home">
-                    <Grid>
+                    <Grid Width="965">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="2"/>
@@ -184,6 +184,9 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="2"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            
                         </Grid.ColumnDefinitions>
 
                         <!-- Clipboard Section -->
@@ -469,6 +472,54 @@
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        <!-- Separator 4 -->
+                        <Rectangle Grid.Column="7" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+                        <!-- Editing Section -->
+                        <Grid Grid.Column="8" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Editing" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+             Foreground="#666666" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Find Button -->
+                                <Button Grid.Column="0" Name="btnFind" ToolTip="Find" Style="{StaticResource ToolbarButtonStyle}">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Find.png" 
+                   Width="32" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
+                                </Button>
+
+                                <!-- Select All Button -->
+                                <Button Grid.Column="1" Name="btnSelectAll" ToolTip="Select All" Style="{StaticResource ToolbarButtonStyle}">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Select All.png" 
+                   Width="32" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
+                                </Button>
+
+                                <!-- Replace Button -->
+                                <Button Grid.Column="2" Name="btnReplace" ToolTip="Replace" Style="{StaticResource ToolbarButtonStyle}">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Replace.png" 
+                   Width="32" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
                         </Grid>
