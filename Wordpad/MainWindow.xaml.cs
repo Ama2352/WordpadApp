@@ -260,18 +260,34 @@ namespace Wordpad
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+N shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            if (e.Key == Key.O && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.O && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 _OpenManager.Open();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+O shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 _PrintManager.PrintRichTextBoxContent();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            else if(e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                clipboardManager.Copy();
+                e.Handled = true;
+            }
+            else if(e.Key == Key.X && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                clipboardManager.Cut();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                clipboardManager.Paste();
+                e.Handled = true;
+            }
+
 
         }
 
@@ -531,6 +547,12 @@ namespace Wordpad
             ReplaceWindow replaceWindow = new ReplaceWindow(editingManager);
             replaceWindow.Show();
         }
+        private void btnPasteSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
+            if(pasteSpecialWindow.ShowDialog() == true) { }
+        }
+
         #endregion
 
 

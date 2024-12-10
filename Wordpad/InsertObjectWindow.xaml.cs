@@ -28,7 +28,6 @@ namespace Wordpad
             _insertManager.AddObjectTypes(listOptions);
 
             listOptions.SelectionChanged += ListBoxOptions_SelectedIndexChanged;
-
         }
 
         private void ListBoxOptions_SelectedIndexChanged(object sender, EventArgs e)

@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
         Title="Find" Height="150" Width="420"
-        KeyDown="Window_KeyDown"
-        Closing="Window_Closing">
+        KeyDown="Window_KeyDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".8*"/>

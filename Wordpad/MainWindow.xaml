@@ -158,6 +158,7 @@
                 <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
                 <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
                 <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
+                <Button x:Name="btnPasteSpecial" Content="Paste Special" Click="btnPasteSpecial_Click"/>
             </WrapPanel>
         </Grid>
 
