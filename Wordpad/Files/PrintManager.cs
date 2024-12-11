@@ -271,8 +271,9 @@ namespace Wordpad
                 : pageSettings.PaperSize.Width;
 
             // Cập nhật margin trên ruler
-            ruler.rulerLength = dockPanel.Width;
-            ruler.UpdateCanvasSize();
+            Ruler.oriRulerWidth = dockPanel.Width;
+            ViewManagment.DPWidthOri = dockPanel.Width;
+            ruler.UpdateCanvasSize(dockPanel.Width);
             ruler.DrawMargins(pageSettings.Margins.Left, pageSettings.Margins.Right);
         }
 

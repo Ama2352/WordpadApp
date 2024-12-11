@@ -18,8 +18,7 @@ namespace Wordpad
         private Slider zoomSlider;
         private double zoomScale = 1.0; // Giá trị ban đầu (100%)
         //Kích thước ban đầu cảu dockpanel
-        private double DPWidthOri;
-        private double DPHeightOri;
+        public static double DPWidthOri;
         private Ruler ruler;
 
         public ViewManagment(StatusBar statusBar, StatusBarItem statusBarItem, 
@@ -31,8 +30,6 @@ namespace Wordpad
             this.unitComboBox = unitComboBox;
             this.dockPanel = DP;
             this.zoomSlider = slider;
-            DPWidthOri = dockPanel.Width;
-            DPHeightOri = dockPanel.Height;
 
             // Đăng ký sự kiện TextChanged cho RichTextBox
             richTextBox.TextChanged += RichTextBox_TextChanged;
@@ -102,13 +99,13 @@ namespace Wordpad
 
         private void ApplyZoom()
         {
+            double preDPWidth = dockPanel.Width;
             // Phóng to cả RichTextBox bằng cách thay đổi kích thước.
             dockPanel.Width = DPWidthOri * zoomScale; // Kích thước mặc định là 743.
-            dockPanel.Height = DPHeightOri * zoomScale; // Chiều cao mặc định là 500.
             // Áp dụng zoom cho RichTextBox qua LayoutTransform
             richTextBox.LayoutTransform = new ScaleTransform(zoomScale, zoomScale);
             //Scale ruler theo zoom
-            ruler.ScaleRuler(zoomScale);
+            ruler.ScaleRuler(zoomScale, preDPWidth);
 
             // Cập nhật giá trị trên thanh trạng thái
             zoomSlider.Value = zoomScale * 100;

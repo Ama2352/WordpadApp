@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 using MessageBox = System.Windows.MessageBox;
+using Wordpad.View;
 
 namespace Wordpad
 {
@@ -35,12 +36,13 @@ namespace Wordpad
         ParagraphManager paragraphManager;
         InsertManager insertManager;
         EditingManager editingManager;
+        private GlobalDashedLineAdorner _adorner;   //Biến dùng để vẽ gạch đứt global cho tumb ruler
 
         public MainWindow()
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -102,6 +104,22 @@ namespace Wordpad
             ruler.InitializeThumbs();
             // Scale toàn bộ rulerCanvas cho bằng dock panel
             rulerCanvas.Width = RTBContainer.Width;
+            // Lấy AdornerLayer của toàn bộ cửa sổ
+            //Hoãn thời điểm lấy adorner để nó được tạo trước.
+            this.Dispatcher.InvokeAsync(() =>
+            {
+                AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(textEditor);
+                if (adornerLayer == null)
+                {
+                    MessageBox.Show("AdornerLayer is null. Ensure that the AdornerLayer exists in the visual tree.");
+                    return;
+                }
+
+                _adorner = new GlobalDashedLineAdorner(textEditor);
+                adornerLayer.Add(_adorner);
+
+                ruler.SetAdorner(_adorner);
+            });
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -548,5 +566,14 @@ namespace Wordpad
 
         #endregion
 
+        private void btnDebug_Click(object sender, RoutedEventArgs e)
+        {
+            ////rulerCanvas.Width *= 1.1;
+            //MessageBox.Show($"ruler cavas widht: {rulerCanvas.Width}");
+
+            ////rulerCanvas.LayoutTransform = new ScaleTransform(1.1, 1);
+            //rulerCanvas.Width *= 1.1;
+            //MessageBox.Show($"ruler cavas widht: {rulerCanvas.Width}"); 
+        }
     }
 }

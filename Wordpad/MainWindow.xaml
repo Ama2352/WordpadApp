@@ -6,66 +6,88 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" 
+        Title="MainWindow" Height="450" Width="928" Loaded="Window_Loaded" 
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
-    <DockPanel>
-        <!-- Menu Bar -->
-        <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
-            <MenuItem Header="File" Background="#FF1979CA" Foreground="White" >
-                <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click"/>
-                <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click"/>
-                <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click"/>
-                <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click"/>
-                <MenuItem Header="Print" Foreground="Black">
-                    <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
-                    <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click" />
-                    <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click"/>
+    <DockPanel x:Name="mainContainer">
+            <!-- Menu Bar -->
+            <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
+                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" >
+                    <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click"/>
+                    <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click"/>
+                    <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click"/>
+                    <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click"/>
+                    <MenuItem Header="Print" Foreground="Black">
+                        <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
+                        <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click" />
+                        <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click"/>
+                    <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click"/>
+                    <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click"/>
+                    <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click"/>
-                <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click"/>
-                <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click"/>
-                <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click"/>
-            </MenuItem>
-        </Menu>
+            </Menu>
 
-        <!-- Toolbar -->
-        <!-- Tab view -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Panel.ZIndex="1" Background="White">
-            <Button Content="Zoom In" Click="ZoomIn_Click"/>
-            <Button Content="Zoom Out" Click="ZoomOut_Click"/>
-            <Button x:Name="bthResetZoom" Content="100%" Click="btnResetZoom_Click"/>
-            <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
-                <ComboBoxItem Content="Inch"/>
-                <ComboBoxItem Content="Cm"/>
-                <ComboBoxItem Content="Points"/>
-                <ComboBoxItem Content="Picas"/>
-            </ComboBox>
-            <Button Content="Toggle Ruler" Click="ToggleRuler_Click"/>
-            <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
-        </StackPanel>
-        <!-- Tab home -->
-        <Grid DockPanel.Dock="Top" Panel.ZIndex="1" Background="#FFF5F6F7">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".7*"/>
-                <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition Width=".865*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
+            <!-- Toolbar -->
+            <!-- Tab view -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Panel.ZIndex="1" Background="White">
+                <Button Content="Zoom In" Click="ZoomIn_Click"/>
+                <Button Content="Zoom Out" Click="ZoomOut_Click"/>
+                <Button x:Name="bthResetZoom" Content="100%" Click="btnResetZoom_Click"/>
+                <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
+                    <ComboBoxItem Content="Inch"/>
+                    <ComboBoxItem Content="Cm"/>
+                    <ComboBoxItem Content="Points"/>
+                    <ComboBoxItem Content="Picas"/>
+                </ComboBox>
+                <Button Content="Toggle Ruler" Click="ToggleRuler_Click"/>
+                <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
+            </StackPanel>
+            <!-- Tab home -->
+            <Grid DockPanel.Dock="Top" Panel.ZIndex="1" Background="#FFF5F6F7">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width=".7*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width=".865*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="btnPaste" Background="FloralWhite" Click="btnPaste_Click">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="/Images/paste1.png" Width="32" Height="32"/>
-                        <TextBlock Text="Paste" Margin="5,0,0,0" FontSize="15"/>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                    </StackPanel>
-                </Button>
+                    <Button x:Name="btnPaste" Background="FloralWhite" Click="btnPaste_Click">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <Image Source="/Images/paste1.png" Width="32" Height="32"/>
+                            <TextBlock Text="Paste" Margin="5,0,0,0" FontSize="15"/>
+
+                        </StackPanel>
+                    </Button>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Name="btnCut" Background="FloralWhite" Margin="0,0,2,0" Click="btnCut_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/cut.png" Width="20" Height="20"/>
+                                <TextBlock Text="Cut" Margin="5,0,0,0" FontSize="15"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Row="1" Name="btnCopy" Background="FloralWhite" Margin="0,0,2,0" Click="btnCopy_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Images/copy.png" Width="20" Height="20"/>
+                                <TextBlock Text="Copy" Margin="5,0,0,0" FontSize="15"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
@@ -73,140 +95,125 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Button Grid.Row="0" Name="btnCut" Background="FloralWhite" Margin="0,0,2,0" Click="btnCut_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/cut.png" Width="20" Height="20"/>
-                            <TextBlock Text="Cut" Margin="5,0,0,0" FontSize="15"/>
-                        </StackPanel>
-                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Name="cbFontFamily" Width="150" SelectionChanged="cbFontFamily_SelectionChanged" />
+                        <ComboBox Name="cbFontSize" Width="70" SelectionChanged="cbFontSize_SelectionChanged" />
+                        <Button x:Name="btnGrowFont" Width="30" Content="A1" Background="Transparent" Margin="1,0,2,0" Click="btnGrowFont_Click"/>
+                        <Button x:Name="btnShrinkFont" Width="30" Content="A2" Background="Transparent" Margin="0,0,1,0" Click="btnShrinkFont_Click"/>
+                    </StackPanel>
 
-                    <Button Grid.Row="1" Name="btnCopy" Background="FloralWhite" Margin="0,0,2,0" Click="btnCopy_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/Images/copy.png" Width="20" Height="20"/>
-                            <TextBlock Text="Copy" Margin="5,0,0,0" FontSize="15"/>
-                        </StackPanel>
-                    </Button>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <ToolBar>
+                            <Button x:Name="btnBold" ToolTip="Bold" Width="30" Click="btnBold_Click">
+                                <Image Source="/Images/bold.png"/>
+                            </Button>
+                            <Button x:Name="btnItalic" ToolTip="Italic" Width="30" Click="btnItalic_Click">
+                                <Image Source="/Images/italic.png"/>
+                            </Button>
+                            <Button x:Name="btnUnderline" ToolTip="Underline" Width="30" Click="btnUnderline_Click">
+                                <Image Source="/Images/underline.png"/>
+                            </Button>
+                            <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" Width="30" Click="btnStrikethrough_Click">
+                                <Image Source="/Images/strikethrough.png"/>
+                            </Button>
+                            <Button x:Name="btnSubscript" ToolTip="Subscript" Width="30" Click="btnSubscript_Click">
+                                <Image Source="/Images/subscript.png"/>
+                            </Button>
+                            <Button x:Name="btnSuperscript" ToolTip="Superscript" Width="30" Click="btnSuperscript_Click">
+                                <Image Source="/Images/superscript.png"/>
+                            </Button>
+                            <xctk:ColorPicker Name="colorPicker" Width="20" SelectedColorChanged="colorPicker_SelectedColorChanged"/>
+                            <xctk:ColorPicker Name="highlightPicker" Width="20" SelectedColorChanged="highlightPicker_SelectedColorChanged"/>
+
+                        </ToolBar>
+                    </StackPanel>
                 </Grid>
+
+                <WrapPanel Grid.Column="2">
+                    <Button Name="btnDecreaseIndent" Content="DeIndent" Click="btnDecreaseIndent_Click"/>
+                    <Button Name="btnIncreaseIndent" Content="InIndent" Click="btnIncreaseIndent_Click"/>
+                    <ComboBox Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged">
+                        <ComboBoxItem>1.0</ComboBoxItem>
+                        <ComboBoxItem>1.25</ComboBoxItem>
+                        <ComboBoxItem>1.5</ComboBoxItem>
+                        <ComboBoxItem>2.0</ComboBoxItem>
+                        <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    </ComboBox>
+                    <Button Name="btnLeftAlignment" Content="LeftA" Click="btnLeftAlignment_Click"/>
+                    <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
+                    <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
+                    <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
+                    <Button Name="btnParagraph" Content="Paragraph"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Column="3">
+                    <Button Name="btnPicture" Content="Picture" Click="btnPicture_Click"/>
+                    <Button Name="btnResizePicture" Content="Resize Picture" Click="btnResizePicture_Click"/>
+                    <Button Name="btnChangePicture" Content="Change Picture" Click="btnChangePicture_Click"/>
+                    <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
+                    <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
+                </WrapPanel>
+
+                <WrapPanel Grid.Column="4">
+                    <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
+                    <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
+                    <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
+                </WrapPanel>
+                <Button x:Name="btnDebug" Grid.Column="4" Content="Debug" HorizontalAlignment="Left" Margin="36,36,0,0" VerticalAlignment="Top" Click="btnDebug_Click"/>
             </Grid>
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="cbFontFamily" Width="150" SelectionChanged="cbFontFamily_SelectionChanged" />
-                    <ComboBox Name="cbFontSize" Width="70" SelectionChanged="cbFontSize_SelectionChanged" />
-                    <Button x:Name="btnGrowFont" Width="30" Content="A1" Background="Transparent" Margin="1,0,2,0" Click="btnGrowFont_Click"/>
-                    <Button x:Name="btnShrinkFont" Width="30" Content="A2" Background="Transparent" Margin="0,0,1,0" Click="btnShrinkFont_Click"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <ToolBar>
-                        <Button x:Name="btnBold" ToolTip="Bold" Width="30" Click="btnBold_Click">
-                            <Image Source="/Images/bold.png"/>
-                        </Button>
-                        <Button x:Name="btnItalic" ToolTip="Italic" Width="30" Click="btnItalic_Click">
-                            <Image Source="/Images/italic.png"/>
-                        </Button>
-                        <Button x:Name="btnUnderline" ToolTip="Underline" Width="30" Click="btnUnderline_Click">
-                            <Image Source="/Images/underline.png"/>
-                        </Button>
-                        <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" Width="30" Click="btnStrikethrough_Click">
-                            <Image Source="/Images/strikethrough.png"/>
-                        </Button>
-                        <Button x:Name="btnSubscript" ToolTip="Subscript" Width="30" Click="btnSubscript_Click">
-                            <Image Source="/Images/subscript.png"/>
-                        </Button>
-                        <Button x:Name="btnSuperscript" ToolTip="Superscript" Width="30" Click="btnSuperscript_Click">
-                            <Image Source="/Images/superscript.png"/>
-                        </Button>
-                        <xctk:ColorPicker Name="colorPicker" Width="20" SelectedColorChanged="colorPicker_SelectedColorChanged"/>
-                        <xctk:ColorPicker Name="highlightPicker" Width="20" SelectedColorChanged="highlightPicker_SelectedColorChanged"/>
-
-                    </ToolBar>
-                </StackPanel>
-            </Grid>
-
-            <WrapPanel Grid.Column="2">
-                <Button Name="btnDecreaseIndent" Content="DeIndent" Click="btnDecreaseIndent_Click"/>
-                <Button Name="btnIncreaseIndent" Content="InIndent" Click="btnIncreaseIndent_Click"/>
-                <ComboBox Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged">
-                    <ComboBoxItem>1.0</ComboBoxItem>
-                    <ComboBoxItem>1.25</ComboBoxItem>
-                    <ComboBoxItem>1.5</ComboBoxItem>
-                    <ComboBoxItem>2.0</ComboBoxItem>
-                    <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                </ComboBox>
-                <Button Name="btnLeftAlignment" Content="LeftA" Click="btnLeftAlignment_Click"/>
-                <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
-                <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
-                <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
-                <Button Name="btnParagraph" Content="Paragraph"/>
-            </WrapPanel>
-
-            <WrapPanel Grid.Column="3">
-                <Button Name="btnPicture" Content="Picture" Click="btnPicture_Click"/>
-                <Button Name="btnResizePicture" Content="Resize Picture" Click="btnResizePicture_Click"/>
-                <Button Name="btnChangePicture" Content="Change Picture" Click="btnChangePicture_Click"/>
-                <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
-                <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
-            </WrapPanel>
-
-            <WrapPanel Grid.Column="4">
-                <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
-                <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
-                <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
-            </WrapPanel>
-        </Grid>
-
-        <!-- Status Bar -->
-        <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
-            <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
-            <Label x:Name="zoomPercent" Content="100%" Width="42"/>
-            <Button x:Name="btnDecreaseZoom" Content="-" Width="20" Click="btnDecreaseZoom_Click" />
-            <Slider Name="zoomSlider" Minimum="10" Maximum="500" Value="100" Width="150" TickFrequency="1" 
+            <!-- Status Bar -->
+            <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
+                <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
+                <Label x:Name="zoomPercent" Content="100%" Width="42"/>
+                <Button x:Name="btnDecreaseZoom" Content="-" Width="20" Click="btnDecreaseZoom_Click" />
+                <Slider Name="zoomSlider" Minimum="10" Maximum="400" Value="100" Width="150" TickFrequency="1" 
                     IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged"
                     SmallChange="5" LargeChange="50"/>
-            <Button x:Name="btnIncreaseZoom" Content="+" Width="20" Click="btnIncreaseZoom_Click" />
-        </StatusBar>
-        <!-- Ruler -->
-        <Grid Name="rulerArea" DockPanel.Dock="Top" Background="#FFCED7E6" Height="30" >
-            <Canvas x:Name="rulerCanvas" Width="705" Height="20" Background="White">
-                <!-- Canvas cho Margin -->
-                <Canvas x:Name="marginCanvas" Width="705" Height="20" />
-                <!-- Canvas cho Tick (Ruler) -->
-                <Canvas x:Name="tickCanvas" Width="705" Height="20" />
-                <!-- Canvas cho Thumb -->
-                <Canvas x:Name="thumbCanvas" Width="705" Height="20" />
-            </Canvas>
-        </Grid>
+                <Button x:Name="btnIncreaseZoom" Content="+" Width="20" Click="btnIncreaseZoom_Click" />
+            </StatusBar>
+
+        <AdornerDecorator>
+            <DockPanel Name="textEditor">
+                            <!-- Ruler -->
+            <Grid Name="rulerArea" DockPanel.Dock="Top" Background="#FFCED7E6" Height="30" >
+                <Canvas x:Name="rulerCanvas" Width="705" Height="20" Background="White" HorizontalAlignment="Center" Margin="0,0,15,0" >
+                    <!-- Canvas cho Margin -->
+                    <Canvas x:Name="marginCanvas" Width="705" Height="20" />
+                    <!-- Canvas cho Tick (Ruler) -->
+                    <Canvas x:Name="tickCanvas" Width="705" Height="20" />
+                    <!-- Canvas cho Thumb -->
+                    <Canvas x:Name="thumbCanvas" Width="705" Height="20" />
+                </Canvas>
+            </Grid>
 
 
-        <!-- Main Content Area -->
-        <Grid Background="#FFCED7E6" Name="editorArea" >
-            <!-- Rich text box -->
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged">
-                <!-- RichTextBox Container-->
-                <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1" Margin="30,2,10,0" Width="705" Height="500" RenderTransformOrigin="0.5,0.5">
+            <!-- Main Content Area -->
+            <Grid Background="#FFCED7E6" Name="editorArea" >
+                <!-- Rich text box -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged">
+                        <!-- RichTextBox Container-->
+                        <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1"  Width="705" Height="500" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
 
-                    <!-- RichTextBox Area -->
-                    <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
+                            <!-- RichTextBox Area -->
+                            <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
                                  AcceptsReturn="True" BorderBrush="{x:Null}"
                                  TextChanged="richTextBox_TextChanged"
                                  Padding="0" 
                                  FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" 
                                 SelectionChanged="richTextBox_SelectionChanged"
                                 MouseDoubleClick="richTextBox_MouseDoubleClick">
-                        <FlowDocument >
-                            <Paragraph LineHeight="1" FontFamily="Arial" Margin="0,0,0,0" FontSize="10">
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                </DockPanel>
-            </ScrollViewer>
+                                <FlowDocument >
+                                    <Paragraph LineHeight="1" FontFamily="Arial" Margin="0,0,0,0" FontSize="10">
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </DockPanel>
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
 
-        </Grid>
+        </AdornerDecorator>
     </DockPanel>
+
 </Window>
