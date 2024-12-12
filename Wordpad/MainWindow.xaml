@@ -172,7 +172,7 @@
 
 
         <!-- Toolbar -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1211">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1194" HorizontalAlignment="Left">
             <TabControl Width="1144">
                 <TabItem Header="Home">
                     <Grid HorizontalAlignment="Left" Width="986">
@@ -234,14 +234,19 @@
                             </Grid>
                             <!-- SplitButton for Paste -->
                             <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+                                <!-- Popup Menu -->
                                 <Popup IsOpen="{Binding IsChecked, ElementName=btnSplit}" Placement="Bottom" StaysOpen="False">
-                                    <StackPanel Background="White" Width="45">
-                                        <Button Content="Paste" Width="45" Height="32" />
-                                        <Button Content="Special Paste" Width="45" Height="32" />
+                                    <StackPanel Background="White" Width="100">
+                                        <!-- Tăng chiều rộng để đảm bảo chữ không bị cắt -->
+                                        <Button Content="Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
+                                        <Button Content="Special Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
                                     </StackPanel>
                                 </Popup>
-                                <ToggleButton x:Name="btnSplit" Content="▼" Width="50" Height="14" />
+
+                                <!-- ToggleButton -->
+                                <ToggleButton x:Name="btnSplit" Content="▼" Width="50" Height="20" FontSize="10" HorizontalContentAlignment="Center" />
                             </StackPanel>
+
                         </Grid>
 
 
