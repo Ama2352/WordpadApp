@@ -194,41 +194,56 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="Clipboard" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
-                                     Foreground="#666666" HorizontalAlignment="Center"/>
+               Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
+                                <!-- Paste Button -->
                                 <Button Grid.Column="0" Click="btnPaste_Click" Style="{StaticResource ToolbarButtonStyle}">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/paste1.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
+                   Width="44" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
                                 </Button>
+                                <!-- Cut Button -->
                                 <Button Grid.Column="1" Click="btnCut_Click" Style="{StaticResource ToolbarButtonStyle}">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/cut.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
+                   Width="32" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
                                 </Button>
+                                <!-- Copy Button -->
                                 <Button Grid.Column="2" Click="btnCopy_Click" Style="{StaticResource ToolbarButtonStyle}">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/copy.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
+                   Width="32" Height="32" 
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   RenderOptions.EdgeMode="Aliased"
+                   SnapsToDevicePixels="True"
+                   UseLayoutRounding="True"/>
                                 </Button>
                             </Grid>
+                            <!-- SplitButton for Paste -->
+                            <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+                                <ToggleButton x:Name="btnSplit" Content="▼" Width="45" Height="16" HorizontalAlignment="Left" />
+                                <Popup IsOpen="{Binding IsChecked, ElementName=btnSplit}" Placement="Bottom" StaysOpen="False">
+                                    <StackPanel Background="White" Width="45">
+                                        <Button Content="Paste" Width="45" Height="32" />
+                                        <Button Content="Special Paste" Width="45" Height="32" />
+                                    </StackPanel>
+                                </Popup>
+                            </StackPanel>
                         </Grid>
+
 
                         <!-- Separator 1 -->
                         <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
@@ -478,60 +493,60 @@
                         <!-- Separator 4 -->
                         <Rectangle Grid.Column="7" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
                         <!-- Editing Section -->
-                     <Grid Grid.Column="8" Margin="5">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
-    <TextBlock Text="Editing" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
+                        <Grid Grid.Column="8" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Editing" Grid.Row="0" Margin="2" FontWeight="SemiBold" 
              Foreground="#666666" HorizontalAlignment="Center"/>
-    <Grid Grid.Row="1">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-        <!-- Find Button -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
-            <Button Name="btnFind" ToolTip="Find" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
-                <Image Source="pack://application:,,,/Wordpad;component/Images/Find.png" 
+                                <!-- Find Button -->
+                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button Name="btnFind" ToolTip="Find" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Find.png" 
                        Width="32" Height="32" 
                        RenderOptions.BitmapScalingMode="HighQuality"
                        RenderOptions.EdgeMode="Aliased"
                        SnapsToDevicePixels="True"
                        UseLayoutRounding="True"/>
-            </Button>
-            <Label Content="Find" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
-        </StackPanel>
+                                    </Button>
+                                    <Label Content="Find" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
 
-        <!-- Select All Button -->
-        <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
-            <Button Name="btnSelectAll" ToolTip="Select All" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
-                <Image Source="pack://application:,,,/Wordpad;component/Images/Select All.png" 
+                                <!-- Select All Button -->
+                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button Name="btnSelectAll" ToolTip="Select All" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Select All.png" 
                        Width="32" Height="32" 
                        RenderOptions.BitmapScalingMode="HighQuality"
                        RenderOptions.EdgeMode="Aliased"
                        SnapsToDevicePixels="True"
                        UseLayoutRounding="True"/>
-            </Button>
-            <Label Content="Select All" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
-        </StackPanel>
+                                    </Button>
+                                    <Label Content="Select All" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
 
-        <!-- Replace Button -->
-        <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
-            <Button Name="btnReplace" ToolTip="Replace" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
-                <Image Source="pack://application:,,,/Wordpad;component/Images/Replace.png" 
+                                <!-- Replace Button -->
+                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button Name="btnReplace" ToolTip="Replace" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Replace.png" 
                        Width="32" Height="32" 
                        RenderOptions.BitmapScalingMode="HighQuality"
                        RenderOptions.EdgeMode="Aliased"
                        SnapsToDevicePixels="True"
                        UseLayoutRounding="True"/>
-            </Button>
-            <Label Content="Replace" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
-        </StackPanel>
-    </Grid>
-</Grid>
+                                    </Button>
+                                    <Label Content="Replace" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
 
 
 
@@ -668,7 +683,7 @@
                                 </StackPanel>
                             </Grid>
                         </Grid>
-                        
+
                         <CheckBox Content="Ruler" Margin="8,29,0,35" Grid.Column="2" Checked="CheckBox_Checked_1"/>
                         <CheckBox Content="Status Bar" Margin="8,52,10,15" Grid.Column="2" Checked="CheckBox_Checked_2"/>
                     </Grid>
