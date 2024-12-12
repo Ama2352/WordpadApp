@@ -234,7 +234,7 @@
                             </Grid>
                             <!-- SplitButton for Paste -->
                             <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
-                                <ToggleButton x:Name="btnSplit" Content="▼" Width="45" Height="16" HorizontalAlignment="Left" />
+                                <ToggleButton x:Name="btnSplit" Content="▼" Width="50" Height="14" HorizontalAlignment="Left" />
                                 <Popup IsOpen="{Binding IsChecked, ElementName=btnSplit}" Placement="Bottom" StaysOpen="False">
                                     <StackPanel Background="White" Width="45">
                                         <Button Content="Paste" Width="45" Height="32" />
@@ -267,10 +267,30 @@
 
                                 <!-- Font Controls -->
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+                                    <!-- ComboBox for Font Family -->
                                     <ComboBox Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
-                                            Height="24" Margin="0,0,5,0" />
+              Height="24" Margin="0,0,5,0" />
+                                    <!-- ComboBox for Font Size -->
                                     <ComboBox Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
-                                            Height="24" Margin="0,0,5,0" />
+              Height="24" Margin="0,0,5,0" />
+                                    <!-- Button to Increase Font -->
+                                    <Button Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/IFont.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
+                                    </Button>
+                                    <!-- Button to Decrease Font -->
+                                    <Button Name="btnDFont" Width="24" Height="24" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/DFont.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
+                                    </Button>
                                 </StackPanel>
 
                                 <!-- Formatting Controls -->
@@ -650,7 +670,7 @@
                                 <!-- Unit ComboBox with Image -->
                                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="22,4,-31,28">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/Unit.png" Width="20" Height="24" Margin="0,0,8,0"/>
-                                    <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Height="24" Width="53">
+                                    <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Height="18" Width="53">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Height="20">
@@ -668,7 +688,7 @@
                                 <!-- Word Wrap ComboBox with Image -->
                                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="23,35,-31,0">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/WordWrap.png" Width="20" Height="24" Margin="0,0,8,0"/>
-                                    <ComboBox Name="wordwrapComboBox" Height="24" Width="53">
+                                    <ComboBox Name="wordwrapComboBox" Height="18" Width="53">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Height="20">

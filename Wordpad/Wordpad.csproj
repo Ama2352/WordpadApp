@@ -476,5 +476,11 @@
   <ItemGroup>
     <Resource Include="Images\Unit.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\IFont.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DFont.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
