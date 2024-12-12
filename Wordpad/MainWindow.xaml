@@ -331,10 +331,6 @@
                                                Width="16" Height="16" 
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
-                                </StackPanel>
-
-                                <!-- Additional Controls -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal">
                                     <Button x:Name="btnSubscript" ToolTip="Subscript" 
                                             Style="{StaticResource ToolbarButtonStyle}" 
                                             Click="btnSubscript_Click" Width="32" Height="32">
@@ -350,12 +346,17 @@
                                                Width="16" Height="16" 
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
+                                </StackPanel>
 
-                                    <xctk:ColorPicker x:Name="colorPicker" Width="35" Height="32" 
+                                <!-- Additional Controls -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    
+
+                                    <xctk:ColorPicker x:Name="colorPicker" Width="20" Height="20" 
                                                      SelectedColorChanged="colorPicker_SelectedColorChanged" 
                                                      Margin="2"/>
 
-                                    <xctk:ColorPicker x:Name="highlightPicker" Width="35" Height="32" 
+                                    <xctk:ColorPicker x:Name="highlightPicker" Width="20" Height="20" 
                                                      SelectedColorChanged="highlightPicker_SelectedColorChanged" 
                                                      Margin="2"/>
                                 </StackPanel>
