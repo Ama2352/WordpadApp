@@ -176,22 +176,26 @@
         <AdornerDecorator>
             <DockPanel Name="textEditor">
                             <!-- Ruler -->
-            <Grid Name="rulerArea" DockPanel.Dock="Top" Background="#FFCED7E6" Height="30" >
-                <Canvas x:Name="rulerCanvas" Width="705" Height="20" Background="White" HorizontalAlignment="Center" Margin="0,0,15,0" >
-                    <!-- Canvas cho Margin -->
-                    <Canvas x:Name="marginCanvas" Width="705" Height="20" />
-                    <!-- Canvas cho Tick (Ruler) -->
-                    <Canvas x:Name="tickCanvas" Width="705" Height="20" />
-                    <!-- Canvas cho Thumb -->
-                    <Canvas x:Name="thumbCanvas" Width="705" Height="20" />
-                </Canvas>
-            </Grid>
+                <!--Đặt ruler canvas bên trong 1 scrollVIewer để nó đồng bộ kich thước và vị trí với RTB-->
+                <ScrollViewer x:Name="rulerScrollViewer" DockPanel.Dock="Top" HorizontalScrollBarVisibility="Hidden" Foreground="{x:Null}">
+                    <Grid Name="rulerArea" Background="#FFCED7E6" Height="30" >
+                        <Canvas x:Name="rulerCanvas" Width="705" Height="20" Background="White" HorizontalAlignment="Center">
+                            <!-- Canvas cho Margin -->
+                            <Canvas x:Name="marginCanvas" Width="705" Height="20" />
+                            <!-- Canvas cho Tick (Ruler) -->
+                            <Canvas x:Name="tickCanvas" Width="705" Height="20" />
+                            <!-- Canvas cho Thumb -->
+                            <Canvas x:Name="thumbCanvas" Width="705" Height="20" />
+                        </Canvas>
+                    </Grid>
+                </ScrollViewer>
 
 
-            <!-- Main Content Area -->
-            <Grid Background="#FFCED7E6" Name="editorArea" >
-                <!-- Rich text box -->
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged">
+
+                <!-- Main Content Area -->
+                <Grid Background="#FFCED7E6" Name="editorArea" >
+                    <!-- Rich text box -->
+                    <ScrollViewer x:Name="RTBSCrollViewer" HorizontalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged" Foreground="{x:Null}">
                         <!-- RichTextBox Container-->
                         <DockPanel x:Name="RTBContainer" Panel.ZIndex="-1"  Width="705" Height="500" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center">
 

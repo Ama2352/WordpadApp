@@ -38,10 +38,13 @@ namespace Wordpad
         private int thumbSize = 15;
         //Kich thước ban đầu của ruler (dùng để scale theo zoom)
         public static double oriRulerWidth;
+        double delta = 0;    //Giá trị khác biệt của kích thước trước và sau khi zoom của dockpanel
+        double zoomScale = 1;
 
         private RichTextBox richTextBox;
         private DockPanel dockPanel;
         private DockPanel mainContainer;
+        private ScrollViewer rulerScrollViewer;
 
         private string currentUnit = "Inches"; // Đơn vị đo hiện tại
         private readonly Dictionary<string, double> unitConversion;
@@ -53,7 +56,7 @@ namespace Wordpad
 
 
         public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, RichTextBox richTextBox, DockPanel dockPanel, DockPanel mainContainer,
-            GlobalDashedLineAdorner adorner)
+            GlobalDashedLineAdorner adorner, ScrollViewer SV)
         {
             marginCanvas = margin;
             tickCanvas = tick;
@@ -63,6 +66,7 @@ namespace Wordpad
             this.dockPanel = dockPanel;
             this.mainContainer = mainContainer;
             _adorner = adorner;
+            this.rulerScrollViewer = SV;
 
             rulerLength = dockPanel.Width;
             unitConversion = new Dictionary<string, double>
@@ -497,30 +501,31 @@ namespace Wordpad
         //Scale ruler khi zoom
         public void ScaleRuler(double zoomScale, double preDPWidth)
         {
+            this.zoomScale = zoomScale;
             double targetWidth = dockPanel.Width; // Kích thước cố định mong muốn
 
             // Tính toán tỷ lệ
             double scaleX = targetWidth / oriRulerWidth;
-            double delta = dockPanel.Width - preDPWidth;
+            delta = dockPanel.Width - preDPWidth;
 
             // Áp dụng scale theo kích thước ban đầu của ruler
             rulerCanvas.LayoutTransform = new ScaleTransform(scaleX, 1);
-            // Tính lại vị trí dockPanel (nếu bị dịch chuyển do zoom)
-            dockPanel.UpdateLayout();
-            Point dockPanelPosition = dockPanel.TransformToAncestor(mainContainer)
-                                             .Transform(new Point(0, 0));
+            //// Tính lại vị trí dockPanel (nếu bị dịch chuyển do zoom)
+            //dockPanel.UpdateLayout();
+            //Point dockPanelPosition = dockPanel.TransformToAncestor(mainContainer)
+            //                                 .Transform(new Point(0, 0));
 
-            // Cập nhật Margin của rulerCanvas để nó luôn nằm đúng vị trí so với dockPanel
-            if(dockPanelPosition.X > 0)
-            {
-                Thickness newMargin = new Thickness(dockPanelPosition.X - 15, 0, dockPanelPosition.X, 0);
-                rulerCanvas.Margin = newMargin;
-            }
-            else
-            {
-                Thickness newMargin = new Thickness(rulerCanvas.Margin.Left + delta, 0, 0, 0);
-                rulerCanvas.Margin = newMargin;
-            }
+            //// Cập nhật Margin của rulerCanvas để nó luôn nằm đúng vị trí so với dockPanel
+            //if(dockPanelPosition.X > 0)
+            //{
+            //    Thickness newMargin = new Thickness(dockPanelPosition.X - 15, 0, dockPanelPosition.X, 0);
+            //    rulerCanvas.Margin = newMargin;
+            //}
+            //else
+            //{
+            //    Thickness newMargin = new Thickness(rulerCanvas.Margin.Left + delta, 0, 0, 0);
+            //    rulerCanvas.Margin = newMargin;
+            //}
             //MessageBox.Show($"dock panel X: {dockPanelPosition.X}\nRuler canvas margin: {rulerCanvas.Margin}");
         }
         
@@ -553,20 +558,23 @@ namespace Wordpad
         }
         private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
+            //rulerCanvas.UpdateLayout();
             if (sender is Thumb thumb)
             {
-                if(rulerCanvas.Margin.Right != 0)
-                {
-                    double left = Canvas.GetLeft(thumb) + 29;
-                    // Cập nhật đường gạch đứt, bắt đầu từ dưới RulerCanvas
-                    _adorner.UpdateLine(left, rulerCanvas.ActualHeight + 10, true);
-                }
-                else
-                {
-                    double left = Canvas.GetLeft(thumb) + 29 + rulerCanvas.Margin.Left;
-                    // Cập nhật đường gạch đứt, bắt đầu từ dưới RulerCanvas
-                    _adorner.UpdateLine(left, rulerCanvas.ActualHeight + 10, true);
-                }
+                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ rulerCanvas
+                Point thumbPosition = thumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+
+                // Lấy vị trí của rulerCanvas trong hệ tọa độ ScrollViewer
+                Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
+
+                // Điều chỉnh tọa độ theo tỷ lệ zoom
+                //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
+                //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
+                double left = (thumbPosition.X * zoomScale + absolutePosition.X);
+
+                // Cập nhật đường gạch đứt
+                _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
+                //MessageBox.Show($"thumb to cavans: {thumbPosition}\n cavnas to SV: {absolutePosition}");
             }
         }
 
@@ -574,18 +582,16 @@ namespace Wordpad
         {
             if (sender is Thumb thumb)
             {
-                if (rulerCanvas.Margin.Right != 0)
-                {
-                    double left = Canvas.GetLeft(thumb) + 29;
-                    // Cập nhật đường gạch đứt, bắt đầu từ dưới RulerCanvas
-                    _adorner.UpdateLine(left, rulerCanvas.ActualHeight + 10, true);
-                }
-                else
-                {
-                    double left = Canvas.GetLeft(thumb) + 29 + rulerCanvas.Margin.Left;
-                    // Cập nhật đường gạch đứt, bắt đầu từ dưới RulerCanvas
-                    _adorner.UpdateLine(left, rulerCanvas.ActualHeight + 10, true);
-                }
+                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ toàn cục
+                Point thumbPosition = thumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+
+                // Tính vị trí so với gốc ScrollViewer
+                Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
+
+                double left = thumbPosition.X + absolutePosition.X;
+
+                // Cập nhật đường gạch đứt
+                _adorner.UpdateLine(left + 5, rulerCanvas.ActualHeight + 10, true);
             }
         }
 

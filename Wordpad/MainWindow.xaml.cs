@@ -36,13 +36,13 @@ namespace Wordpad
         ParagraphManager paragraphManager;
         InsertManager insertManager;
         EditingManager editingManager;
-        private GlobalDashedLineAdorner _adorner;   //Biến dùng để vẽ gạch đứt global cho tumb ruler
+        private GlobalDashedLineAdorner _adorner;   //Biến dùng để vẽ gạch đứt global cho thumb ruler
 
         public MainWindow()
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -265,10 +265,10 @@ namespace Wordpad
         //Điều khiển thanh ruler khi lân chuột ngang
         private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            // Đồng bộ scroll ngang của ruler với ScrollViewer
+            // Đồng bộ HorizontalOffset của ScrollViewer chứa rulerCanvas
             if (e.HorizontalChange != 0)
             {
-                rulerCanvas.RenderTransform = new TranslateTransform(-e.HorizontalOffset, 0);
+                rulerScrollViewer.ScrollToHorizontalOffset(RTBSCrollViewer.HorizontalOffset);
             }
         }
 
