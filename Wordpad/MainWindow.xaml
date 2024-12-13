@@ -62,7 +62,7 @@
     </Window.Resources>
     <DockPanel>
         <!-- Menu Bar -->
-        <Grid DockPanel.Dock="Top" Background="#E8E8E8">
+        <Grid DockPanel.Dock="Top" Background="#E8E8E8" Height="20">
             <Grid.ColumnDefinitions>
                 <!-- Cột chứa Menu File -->
                 <ColumnDefinition Width="Auto" />
@@ -172,7 +172,7 @@
 
 
         <!-- Toolbar -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1194" HorizontalAlignment="Left">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1222" Height="171" HorizontalAlignment="Left">
             <TabControl Width="1144">
                 <TabItem Header="Home">
                     <Grid HorizontalAlignment="Left" Width="986">
@@ -732,9 +732,9 @@
                            Maximum="100"
                            SmallChange="1"
                            LargeChange="10"
-                           DockPanel.Dock="Right"/>
+                           DockPanel.Dock="Right" Height="239"/>
         <!-- Status Bar -->
-        <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
+        <StatusBar Name="statusBar" DockPanel.Dock="Bottom" Height="22">
             <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
             <Slider Name="zoomSlider" Minimum="50" Maximum="200" Value="100" Width="150" TickFrequency="10" 
                     IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged"/>
