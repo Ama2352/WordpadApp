@@ -482,5 +482,8 @@
   <ItemGroup>
     <Resource Include="Images\DFont.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\highlight.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
