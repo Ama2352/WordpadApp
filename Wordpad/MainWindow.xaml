@@ -172,7 +172,7 @@
 
 
         <!-- Toolbar -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1222" Height="171" HorizontalAlignment="Left">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1233" Height="171">
             <TabControl Width="1144">
                 <TabItem Header="Home">
                     <Grid HorizontalAlignment="Left" Width="986">
@@ -353,12 +353,12 @@
 
 
                                 <!-- Additional Controls -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Height="32" VerticalAlignment="Bottom">
 
                                     <!-- Group for ColorPicker with Underline Icon -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
-               Width="20" Height="20" 
+               Width="42" Height="20" 
                RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0"/>
                                         <xctk:ColorPicker x:Name="colorPicker" Width="20" Height="20" 
                           SelectedColorChanged="colorPicker_SelectedColorChanged" 
@@ -368,7 +368,7 @@
                                     <!-- Group for HighlightPicker with Highlight Icon -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/highlight.png" 
-               Width="20" Height="20" 
+               Width="35" Height="20" 
                RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0"/>
                                         <xctk:ColorPicker x:Name="highlightPicker" Width="20" Height="20" 
                           SelectedColorChanged="highlightPicker_SelectedColorChanged" 
@@ -378,7 +378,7 @@
                                     <!-- Subscript Button -->
                                     <Button x:Name="btnSubscript" ToolTip="Subscript" 
             Style="{StaticResource ToolbarButtonStyle}" 
-            Click="btnSubscript_Click" Width="46" Height="32" Margin="5,0">
+            Click="btnSubscript_Click" Width="40" Height="32" Margin="5,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
                Width="16" Height="16" 
                RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -387,7 +387,7 @@
                                     <!-- Superscript Button -->
                                     <Button x:Name="btnSuperscript" ToolTip="Superscript" 
             Style="{StaticResource ToolbarButtonStyle}" 
-            Click="btnSuperscript_Click" Width="40" Height="32" Margin="5,0">
+            Click="btnSuperscript_Click" Width="27" Height="32" Margin="5,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
                Width="16" Height="16" 
                RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -541,15 +541,15 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnJustifyAlignment" ToolTip="Justify" Style="{StaticResource ToolbarButtonStyle}" Click="btnJustifyAlignment_Click" Margin="10,0,96,4">
+                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnJustifyAlignment" ToolTip="Justify" Style="{StaticResource ToolbarButtonStyle}" Click="btnJustifyAlignment_Click" Margin="6,2,108,2">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/Justify.png" 
-                                           Width="32" Height="32" 
+                                           Width="32" Height="31" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
                                            RenderOptions.EdgeMode="Aliased"
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnParagraph" ToolTip="Paragraph Settings" Style="{StaticResource ToolbarButtonStyle}" Margin="63,4,43,0">
+                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnParagraph" ToolTip="Paragraph Settings" Style="{StaticResource ToolbarButtonStyle}" Margin="69,2,45,2">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/paragraph.png" 
                                            Width="32" Height="32" 
                                            RenderOptions.BitmapScalingMode="HighQuality"
@@ -564,17 +564,21 @@
 
                         <!-- Editing Section -->
                         <Grid Grid.Column="8" Margin="93,10,-83,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="44*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <!-- Editing Title -->
-                            <TextBlock Text="Editing" Grid.Row="0" Margin="7,-12,-124,106" FontWeight="SemiBold" 
-               Foreground="#666666" Grid.RowSpan="2"/>
+                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-14,-98,1" FontWeight="SemiBold" 
+               Foreground="#666666" Grid.ColumnSpan="2"/>
 
                             <!-- Buttons Grid -->
-                            <Grid Margin="-82,9,-132,0" Grid.Row="1">
+                            <Grid Margin="-97,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
