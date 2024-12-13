@@ -172,7 +172,7 @@
 
 
         <!-- Toolbar -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1233" Height="171">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1233" Height="171" HorizontalAlignment="Left">
             <TabControl Width="1144">
                 <TabItem Header="Home">
                     <Grid HorizontalAlignment="Left" Width="986">
