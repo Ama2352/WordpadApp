@@ -489,27 +489,27 @@
                                 <!-- Row 0: Indentation and Spacing -->
                                 <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
+                                               Width="32" Height="32" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderOptions.EdgeMode="Aliased"
+                                               SnapsToDevicePixels="True"
+                                               UseLayoutRounding="True"/>
                                 </Button>
-                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click">
+                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Center" Margin="0,2,0,2" Width="48">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" 
-                                           Width="32" Height="32" 
-                                           RenderOptions.BitmapScalingMode="HighQuality"
-                                           RenderOptions.EdgeMode="Aliased"
-                                           SnapsToDevicePixels="True"
-                                           UseLayoutRounding="True"/>
+                                               Width="32" Height="32" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderOptions.EdgeMode="Aliased"
+                                               SnapsToDevicePixels="True"
+                                               UseLayoutRounding="True"/>
                                 </Button>
-                                <ComboBox Grid.Row="0" Grid.Column="2" x:Name="cbLineSpacing" Width="55" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="2" Height="24">
+                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="3,14,139,18" Height="20" Width="20">
                                     <ComboBoxItem Content="1.0"/>
                                     <ComboBoxItem Content="1.25"/>
                                     <ComboBoxItem Content="1.5"/>
                                     <ComboBoxItem Content="2.0"/>
                                 </ComboBox>
-                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbStartAList" Width="150" Height="24" Margin="2">
+                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbStartAList" Width="20" Height="20" Margin="87,12,55,20">
                                     <ComboBoxItem Content="Bullet"/>
                                     <ComboBoxItem Content="Number"/>
                                     <ComboBoxItem Content="Lower Alphabet"/>
@@ -557,6 +557,16 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
+                                <Image Source="/Images/line-spacing.png" 
+                                    RenderOptions.BitmapScalingMode="HighQuality"
+                                    RenderOptions.EdgeMode="Aliased"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True" Margin="50,10,80,10" Grid.Column="3" Width="32" Height="32"/>
+                                <Image Source="/Images/list.png" 
+                                    RenderOptions.BitmapScalingMode="HighQuality"
+                                    RenderOptions.EdgeMode="Aliased"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True" Margin="18,11,2,9" Grid.Column="2" Width="32" Height="32"/>
                             </Grid>
                         </Grid>
                         <!-- Separator 4 -->
@@ -578,7 +588,7 @@
                Foreground="#666666" Grid.ColumnSpan="2"/>
 
                             <!-- Buttons Grid -->
-                            <Grid Margin="-97,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid Margin="-90,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
