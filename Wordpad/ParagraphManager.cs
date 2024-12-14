@@ -10,6 +10,7 @@ namespace Wordpad
     internal class ParagraphManager
     {
         private RichTextBox _richTextBox;
+        private Ruler ruler;
         public static float lineSpacing = 1.0f;
         //Biến đề đồng bộ line height để bằng với wordpad(đoán mò ~~)
         private float LineHeightMultiplier = 1.3f;
@@ -18,9 +19,10 @@ namespace Wordpad
 
 
         // Khởi tạo với tham chiếu tới RichTextBox
-        public ParagraphManager(RichTextBox richTextBox)
+        public ParagraphManager(RichTextBox richTextBox, Ruler ruler)
         {
             _richTextBox = richTextBox;
+            this.ruler = ruler;
         }
 
         // Căn lề trái
@@ -135,7 +137,9 @@ namespace Wordpad
                         if (paragraph.ContentStart.CompareTo(end) <= 0
                             && paragraph.ContentEnd.CompareTo(start) >= 0)
                         {
-                            paragraph.TextIndent += 20; // Tăng thụt lề
+                            ruler.isParagraphChanged = true;
+                            ruler.IncreaseIndent(48);   //Tăng 0,5 inch
+                            ruler.isParagraphChanged = false;
                         }
                     }
                 }
@@ -146,8 +150,9 @@ namespace Wordpad
                 Paragraph para = selection.Start.Paragraph;
                 if (para != null)
                 {
-                    // Tăng độ thụt lề (indent) cho đoạn văn bản
-                    para.TextIndent += 20;  // Tăng độ thụt lề (20 unit)
+                    ruler.isParagraphChanged = true;
+                    ruler.IncreaseIndent(48);   //Tăng 0,5 inch
+                    ruler.isParagraphChanged = false;
                 }
             }
 
@@ -171,7 +176,9 @@ namespace Wordpad
                             && paragraph.ContentEnd.CompareTo(start) >= 0
                             && paragraph.TextIndent >= 20)
                         {
-                            paragraph.TextIndent -= 20;
+                            ruler.isParagraphChanged = true;
+                            ruler.DecreaseIndent(48);   //Tăng 0,5 inch
+                            ruler.isParagraphChanged = false;
                         }
                     }
                 }
@@ -179,8 +186,12 @@ namespace Wordpad
             else
             {
                 Paragraph para = selection.Start.Paragraph;
-                if (para != null && para.TextIndent >= 20)
-                    para.TextIndent -= 20;
+                if (para != null)
+                {
+                    ruler.isParagraphChanged = true;
+                    ruler.DecreaseIndent(48);   //Tăng 0,5 inch
+                    ruler.isParagraphChanged = false;
+                }
             }
         }
 

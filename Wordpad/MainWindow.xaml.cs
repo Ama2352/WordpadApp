@@ -55,7 +55,7 @@ namespace Wordpad
             //Home
             clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
-            paragraphManager = new ParagraphManager(richTextBox);
+            paragraphManager = new ParagraphManager(richTextBox, ruler);
             insertManager = new InsertManager(richTextBox); 
             editingManager = new EditingManager(richTextBox);
 

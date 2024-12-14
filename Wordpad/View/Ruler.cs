@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Shapes;
-using System.Windows.Media;
 using System.Windows.Documents;
-using System.Windows;
-using DocumentFormat.OpenXml.Drawing.ChartDrawing;
-using Shape = System.Windows.Shapes.Shape;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Wordpad.View;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using Shape = System.Windows.Shapes.Shape;
 using Thumb = System.Windows.Controls.Primitives.Thumb;
 
 namespace Wordpad
@@ -44,7 +40,7 @@ namespace Wordpad
         double zoomScale = 1;
         private bool isHangingChanged = false;      //Biến check xem hanging thumb có vừa được điều chỉnh ko
         private bool isFirstLineChanged = false;      //Biến check xem frist line thumb có vừa được điều chỉnh ko
-        private bool isParagraphChanged = false;      //Biến check xem parapraph thumb có vừa được điều chỉnh ko
+        public bool isParagraphChanged = false;      //Biến check xem parapraph thumb có vừa được điều chỉnh ko
         //Các biến lưu vị trí của các đường gạch đứt của các thumb
         private double _firstLineAdornerPosition = 0;
         private double _hangingAdornerPosition = 0;
@@ -726,6 +722,72 @@ namespace Wordpad
         {
             _adorner = adorner;
             // Nếu cần, cập nhật lại giao diện hoặc các logic khác liên quan đến Adorner
+        }
+
+        //In/Decrease indent là sẽ điều chỉnh vị trí của para thumb nên sẽ copy code ở trên đem xuống: di chuyển thumb, cập nhật nét đứt, apply indent
+        public void IncreaseIndent(double length)
+        {
+            double newIndent = Canvas.GetLeft(paragraphIndentThumb) + length;
+            double setHanging = Canvas.GetLeft(hangingIndentThumb) + length;
+            double setFirstLine = Canvas.GetLeft(firstLineIndentThumb) + length;
+            // Khi di chuyển first line thumb thì cũng phải xét vị trí của nó so với text length của ruler
+            if (newIndent >= (leftMargin - 5) && newIndent <= Canvas.GetLeft(rightIndentThumb)
+                && setFirstLine >= (leftMargin - 5) && setFirstLine <= Canvas.GetLeft(rightIndentThumb))
+            {
+                // Di chuyển toàn bộ các Thumb trái
+
+                Canvas.SetLeft(paragraphIndentThumb, newIndent);
+                Canvas.SetLeft(hangingIndentThumb, setHanging);
+                Canvas.SetLeft(firstLineIndentThumb, setFirstLine);
+
+                rulerCanvas.UpdateLayout();
+                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ rulerCanvas
+                Point thumbPosition = paragraphIndentThumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+                Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
+
+                // Điều chỉnh tọa độ theo tỷ lệ zoom
+                //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
+                //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
+                double left = (thumbPosition.X * zoomScale + absolutePosition.X);   //Tọa độ X của thumb trong window
+
+                _paragraphAdornerPosition = left + 5 * zoomScale;
+                preParaIndent = _paragraphAdornerPosition - leftMargin - absolutePosition.X - length;
+
+                _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
+                ApplyIndent();
+            }
+        }
+        public void DecreaseIndent(double length)
+        {
+            double newIndent = Canvas.GetLeft(paragraphIndentThumb) - length;
+            double setHanging = Canvas.GetLeft(hangingIndentThumb) - length;
+            double setFirstLine = Canvas.GetLeft(firstLineIndentThumb) - length;
+            // Khi di chuyển first line thumb thì cũng phải xét vị trí của nó so với text length của ruler
+            if (newIndent >= (leftMargin - 5) && newIndent <= Canvas.GetLeft(rightIndentThumb)
+                && setFirstLine >= (leftMargin - 5) && setFirstLine <= Canvas.GetLeft(rightIndentThumb))
+            {
+                // Di chuyển toàn bộ các Thumb trái
+
+                Canvas.SetLeft(paragraphIndentThumb, newIndent);
+                Canvas.SetLeft(hangingIndentThumb, setHanging);
+                Canvas.SetLeft(firstLineIndentThumb, setFirstLine);
+
+                rulerCanvas.UpdateLayout();
+                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ rulerCanvas
+                Point thumbPosition = paragraphIndentThumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+                Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
+
+                // Điều chỉnh tọa độ theo tỷ lệ zoom
+                //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
+                //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
+                double left = (thumbPosition.X * zoomScale + absolutePosition.X);   //Tọa độ X của thumb trong window
+
+                _paragraphAdornerPosition = left + 5 * zoomScale;
+                preParaIndent = _paragraphAdornerPosition - leftMargin - absolutePosition.X + length;
+
+                _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
+                ApplyIndent();
+            }
         }
     }
 }
