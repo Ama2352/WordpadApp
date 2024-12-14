@@ -13,6 +13,8 @@ using DocumentFormat.OpenXml.Drawing.ChartDrawing;
 using Shape = System.Windows.Shapes.Shape;
 using System.Windows.Input;
 using Wordpad.View;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+using Thumb = System.Windows.Controls.Primitives.Thumb;
 
 namespace Wordpad
 {
@@ -40,11 +42,23 @@ namespace Wordpad
         public static double oriRulerWidth;
         double delta = 0;    //Giá trị khác biệt của kích thước trước và sau khi zoom của dockpanel
         double zoomScale = 1;
+        private bool isHangingChanged = false;      //Biến check xem hanging thumb có vừa được điều chỉnh ko
+        private bool isFirstLineChanged = false;      //Biến check xem frist line thumb có vừa được điều chỉnh ko
+        private bool isParagraphChanged = false;      //Biến check xem parapraph thumb có vừa được điều chỉnh ko
+        //Các biến lưu vị trí của các đường gạch đứt của các thumb
+        private double _firstLineAdornerPosition = 0;
+        private double _hangingAdornerPosition = 0;
+        private double _paragraphAdornerPosition = 0;
+        private double _rightAdornerPosition = 0;
+        double preFirstLineIndent = 0;      //Giá trị khác biệt của para.textindent khi dùng hanging thumb và first line thumb.
+        double preHangingIndent = 0;      //Giá trị khác biệt của para.textindent khi dùng hanging thumb và first line thumb.
+        double preParaIndent = 0;      //Giá trị khác biệt của para.textindent khi dùng hanging thumb và first line thumb.
 
         private RichTextBox richTextBox;
         private DockPanel dockPanel;
         private DockPanel mainContainer;
         private ScrollViewer rulerScrollViewer;
+        private ScrollViewer RTBScrollViewer;
 
         private string currentUnit = "Inches"; // Đơn vị đo hiện tại
         private readonly Dictionary<string, double> unitConversion;
@@ -56,7 +70,7 @@ namespace Wordpad
 
 
         public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, RichTextBox richTextBox, DockPanel dockPanel, DockPanel mainContainer,
-            GlobalDashedLineAdorner adorner, ScrollViewer SV)
+            GlobalDashedLineAdorner adorner, ScrollViewer SV, ScrollViewer SV2)
         {
             marginCanvas = margin;
             tickCanvas = tick;
@@ -67,6 +81,7 @@ namespace Wordpad
             this.mainContainer = mainContainer;
             _adorner = adorner;
             this.rulerScrollViewer = SV;
+            RTBScrollViewer = SV2;
 
             rulerLength = dockPanel.Width;
             unitConversion = new Dictionary<string, double>
@@ -98,6 +113,23 @@ namespace Wordpad
                         newParagraph.TextIndent = caretParagraph.TextIndent;
                         newParagraph.Margin = caretParagraph.Margin;
                         richTextBox.Document.Blocks.InsertAfter(caretParagraph, newParagraph);
+                    }
+                }
+                else if (e.Key == Key.Back)
+                {
+                    var caretPosition = richTextBox.CaretPosition;
+                    var currentParagraph = caretPosition.Paragraph;
+
+                    if (currentParagraph != null)
+                    {
+                        // Kiểm tra nếu vị trí con trỏ nằm trước giá trị TextIndent
+                        double firstLineIndent = currentParagraph.TextIndent;
+                        double caretOffset = caretPosition.GetCharacterRect(LogicalDirection.Forward).X;
+
+                        if (caretOffset <= firstLineIndent)
+                        {
+                            e.Handled = true; // Ngăn Backspace
+                        }
                     }
                 }
             };
@@ -226,22 +258,22 @@ namespace Wordpad
         {
             // Tạo Thumb cho First Line Indent - tam giác trên
             firstLineIndentThumb = CreateCustomThumb(0);
-            Canvas.SetLeft(firstLineIndentThumb, leftMargin - thumbSize);
+            Canvas.SetLeft(firstLineIndentThumb, leftMargin - 5);
             thumbCanvas.Children.Add(firstLineIndentThumb);
 
             // Tạo Thumb cho Hanging Indent - tam giác dưới
             hangingIndentThumb = CreateCustomThumb(2);
-            Canvas.SetLeft(hangingIndentThumb, leftMargin);
+            Canvas.SetLeft(hangingIndentThumb, leftMargin - 5);
             thumbCanvas.Children.Add(hangingIndentThumb);
 
             // Tạo Thumb cho Paragraph Indent - chữ nhật dưới
             paragraphIndentThumb = CreateCustomThumb(1);
-            Canvas.SetLeft(paragraphIndentThumb, leftMargin);
+            Canvas.SetLeft(paragraphIndentThumb, leftMargin - 5);
             thumbCanvas.Children.Add(paragraphIndentThumb);
 
             // Tạo Thumb cho Right Indent - tam giác dưới
             rightIndentThumb = CreateCustomThumb(2);
-            Canvas.SetLeft(rightIndentThumb, leftMargin + textLength + thumbSize);
+            Canvas.SetLeft(rightIndentThumb, rulerLength - rightMargin - 5);
             thumbCanvas.Children.Add(rightIndentThumb);
 
             // Gắn sự kiện DragDelta cho các Thumb
@@ -265,7 +297,7 @@ namespace Wordpad
             hangingIndentThumb.DragCompleted += Thumb_DragCompleted;
             paragraphIndentThumb.DragCompleted += Thumb_DragCompleted;
             rightIndentThumb.DragCompleted += Thumb_DragCompleted;
-            InitializeDashLines();
+            //InitializeDashLines();
         }
 
         // Hàm tạo Thumb với giao diện tùy chỉnh
@@ -367,7 +399,7 @@ namespace Wordpad
             double newIndent = Canvas.GetLeft(firstLineIndentThumb) + e.HorizontalChange;
 
             //Giới hạn cần - cho kích thước của thumb
-            if (newIndent >= (leftMargin - thumbSize) && newIndent <= Canvas.GetLeft(rightIndentThumb) - 10)
+            if (newIndent >= (leftMargin - 5) && newIndent <= Canvas.GetLeft(rightIndentThumb))
             {
                 Canvas.SetLeft(firstLineIndentThumb, newIndent);
                 ApplyIndent();
@@ -393,12 +425,11 @@ namespace Wordpad
         private void ParagraphIndentThumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             double newIndent = Canvas.GetLeft(paragraphIndentThumb) + e.HorizontalChange;
-            double delta = newIndent - Canvas.GetLeft(paragraphIndentThumb);
-            double setHanging = Canvas.GetLeft(hangingIndentThumb) + delta;
-            double setFirstLine = Canvas.GetLeft(firstLineIndentThumb) + delta;
+            double setHanging = Canvas.GetLeft(hangingIndentThumb) + e.HorizontalChange;
+            double setFirstLine = Canvas.GetLeft(firstLineIndentThumb) + e.HorizontalChange;
             // Khi di chuyển first line thumb thì cũng phải xét vị trí của nó so với text length của ruler
             if (newIndent >= (leftMargin - 5) && newIndent <= Canvas.GetLeft(rightIndentThumb)
-                && setFirstLine >= (leftMargin - thumbSize) && setFirstLine <= Canvas.GetLeft(rightIndentThumb) - 10)
+                && setFirstLine >= (leftMargin - 5) && setFirstLine <= Canvas.GetLeft(rightIndentThumb))
             {
                 // Di chuyển toàn bộ các Thumb trái
 
@@ -415,7 +446,7 @@ namespace Wordpad
             double newIndent = Canvas.GetLeft(rightIndentThumb) + e.HorizontalChange;
 
             // Giới hạn di chuyển trong khoảng hợp lệ
-            if (newIndent >= (Canvas.GetLeft(firstLineIndentThumb) + 10) && newIndent >= (Canvas.GetLeft(hangingIndentThumb)) &&
+            if (newIndent >= (Canvas.GetLeft(firstLineIndentThumb)) && newIndent >= (Canvas.GetLeft(hangingIndentThumb)) &&
                 newIndent <= (rulerLength - rightMargin - 5))
             {
                 Canvas.SetLeft(rightIndentThumb, newIndent);
@@ -481,14 +512,56 @@ namespace Wordpad
         /// </summary>
         private void ApplyIndentToParagraph(Paragraph paragraph, double pixelsPerUnit)
         {
-            double firstLineIndent = (Canvas.GetLeft(firstLineIndentThumb) - (leftMargin - thumbSize));
-            double hangingIndent = (Canvas.GetLeft(hangingIndentThumb) - (leftMargin - 5));
-            double paragraphIndent = (Canvas.GetLeft(paragraphIndentThumb) - (leftMargin - 5));
-            double rightIndent = (rulerLength - Canvas.GetLeft(rightIndentThumb));
+            // Lấy chiều trài lề trái của dock panel so với window trong hệ tọa độ ScrollViewer ~ tọa độ X của dock panel
+            Point absolutePosition = dockPanel.TransformToAncestor(RTBScrollViewer).Transform(new Point(0, 0));
 
-            // Cập nhật đoạn văn
-            paragraph.TextIndent = firstLineIndent;
-            paragraph.Margin = new Thickness(paragraphIndent, 0, 0, 0);
+            //Các indent đều được tính từ left margin.
+            double firstLineIndent = (_firstLineAdornerPosition - leftMargin - absolutePosition.X);
+            double hangingIndent = _hangingAdornerPosition - leftMargin - absolutePosition.X;
+            double paragraphIndent = _paragraphAdornerPosition - leftMargin - absolutePosition.X;
+            double rightIndent = (absolutePosition.X + rulerLength) - _rightAdornerPosition - rightMargin;
+
+            double preMargin = paragraph.Margin.Left;   //Biến lưu giá trị cũ của margin left để tính số đơn vị cần di chuyển indent của hanging 
+
+
+            //Xét xem phải hanging thumb vừa được điều chỉnh ko.
+
+            if (isHangingChanged)
+            {
+                // Cập nhật trạng thái hanging indent
+                double deltaHangingIndent = hangingIndent - preHangingIndent;
+                paragraph.Margin = new Thickness(paragraph.Margin.Left + deltaHangingIndent, 0, rightIndent, 0);
+                preHangingIndent = hangingIndent;
+
+                double deltaMargin = paragraph.Margin.Left - preMargin;     //Biến lưu lại sự khác biệt của margin sau khi điều chỉnh margin và hướng mà hanging thumb di chuyển
+                                                                //(+): margin trước lớn hơn(indent mới thấp hơn (<-)); (-): margin trước bé hơn(indent mới sâu hơn(->))
+
+                paragraph.TextIndent = paragraph.TextIndent - deltaMargin; //thụt đầu dòng tính từ margin của paragraph. margin bị dời bao nhiêu do hangthumb,
+                                                                           //thì sẽ trừ first line indent bấy nhiêu.
+
+
+            }
+            else if(isFirstLineChanged)
+            {
+                // Cập nhật đoạn văn
+                double delta = firstLineIndent - preFirstLineIndent;    //Giá trị khác nhau giữa vị trí trước đó và vị trí hiện tại của thumb thì ms xét đúng dấu (+,-) dc.
+                paragraph.TextIndent += delta;
+                preFirstLineIndent = firstLineIndent; // -->Cập nhật lại giá trị ban đầu sau mỗi lần kéo.
+            }
+            else if(isParagraphChanged)
+            {
+                double deltaParaIndent = paragraphIndent - preParaIndent;
+                paragraph.Margin = new Thickness(paragraph.Margin.Left + deltaParaIndent, 0, rightIndent, 0);
+                preParaIndent = paragraphIndent;
+            }
+            else
+            {
+                paragraph.Margin = new Thickness(paragraph.Margin.Left, 0, rightIndent, 0);
+            }
+            //MessageBox.Show($"First line indent: {firstLineIndent}\nPre First Line indent: {preFirstLineIndent}\n" +
+            //    $"Hanging indent: {hangingIndent}\nRight indent: {rightIndent}" +
+            //    $"\nRight margin: {paragraph.Margin.Right}\nText indent: {paragraph.TextIndent}" +
+            //    $"\nParagraph indent: {paragraphIndent}\nLeft margin: {paragraph.Margin.Left}");
         }
 
 
@@ -510,23 +583,6 @@ namespace Wordpad
 
             // Áp dụng scale theo kích thước ban đầu của ruler
             rulerCanvas.LayoutTransform = new ScaleTransform(scaleX, 1);
-            //// Tính lại vị trí dockPanel (nếu bị dịch chuyển do zoom)
-            //dockPanel.UpdateLayout();
-            //Point dockPanelPosition = dockPanel.TransformToAncestor(mainContainer)
-            //                                 .Transform(new Point(0, 0));
-
-            //// Cập nhật Margin của rulerCanvas để nó luôn nằm đúng vị trí so với dockPanel
-            //if(dockPanelPosition.X > 0)
-            //{
-            //    Thickness newMargin = new Thickness(dockPanelPosition.X - 15, 0, dockPanelPosition.X, 0);
-            //    rulerCanvas.Margin = newMargin;
-            //}
-            //else
-            //{
-            //    Thickness newMargin = new Thickness(rulerCanvas.Margin.Left + delta, 0, 0, 0);
-            //    rulerCanvas.Margin = newMargin;
-            //}
-            //MessageBox.Show($"dock panel X: {dockPanelPosition.X}\nRuler canvas margin: {rulerCanvas.Margin}");
         }
         
         //Hàm cập nhật chiều dài của canvas do khi đang chạy hàm adjust dockpanel, kích thước của dock panel chưa thực sự được đổi nên cần đổi trực
@@ -540,9 +596,32 @@ namespace Wordpad
         }
 
         //Tạo các nét đứt
-        private void InitializeDashLines()
+        public void InitializeDashLines()
         {
             DashedLine = CreateDashLine();
+            // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ rulerCanvas
+            Point thumbPosition = firstLineIndentThumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+
+            // Lấy vị trí của rulerCanvas trong hệ tọa độ ScrollViewer
+            Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
+
+            // Điều chỉnh tọa độ theo tỷ lệ zoom
+            //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
+            //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
+            double left = (thumbPosition.X * zoomScale + absolutePosition.X);   //Tọa độ X của thumb trong window
+
+            // Cập nhật vị trí adorner
+            _firstLineAdornerPosition = left + 5 * zoomScale;
+
+            thumbPosition = hangingIndentThumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+            left = (thumbPosition.X * zoomScale + absolutePosition.X);
+            _hangingAdornerPosition = left + 5 * zoomScale;
+            _paragraphAdornerPosition = left + 5 * zoomScale;   //hanging và paragraph thumb trùng vị trí
+
+
+            thumbPosition = rightIndentThumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
+            left = (thumbPosition.X * zoomScale + absolutePosition.X);
+            _rightAdornerPosition = left + 5 * zoomScale;
         }
 
         private Line CreateDashLine()
@@ -570,7 +649,33 @@ namespace Wordpad
                 // Điều chỉnh tọa độ theo tỷ lệ zoom
                 //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
                 //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
-                double left = (thumbPosition.X * zoomScale + absolutePosition.X);
+                double left = (thumbPosition.X * zoomScale + absolutePosition.X);   //Tọa độ X của thumb trong window
+
+                // Cập nhật vị trí adorner
+                if (thumb == firstLineIndentThumb)
+                {
+                    _firstLineAdornerPosition = left + 5 * zoomScale;
+                    preFirstLineIndent = (_firstLineAdornerPosition - leftMargin - absolutePosition.X);       //Biến lưu vị trí cũ của first line thumb để tính thumb kéo k/c bn
+                    isFirstLineChanged = true;
+                }
+                    
+                else if (thumb == hangingIndentThumb)
+                {
+                    _hangingAdornerPosition = left + 5 * zoomScale;
+                    preHangingIndent = _hangingAdornerPosition - leftMargin - absolutePosition.X;
+
+                    isHangingChanged = true;
+                }
+
+                else if (thumb == paragraphIndentThumb)
+                {
+                    _paragraphAdornerPosition = left + 5 * zoomScale;
+                    preParaIndent = _paragraphAdornerPosition - leftMargin - absolutePosition.X;
+                    isParagraphChanged = true;
+                }
+
+                else if (thumb == rightIndentThumb)
+                    _rightAdornerPosition = left + 5 * zoomScale;
 
                 // Cập nhật đường gạch đứt
                 _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
@@ -582,22 +687,39 @@ namespace Wordpad
         {
             if (sender is Thumb thumb)
             {
-                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ toàn cục
+                // Lấy vị trí tuyệt đối của Thumb trong hệ tọa độ rulerCanvas
                 Point thumbPosition = thumb.TransformToAncestor(rulerCanvas).Transform(new Point(0, 0));
 
-                // Tính vị trí so với gốc ScrollViewer
+                // Lấy vị trí của rulerCanvas trong hệ tọa độ ScrollViewer
                 Point absolutePosition = rulerCanvas.TransformToAncestor(rulerScrollViewer).Transform(new Point(0, 0));
 
-                double left = thumbPosition.X + absolutePosition.X;
+                // Điều chỉnh tọa độ theo tỷ lệ zoom
+                //Phải nhân vị trí của thumb(so với ruler canvas) vì nó là vị trí tuyệt đối(cố định) so với canvas.
+                //Nhưng là phải thay đổi theo zoom để chiều dài nó phù hợp vs zoom.
+                double left = (thumbPosition.X * zoomScale + absolutePosition.X);
+
+                // Cập nhật vị trí adorner
+                if (thumb == firstLineIndentThumb)
+                    _firstLineAdornerPosition = left + 5 * zoomScale;
+                else if (thumb == hangingIndentThumb)
+                    _hangingAdornerPosition = left + 5 * zoomScale;
+                else if (thumb == paragraphIndentThumb)
+                    _paragraphAdornerPosition = left + 5 * zoomScale;
+                else if (thumb == rightIndentThumb)
+                    _rightAdornerPosition = left + 5 * zoomScale;
 
                 // Cập nhật đường gạch đứt
-                _adorner.UpdateLine(left + 5, rulerCanvas.ActualHeight + 10, true);
+                _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
+                //MessageBox.Show($"thumb to cavans: {thumbPosition}\n cavnas to SV: {absolutePosition}");
             }
         }
 
         private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             _adorner.UpdateLine(0, 0, false); // Ẩn đường gạch đứt
+            isHangingChanged = false;
+            isFirstLineChanged = false;
+            isParagraphChanged = false;
         }
 
         public void SetAdorner(GlobalDashedLineAdorner adorner)

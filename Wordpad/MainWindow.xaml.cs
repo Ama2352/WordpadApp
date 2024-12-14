@@ -42,7 +42,7 @@ namespace Wordpad
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer, RTBSCrollViewer);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -102,6 +102,8 @@ namespace Wordpad
             //Vẽ ruler lần đầu
             ruler.DrawRuler();
             ruler.InitializeThumbs();
+            // Trì hoãn việc khởi tạo dashed lines để giao diện hoàn tất
+            Dispatcher.BeginInvoke(new Action(ruler.InitializeDashLines), System.Windows.Threading.DispatcherPriority.Render);
             // Scale toàn bộ rulerCanvas cho bằng dock panel
             rulerCanvas.Width = RTBContainer.Width;
             // Lấy AdornerLayer của toàn bộ cửa sổ
