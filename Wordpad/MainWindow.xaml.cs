@@ -36,13 +36,13 @@ namespace Wordpad
         ParagraphManager paragraphManager;
         InsertManager insertManager;
         EditingManager editingManager;
-        private GlobalDashedLineAdorner _adorner;   //Biến dùng để vẽ gạch đứt global cho thumb ruler
+        //private GlobalDashedLineAdorner _adorner;   //Biến dùng để vẽ gạch đứt global cho thumb ruler
 
         public MainWindow()
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer, RTBSCrollViewer);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer, RTBSCrollViewer, null);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -101,26 +101,27 @@ namespace Wordpad
             //MessageBox.Show($"Dock width: {RTBContainer.Width}");
             //Vẽ ruler lần đầu
             ruler.DrawRuler();
-            ruler.InitializeThumbs();
-            // Trì hoãn việc khởi tạo dashed lines để giao diện hoàn tất
-            Dispatcher.BeginInvoke(new Action(ruler.InitializeDashLines), System.Windows.Threading.DispatcherPriority.Render);
+            //ruler.InitializeThumbs();
+            //// Trì hoãn việc khởi tạo dashed lines để giao diện hoàn tất
+            //Dispatcher.BeginInvoke(new Action(ruler.InitializeDashLines), System.Windows.Threading.DispatcherPriority.Render);
             // Scale toàn bộ rulerCanvas cho bằng dock panel
             rulerCanvas.Width = RTBContainer.Width;
             // Lấy AdornerLayer của toàn bộ cửa sổ
             //Hoãn thời điểm lấy adorner để nó được tạo trước.
             this.Dispatcher.InvokeAsync(() =>
             {
-                AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(textEditor);
-                if (adornerLayer == null)
-                {
-                    MessageBox.Show("AdornerLayer is null. Ensure that the AdornerLayer exists in the visual tree.");
-                    return;
-                }
+                //    AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(textEditor);
+                //    if (adornerLayer == null)
+                //    {
+                //        MessageBox.Show("AdornerLayer is null. Ensure that the AdornerLayer exists in the visual tree.");
+                //        return;
+                //    }
 
-                _adorner = new GlobalDashedLineAdorner(textEditor);
-                adornerLayer.Add(_adorner);
+                //    _adorner = new GlobalDashedLineAdorner(textEditor);
+                //    adornerLayer.Add(_adorner);
 
-                ruler.SetAdorner(_adorner);
+                //    ruler.SetAdorner(_adorner);
+                ruler.SetViewManager(viewManagment);
             });
         }
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -515,10 +516,6 @@ namespace Wordpad
             paragraphManager.AlignJustify();
         }
 
-        private void btnParagraph_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void btnPicture_Click(object sender, RoutedEventArgs e)
         {
@@ -564,7 +561,27 @@ namespace Wordpad
             replaceWindow.Show();
         }
 
+        private void btnParagraph_Click_1(object sender, RoutedEventArgs e)
+        {
+            var paragraphWindow = new ParagraphWindow();
+            bool? dialogResult = paragraphWindow.ShowDialog();
 
+            if (dialogResult == true)
+            {
+                // Lấy giá trị từ ParagraphWindow
+                double leftIndent = paragraphWindow.IndentLeft;
+                double rightIndent = paragraphWindow.IndentRight;
+                double firstLineIndent = paragraphWindow.FirstLineIndent;
+                float lineSpacing = paragraphWindow.LineSpacing;
+                bool addSpacing = paragraphWindow.AddSpacingAfterParagraphs;
+                TextAlignment alignment = paragraphWindow.Alignment;
+
+                // Truyền các giá trị này vào ParagraphManager
+                paragraphManager.SetIndentation(leftIndent, rightIndent, firstLineIndent);
+                paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, addSpacing);
+                paragraphManager.SetAlignment(alignment);
+            }
+        }
 
         #endregion
 
@@ -577,5 +594,7 @@ namespace Wordpad
             //rulerCanvas.Width *= 1.1;
             //MessageBox.Show($"ruler cavas widht: {rulerCanvas.Width}"); 
         }
+
+
     }
 }

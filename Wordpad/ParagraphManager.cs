@@ -137,9 +137,8 @@ namespace Wordpad
                         if (paragraph.ContentStart.CompareTo(end) <= 0
                             && paragraph.ContentEnd.CompareTo(start) >= 0)
                         {
-                            ruler.isParagraphChanged = true;
-                            ruler.IncreaseIndent(48);   //Tăng 0,5 inch
-                            ruler.isParagraphChanged = false;
+                            //Length = 48 ~ 0,5 inch
+                            ruler.IncreaseIndentSimplified(paragraph, 48);
                         }
                     }
                 }
@@ -150,9 +149,7 @@ namespace Wordpad
                 Paragraph para = selection.Start.Paragraph;
                 if (para != null)
                 {
-                    ruler.isParagraphChanged = true;
-                    ruler.IncreaseIndent(48);   //Tăng 0,5 inch
-                    ruler.isParagraphChanged = false;
+                    ruler.IncreaseIndentSimplified(para, 48);
                 }
             }
 
@@ -173,12 +170,9 @@ namespace Wordpad
                     if (block is Paragraph paragraph)
                     {
                         if (paragraph.ContentStart.CompareTo(end) <= 0
-                            && paragraph.ContentEnd.CompareTo(start) >= 0
-                            && paragraph.TextIndent >= 20)
+                            && paragraph.ContentEnd.CompareTo(start) >= 0)
                         {
-                            ruler.isParagraphChanged = true;
-                            ruler.DecreaseIndent(48);   //Tăng 0,5 inch
-                            ruler.isParagraphChanged = false;
+                            ruler.DecreaseIndentSimplified(paragraph, 48);
                         }
                     }
                 }
@@ -188,15 +182,11 @@ namespace Wordpad
                 Paragraph para = selection.Start.Paragraph;
                 if (para != null)
                 {
-                    ruler.isParagraphChanged = true;
-                    ruler.DecreaseIndent(48);   //Tăng 0,5 inch
-                    ruler.isParagraphChanged = false;
+                    ruler.DecreaseIndentSimplified(para, 48);
                 }
             }
         }
 
-
-        // Hàm Set Line Spacing
         // Hàm Set Line Spacing
         public void SetLineSpacingWithSpacingAfterParagraphs(float lineSpacing, bool addSpacingAfterParagraphs = false)
         {
@@ -285,6 +275,57 @@ namespace Wordpad
 
             return (startPosition.CompareTo(paragraphEnd) <= 0) && (endPosition.CompareTo(paragraphStart) >= 0);
         }
+
+        //Các hàm truyền dữ liệu từ paragraph window
+
+        public void SetIndentation(double leftIndent, double rightIndent, double firstLineIndent)
+        {
+            var selection = _richTextBox.Selection;
+            if (selection.IsEmpty)
+            {
+                foreach (var block in _richTextBox.Document.Blocks)
+                {
+                    if (block is Paragraph paragraph)
+                    {
+                        paragraph.Margin = new Thickness(leftIndent, 0, rightIndent, 0);
+                        paragraph.TextIndent = firstLineIndent;
+                    }
+                }
+            }
+            else
+            {
+                Paragraph para = selection.Start.Paragraph;
+                if (para != null)
+                {
+                    para.Margin = new Thickness(leftIndent,0, rightIndent, 0);
+                    para.TextIndent = firstLineIndent;
+                }
+            }
+        }
+
+        public void SetAlignment(TextAlignment alignment)
+        {
+            var selection = _richTextBox.Selection;
+            if (selection.IsEmpty)
+            {
+                foreach (var block in _richTextBox.Document.Blocks)
+                {
+                    if (block is Paragraph paragraph)
+                    {
+                        paragraph.TextAlignment = alignment;
+                    }
+                }
+            }
+            else
+            {
+                Paragraph para = selection.Start.Paragraph;
+                if (para != null)
+                {
+                    para.TextAlignment = alignment;
+                }
+            }
+        }
     }
+
 
 }

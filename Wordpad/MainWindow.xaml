@@ -35,9 +35,8 @@
                 <Button Content="Zoom Out" Click="ZoomOut_Click"/>
                 <Button x:Name="bthResetZoom" Content="100%" Click="btnResetZoom_Click"/>
                 <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
-                    <ComboBoxItem Content="Inch"/>
-                    <ComboBoxItem Content="Cm"/>
-                    <ComboBoxItem Content="Points"/>
+                    <ComboBoxItem Content="Inches"/>
+                    <ComboBoxItem Content="Centimeters"/>
                     <ComboBoxItem Content="Picas"/>
                 </ComboBox>
                 <Button Content="Toggle Ruler" Click="ToggleRuler_Click"/>
@@ -143,7 +142,7 @@
                     <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
                     <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
                     <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
-                    <Button Name="btnParagraph" Content="Paragraph"/>
+                    <Button Name="btnParagraph" Content="Paragraph" Click="btnParagraph_Click_1"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Column="3">

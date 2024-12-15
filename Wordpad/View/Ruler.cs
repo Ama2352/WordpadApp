@@ -33,7 +33,6 @@ namespace Wordpad
         private double leftMargin;
         private double rightMargin;
         private double textLength;
-        private int thumbSize = 15;
         //Kich thước ban đầu của ruler (dùng để scale theo zoom)
         public static double oriRulerWidth;
         double delta = 0;    //Giá trị khác biệt của kích thước trước và sau khi zoom của dockpanel
@@ -55,6 +54,7 @@ namespace Wordpad
         private DockPanel mainContainer;
         private ScrollViewer rulerScrollViewer;
         private ScrollViewer RTBScrollViewer;
+        private ViewManagment ViewManagment;
 
         private string currentUnit = "Inches"; // Đơn vị đo hiện tại
         private readonly Dictionary<string, double> unitConversion;
@@ -66,7 +66,7 @@ namespace Wordpad
 
 
         public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, RichTextBox richTextBox, DockPanel dockPanel, DockPanel mainContainer,
-            GlobalDashedLineAdorner adorner, ScrollViewer SV, ScrollViewer SV2)
+            GlobalDashedLineAdorner adorner, ScrollViewer SV, ScrollViewer SV2, ViewManagment viewManagment)
         {
             marginCanvas = margin;
             tickCanvas = tick;
@@ -84,7 +84,6 @@ namespace Wordpad
             {
             { "Inches", 96 },
             { "Centimeters", 37.7952755906 },
-            { "Points", 1.333333333 },
             { "Picas", 16 }
             };
 
@@ -96,39 +95,40 @@ namespace Wordpad
                 //DrawRuler(); // Vẽ lại ruler khi kích thước thay đổi
 
             };
-            
+            ViewManagment = viewManagment;
+
             //Copy indent của paragraph trước áp dụng cho paragraph sau.
-            richTextBox.PreviewKeyDown += (s, e) =>
-            {
-                if (e.Key == Key.Enter)
-                {
-                    var caretParagraph = richTextBox.CaretPosition.Paragraph;
-                    if (caretParagraph != null)
-                    {
-                        var newParagraph = new Paragraph();
-                        newParagraph.TextIndent = caretParagraph.TextIndent;
-                        newParagraph.Margin = caretParagraph.Margin;
-                        richTextBox.Document.Blocks.InsertAfter(caretParagraph, newParagraph);
-                    }
-                }
-                else if (e.Key == Key.Back)
-                {
-                    var caretPosition = richTextBox.CaretPosition;
-                    var currentParagraph = caretPosition.Paragraph;
+            //richTextBox.PreviewKeyDown += (s, e) =>
+            //{
+            //    if (e.Key == Key.Enter)
+            //    {
+            //        var caretParagraph = richTextBox.CaretPosition.Paragraph;
+            //        if (caretParagraph != null)
+            //        {
+            //            var newParagraph = new Paragraph();
+            //            newParagraph.TextIndent = caretParagraph.TextIndent;
+            //            newParagraph.Margin = caretParagraph.Margin;
+            //            richTextBox.Document.Blocks.InsertAfter(caretParagraph, newParagraph);
+            //        }
+            //    }
+            //    else if (e.Key == Key.Back)
+            //    {
+            //        var caretPosition = richTextBox.CaretPosition;
+            //        var currentParagraph = caretPosition.Paragraph;
 
-                    if (currentParagraph != null)
-                    {
-                        // Kiểm tra nếu vị trí con trỏ nằm trước giá trị TextIndent
-                        double firstLineIndent = currentParagraph.TextIndent;
-                        double caretOffset = caretPosition.GetCharacterRect(LogicalDirection.Forward).X;
+            //        if (currentParagraph != null)
+            //        {
+            //            // Kiểm tra nếu vị trí con trỏ nằm trước giá trị TextIndent
+            //            double firstLineIndent = currentParagraph.TextIndent;
+            //            double caretOffset = caretPosition.GetCharacterRect(LogicalDirection.Forward).X;
 
-                        if (caretOffset <= firstLineIndent)
-                        {
-                            e.Handled = true; // Ngăn Backspace
-                        }
-                    }
-                }
-            };
+            //            if (caretOffset <= firstLineIndent)
+            //            {
+            //                e.Handled = true; // Ngăn Backspace
+            //            }
+            //        }
+            //    }
+            //};
 
             //MessageBox.Show("Canvas Children Count: " + rulerCanvas.Children.Count);
             //MessageBox.Show($"Ruler Length: {rulerLength}, Canvas Width: {rulerCanvas.Width}");
@@ -142,6 +142,9 @@ namespace Wordpad
                 throw new ArgumentException("Unsupported unit");
 
             currentUnit = unit;
+            //Chỉnh zoom thành 100 để kích thước chuẩn.
+            ViewManagment.Set100();
+            rulerCanvas.UpdateLayout();
             DrawRuler();
         }
 
@@ -235,9 +238,6 @@ namespace Wordpad
                     break;
                 case "Centimeters":
                     result = 10; // 10 vạch phụ cho 1 cm
-                    break;
-                case "Points":
-                    result = 4; // 4 vạch phụ cho 1 point
                     break;
                 case "Picas":
                     result = 6; // 6 vạch phụ cho 1 pica
@@ -385,7 +385,7 @@ namespace Wordpad
             marginCanvas.Children.Add(rightMarginRec);
             leftMargin = leftMarginPx;
             rightMargin = rightMarginPx;
-            textLength = rulerCanvas.Width - leftMargin - rightMargin;
+            textLength = rulerLength - leftMargin - rightMargin;
             //MessageBox.Show($"Left margin: {leftMargin}\nRight margin: {rightMargin}\n Text length: {textLength}");
         }
 
@@ -788,6 +788,26 @@ namespace Wordpad
                 _adorner.UpdateLine((left + 5 * zoomScale), rulerCanvas.ActualHeight + 10, true);
                 ApplyIndent();
             }
+        }
+
+        public void IncreaseIndentSimplified(Paragraph paragraph, double length)
+        {
+            if ((paragraph.Margin.Left + length) <= textLength)
+            {
+                paragraph.Margin = new Thickness (paragraph.Margin.Left + length,0,0,0);
+            }
+        }
+        public void DecreaseIndentSimplified(Paragraph paragraph, double length)
+        {
+            if ((paragraph.Margin.Left - length) >= 0)
+            {
+                paragraph.Margin = new Thickness (paragraph.Margin.Left - length,0,0,0);
+            }
+        }
+
+        public void SetViewManager(ViewManagment viewManagment)
+        {
+            this.ViewManagment = viewManagment;
         }
     }
 }

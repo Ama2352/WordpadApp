@@ -258,6 +258,9 @@
     <Compile Include="FindWindow.xaml.cs">
       <DependentUpon>FindWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ParagraphWindow.xaml.cs">
+      <DependentUpon>ParagraphWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ReplaceWindow.xaml.cs">
       <DependentUpon>ReplaceWindow.xaml</DependentUpon>
     </Compile>
@@ -313,6 +316,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ParagraphWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PasteSpecialWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
