@@ -149,7 +149,9 @@ namespace Wordpad
         }
         private void OnFontFamilyChanged(string newFont)
         {
+            cbFontFamily.SelectionChanged -= cbFontFamily_SelectionChanged;
             cbFontFamily.Text = newFont;
+            cbFontFamily.SelectionChanged += cbFontFamily_SelectionChanged;
         }
 
         private void SettingFontSize(FontManager _fontManager)
