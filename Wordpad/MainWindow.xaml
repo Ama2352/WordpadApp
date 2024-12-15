@@ -557,12 +557,12 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <Image Source="/Images/line-spacing.png" 
+                                <Image Source="/Images/list.png" 
                                     RenderOptions.BitmapScalingMode="HighQuality"
                                     RenderOptions.EdgeMode="Aliased"
                                     SnapsToDevicePixels="True"
                                     UseLayoutRounding="True" Margin="50,10,80,10" Grid.Column="3" Width="32" Height="32"/>
-                                <Image Source="/Images/list.png" 
+                                <Image Source="/Images/line-spacing.png" 
                                     RenderOptions.BitmapScalingMode="HighQuality"
                                     RenderOptions.EdgeMode="Aliased"
                                     SnapsToDevicePixels="True"
