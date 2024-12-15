@@ -360,10 +360,10 @@
                                     <!-- Group for ColorPicker with TextColor Icon -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
-           Width="42" Height="20" 
+           Width="18" Height="20" 
            RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0" 
            ToolTip="Change Text Color"/>
-                                        <xctk:ColorPicker x:Name="colorPicker" Width="20" Height="20" 
+                                        <xctk:ColorPicker x:Name="colorPicker" Width="18" Height="18" 
                       SelectedColorChanged="colorPicker_SelectedColorChanged" 
                       Margin="0" ToolTip="Pick Text Color"/>
                                     </StackPanel>
@@ -371,18 +371,18 @@
                                     <!-- Group for HighlightPicker with Highlight Icon -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/highlight.png" 
-           Width="35" Height="20" 
-           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0" 
+           Width="28" Height="20" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
            ToolTip="Highlight Text"/>
-                                        <xctk:ColorPicker x:Name="highlightPicker" Width="20" Height="20" 
+                                        <xctk:ColorPicker x:Name="highlightPicker" Width="18" Height="18" 
                       SelectedColorChanged="highlightPicker_SelectedColorChanged" 
-                      Margin="0" ToolTip="Pick Highlight Color"/>
+                      ToolTip="Pick Highlight Color"/>
                                     </StackPanel>
 
                                     <!-- Subscript Button -->
                                     <Button x:Name="btnSubscript" ToolTip="Subscript" 
         Style="{StaticResource ToolbarButtonStyle}" 
-        Click="btnSubscript_Click" Width="40" Height="32" Margin="5,0">
+        Click="btnSubscript_Click" Width="45" Height="32" Margin="5,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
            Width="16" Height="16" 
            RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -391,7 +391,7 @@
                                     <!-- Superscript Button -->
                                     <Button x:Name="btnSuperscript" ToolTip="Superscript" 
         Style="{StaticResource ToolbarButtonStyle}" 
-        Click="btnSuperscript_Click" Width="27" Height="32" Margin="5,0">
+        Click="btnSuperscript_Click" Width="35" Height="32" Margin="5,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
            Width="16" Height="16" 
            RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -472,12 +472,12 @@
                         <Rectangle Grid.Column="5" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
 
                         <!-- Paragraph Section -->
-                        <Grid Grid.Column="6" Margin="5">
+                        <Grid Grid.Column="6" Margin="5,0,5,0" Height="135" VerticalAlignment="Top">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="0,-6,0,10" FontWeight="SemiBold" 
+                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="0,0,0,5" FontWeight="SemiBold" 
                                      Foreground="#666666" HorizontalAlignment="Center"/>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
@@ -492,7 +492,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <!-- Row 0: Indentation and Spacing -->
-                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click">
+                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click" Grid.ColumnSpan="2" Margin="2,8,50,8">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" 
                                                Width="32" Height="32" 
                                                RenderOptions.BitmapScalingMode="HighQuality"
@@ -502,27 +502,75 @@
                                 </Button>
                                 <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Center" Margin="0,2,0,2" Width="48">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" 
-                                               Width="32" Height="32" 
+                                               Width="46" Height="32" 
                                                RenderOptions.BitmapScalingMode="HighQuality"
                                                RenderOptions.EdgeMode="Aliased"
                                                SnapsToDevicePixels="True"
-                                               UseLayoutRounding="True"/>
+                                               UseLayoutRounding="True" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform AngleX="0"/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="0"/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
                                 </Button>
-                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
-          Margin="3,14,139,18" Height="20" Width="20" ToolTip="Line Spacing">
-                                    <ComboBoxItem Content="1.0"/>
-                                    <ComboBoxItem Content="1.25"/>
-                                    <ComboBoxItem Content="1.5"/>
-                                    <ComboBoxItem Content="2.0"/>
-                                </ComboBox>
+                                <!-- Group for Line Spacing -->
+                                <Grid Grid.Row="0" Grid.Column="3" Margin="3,14,139,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Width for Image -->
+                                        <ColumnDefinition Width="*"/>
+                                        <!-- Width for ComboBox -->
+                                    </Grid.ColumnDefinitions>
 
-                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbStartAList" Width="20" Height="20" Margin="87,12,55,20" ToolTip="Start a List">
-                                    <ComboBoxItem Content="Bullet"/>
-                                    <ComboBoxItem Content="Number"/>
-                                    <ComboBoxItem Content="Lower Alphabet"/>
-                                    <ComboBoxItem Content="Upper Alphabet"/>
-                                    <ComboBoxItem Content="Roman"/>
-                                </ComboBox>
+                                    <!-- Image for Line Spacing -->
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/line-spacing.png" Height="31" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           ToolTip="Line Spacing"
+           Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
+
+                                    <!-- ComboBox for Line Spacing -->
+                                    <ComboBox x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
+              Height="18" Width="18" Margin="3,8,3,13">
+                                        <ComboBoxItem Content="1.0"/>
+                                        <ComboBoxItem Content="1.25"/>
+                                        <ComboBoxItem Content="1.5"/>
+                                        <ComboBoxItem Content="2.0"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <!-- Group for Start a List -->
+                                <Grid Grid.Row="0" Grid.Column="3" Margin="87,12,55,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13*"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Width for Image -->
+                                        <ColumnDefinition Width="*"/>
+                                        <!-- Width for ComboBox -->
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Image for Start a List -->
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
+           Width="32" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           ToolTip="Start a List"
+           Grid.Column="0" Margin="-30,0,32,0"/>
+
+                                    <!-- ComboBox for Start a List -->
+                                    <ComboBox x:Name="cbStartAList" Height="18" Width="18" Margin="2,5,14,14">
+                                        <ComboBoxItem Content="Bullet"/>
+                                        <ComboBoxItem Content="Number"/>
+                                        <ComboBoxItem Content="Lower Alphabet"/>
+                                        <ComboBoxItem Content="Upper Alphabet"/>
+                                        <ComboBoxItem Content="Roman"/>
+                                    </ComboBox>
+                                </Grid>
 
                                 <!-- Row 1: Alignment -->
                                 <Button Grid.Row="1" Grid.Column="0" x:Name="btnLeftAlignment" ToolTip="Left Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnLeftAlignment_Click">
@@ -565,16 +613,6 @@
                                            SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"/>
                                 </Button>
-                                <Image Source="/Images/list.png" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True" Margin="50,10,80,10" Grid.Column="3" Width="32" Height="32"/>
-                                <Image Source="/Images/line-spacing.png" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True" Margin="18,11,2,9" Grid.Column="2" Width="32" Height="32"/>
                             </Grid>
                         </Grid>
                         <!-- Separator 4 -->
