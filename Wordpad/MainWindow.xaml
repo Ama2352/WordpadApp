@@ -296,23 +296,25 @@
                                     <ComboBox x:Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
               Height="24" Margin="0,0,5,0" />
                                     <!-- Button to Increase Font -->
-                                    <Button x:Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}">
+                                    <Button x:Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Increase Font Size">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/IFont.png" 
-               Width="16" Height="16" 
-               RenderOptions.BitmapScalingMode="HighQuality"
-               RenderOptions.EdgeMode="Aliased"
-               SnapsToDevicePixels="True"
-               UseLayoutRounding="True"/>
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"
+           RenderOptions.EdgeMode="Aliased"
+           SnapsToDevicePixels="True"
+           UseLayoutRounding="True"/>
                                     </Button>
+
                                     <!-- Button to Decrease Font -->
-                                    <Button x:Name="btnDFont" Width="24" Height="24" Style="{StaticResource ToolbarButtonStyle}">
+                                    <Button x:Name="btnDFont" Width="24" Height="24" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Decrease Font Size">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/DFont.png" 
-               Width="16" Height="16" 
-               RenderOptions.BitmapScalingMode="HighQuality"
-               RenderOptions.EdgeMode="Aliased"
-               SnapsToDevicePixels="True"
-               UseLayoutRounding="True"/>
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"
+           RenderOptions.EdgeMode="Aliased"
+           SnapsToDevicePixels="True"
+           UseLayoutRounding="True"/>
                                     </Button>
+
                                 </StackPanel>
 
                                 <!-- Formatting Controls -->
@@ -503,19 +505,22 @@
                                                SnapsToDevicePixels="True"
                                                UseLayoutRounding="True"/>
                                 </Button>
-                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" Margin="3,14,139,18" Height="20" Width="20">
+                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
+          Margin="3,14,139,18" Height="20" Width="20" ToolTip="Line Spacing">
                                     <ComboBoxItem Content="1.0"/>
                                     <ComboBoxItem Content="1.25"/>
                                     <ComboBoxItem Content="1.5"/>
                                     <ComboBoxItem Content="2.0"/>
                                 </ComboBox>
-                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbStartAList" Width="20" Height="20" Margin="87,12,55,20">
+
+                                <ComboBox Grid.Row="0" Grid.Column="3" x:Name="cbStartAList" Width="20" Height="20" Margin="87,12,55,20" ToolTip="Start a List">
                                     <ComboBoxItem Content="Bullet"/>
                                     <ComboBoxItem Content="Number"/>
                                     <ComboBoxItem Content="Lower Alphabet"/>
                                     <ComboBoxItem Content="Upper Alphabet"/>
                                     <ComboBoxItem Content="Roman"/>
                                 </ComboBox>
+
                                 <!-- Row 1: Alignment -->
                                 <Button Grid.Row="1" Grid.Column="0" x:Name="btnLeftAlignment" ToolTip="Left Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnLeftAlignment_Click">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/LeftA.png" 
@@ -575,7 +580,8 @@
                         <!-- Editing Section -->
                         <Grid Grid.Column="8" Margin="93,10,-83,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="44*"/>
+                                <ColumnDefinition Width="22*"/>
+                                <ColumnDefinition Width="28*"/>
                                 <ColumnDefinition Width="3*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -584,11 +590,11 @@
                             </Grid.RowDefinitions>
 
                             <!-- Editing Title -->
-                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-14,-98,1" FontWeight="SemiBold" 
-               Foreground="#666666" Grid.ColumnSpan="2"/>
+                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-9,-98,100" FontWeight="SemiBold" 
+               Foreground="#666666" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 
                             <!-- Buttons Grid -->
-                            <Grid Margin="-90,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid Margin="-90,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
