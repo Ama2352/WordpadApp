@@ -560,10 +560,10 @@
            Width="32" 
            RenderOptions.BitmapScalingMode="HighQuality" 
            ToolTip="Start a List"
-           Grid.Column="0" Margin="-30,0,32,0"/>
+           Grid.Column="0" Margin="-30,0,32,0" Grid.RowSpan="2"/>
 
                                     <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Width="18" Margin="2,5,14,14">
+                                    <ComboBox x:Name="cbStartAList" Height="18" Width="18" Margin="2,9,14,10">
                                         <ComboBoxItem Content="Bullet"/>
                                         <ComboBoxItem Content="Number"/>
                                         <ComboBoxItem Content="Lower Alphabet"/>
