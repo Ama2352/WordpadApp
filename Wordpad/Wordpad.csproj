@@ -491,5 +491,8 @@
   <ItemGroup>
     <Resource Include="Images\line-spacing.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\underline1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
