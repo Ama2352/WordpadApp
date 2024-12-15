@@ -358,20 +358,22 @@
                                 <StackPanel Grid.Row="2" Orientation="Horizontal" Height="32" VerticalAlignment="Bottom">
 
                                     <!-- Group for ColorPicker with TextColor Icon -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0" ToolTip="Change Text Color">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
            Width="42" Height="20" 
-           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0"/>
+           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0" 
+           ToolTip="Change Text Color"/>
                                         <xctk:ColorPicker x:Name="colorPicker" Width="20" Height="20" 
                       SelectedColorChanged="colorPicker_SelectedColorChanged" 
                       Margin="0" ToolTip="Pick Text Color"/>
                                     </StackPanel>
 
                                     <!-- Group for HighlightPicker with Highlight Icon -->
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0" ToolTip="Highlight Text">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/highlight.png" 
            Width="35" Height="20" 
-           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0"/>
+           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0" 
+           ToolTip="Highlight Text"/>
                                         <xctk:ColorPicker x:Name="highlightPicker" Width="20" Height="20" 
                       SelectedColorChanged="highlightPicker_SelectedColorChanged" 
                       Margin="0" ToolTip="Pick Highlight Color"/>
@@ -394,6 +396,7 @@
            Width="16" Height="16" 
            RenderOptions.BitmapScalingMode="HighQuality"/>
                                     </Button>
+
 
                                 </StackPanel>
 
