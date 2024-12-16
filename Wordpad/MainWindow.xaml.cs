@@ -56,7 +56,7 @@ namespace Wordpad
             clipboardManager = new ClipboardManager(richTextBox);
             fontManager = new FontManager(richTextBox);
             paragraphManager = new ParagraphManager(richTextBox, ruler);
-            insertManager = new InsertManager(richTextBox); 
+            insertManager = new InsertManager(richTextBox);
             editingManager = new EditingManager(richTextBox);
 
 
@@ -143,10 +143,10 @@ namespace Wordpad
                     fontManager.ChangeFontSize(fontSize);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.ToString());
-            }              
+            }
         }
 
         private void SettingFontType(FontManager _fontManager)
@@ -212,7 +212,7 @@ namespace Wordpad
                     OnFontFamilyChanged(currentFontFamily.ToString());
                 }
             }
-       
+
         }
         private void richTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -307,12 +307,12 @@ namespace Wordpad
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if(e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 clipboardManager.Copy();
                 e.Handled = true;
             }
-            else if(e.Key == Key.X && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.X && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 clipboardManager.Cut();
                 e.Handled = true;
@@ -439,7 +439,7 @@ namespace Wordpad
 
         private void btnPaste_Click(object sender, RoutedEventArgs e)
         {
-            clipboardManager.Paste();   
+            clipboardManager.Paste();
         }
 
         private void btnGrowFont_Click(object sender, RoutedEventArgs e)
@@ -552,15 +552,15 @@ namespace Wordpad
         private void btnDateAndTime_Click(object sender, RoutedEventArgs e)
         {
             DateAndTimeWindow dateAndTimeWindow = new DateAndTimeWindow(insertManager);
-            if(dateAndTimeWindow.ShowDialog() == true)
-                insertManager.InsertDateTime(dateAndTimeWindow.chosenDateTime);       
+            if (dateAndTimeWindow.ShowDialog() == true)
+                insertManager.InsertDateTime(dateAndTimeWindow.chosenDateTime);
         }
 
         private void btnInsertObject_Click(object sender, RoutedEventArgs e)
         {
-            InsertObjectWindow insertObjectWindow = new InsertObjectWindow(insertManager,clipboardManager);
-            if(insertObjectWindow.ShowDialog() == true) { }
-                
+            InsertObjectWindow insertObjectWindow = new InsertObjectWindow(insertManager, clipboardManager);
+            if (insertObjectWindow.ShowDialog() == true) { }
+
         }
         private void btnSelectAll_Click(object sender, RoutedEventArgs e)
         {
@@ -599,14 +599,13 @@ namespace Wordpad
                 paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, addSpacing);
                 paragraphManager.SetAlignment(alignment);
             }
+
+        }
         private void btnPasteSpecial_Click(object sender, RoutedEventArgs e)
         {
             PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
-            if(pasteSpecialWindow.ShowDialog() == true) { }
+            if (pasteSpecialWindow.ShowDialog() == true) { }
         }
-
-        #endregion
-
-
+            #endregion
     }
 }

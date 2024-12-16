@@ -281,7 +281,7 @@ namespace Wordpad
         public void SetIndentation(double leftIndent, double rightIndent, double firstLineIndent)
         {
             var selection = _richTextBox.Selection;
-            if (selection.IsEmpty)
+            if (!selection.IsEmpty)
             {
                 foreach (var block in _richTextBox.Document.Blocks)
                 {
@@ -306,7 +306,7 @@ namespace Wordpad
         public void SetAlignment(TextAlignment alignment)
         {
             var selection = _richTextBox.Selection;
-            if (selection.IsEmpty)
+            if (!selection.IsEmpty)
             {
                 foreach (var block in _richTextBox.Document.Blocks)
                 {

@@ -151,6 +151,7 @@
                     <Button Name="btnChangePicture" Content="Change Picture" Click="btnChangePicture_Click"/>
                     <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
                     <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
+                    <Button Name="btnPasteSpecial" Content="Paste Special" Click="btnPasteSpecial_Click"/>
                 </WrapPanel>
 
                 <WrapPanel Grid.Column="4">

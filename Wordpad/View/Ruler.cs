@@ -261,7 +261,7 @@ namespace Wordpad
             {
                 Width = leftMarginPx,
                 Height = marginCanvas.Height,
-                Fill = Brushes.Yellow
+                Fill = Brushes.LightGray
             };
             Canvas.SetLeft(leftMarginRec, 0);
             marginCanvas.Children.Add(leftMarginRec);
@@ -271,7 +271,7 @@ namespace Wordpad
             {
                 Width = rightMarginPx,
                 Height = marginCanvas.Height,
-                Fill = Brushes.Green
+                Fill = Brushes.LightGray
             };
             Canvas.SetRight(rightMarginRec, 0);
             marginCanvas.Children.Add(rightMarginRec);
@@ -333,6 +333,7 @@ namespace Wordpad
                 paragraph.Margin = new Thickness (paragraph.Margin.Left - length,0,0,0);
             }
         }
+
         #region Unused
 
         public void InitializeThumbs()
