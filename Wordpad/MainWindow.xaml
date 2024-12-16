@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1214" Loaded="Window_Loaded" 
+        Title="MainWindow" Height="883" Width="1214" Loaded="Window_Loaded" 
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown"
         MouseDoubleClick="Window_MouseDoubleClick">
     <Window.Resources>
@@ -212,44 +212,48 @@
                                 <!-- Paste Button with Label -->
                                 <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
                                     <Button Click="btnPaste_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Paste</Button.ToolTip>
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/paste1.png" 
-                       Width="44" Height="32" 
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       RenderOptions.EdgeMode="Aliased"
-                       SnapsToDevicePixels="True"
-                       UseLayoutRounding="True"/>
+               Width="44" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
                                     </Button>
                                     <TextBlock Text="Paste" FontSize="12" Foreground="#666666" 
-                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </StackPanel>
 
                                 <!-- Cut Button with Label -->
                                 <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
                                     <Button Click="btnCut_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Cut</Button.ToolTip>
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/cut.png" 
-                       Width="32" Height="32" 
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       RenderOptions.EdgeMode="Aliased"
-                       SnapsToDevicePixels="True"
-                       UseLayoutRounding="True"/>
+               Width="32" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
                                     </Button>
                                     <TextBlock Text="Cut" FontSize="12" Foreground="#666666" 
-                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </StackPanel>
 
                                 <!-- Copy Button with Label -->
                                 <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
                                     <Button Click="btnCopy_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Copy</Button.ToolTip>
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/copy.png" 
-                       Width="32" Height="32" 
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       RenderOptions.EdgeMode="Aliased"
-                       SnapsToDevicePixels="True"
-                       UseLayoutRounding="True"/>
+               Width="32" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
                                     </Button>
                                     <TextBlock Text="Copy" FontSize="12" Foreground="#666666" 
-                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
                                 </StackPanel>
+
                             </Grid>
 
                             <!-- SplitButton for Paste -->
@@ -560,10 +564,10 @@
            Width="32" 
            RenderOptions.BitmapScalingMode="HighQuality" 
            ToolTip="Start a List"
-           Grid.Column="0" Margin="-30,0,32,0" Grid.RowSpan="2"/>
+           Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
 
                                     <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Width="18" Margin="2,9,14,10">
+                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18">
                                         <ComboBoxItem Content="Bullet"/>
                                         <ComboBoxItem Content="Number"/>
                                         <ComboBoxItem Content="Lower Alphabet"/>
@@ -800,7 +804,10 @@
 
                                 <!-- Unit ComboBox -->
                                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="22,4,-31,28">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Unit.png" Width="20" Height="24" Margin="0,0,8,0"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Unit.png" 
+           Width="20" Height="24" Margin="0,0,8,0">
+                                        <Image.ToolTip>Unit Settings</Image.ToolTip>
+                                    </Image>
                                     <ComboBox x:Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Height="18" Width="53">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -816,9 +823,12 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <!-- Word Wrap ComboBox  -->
+                                <!-- Word Wrap ComboBox -->
                                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="23,35,-31,0">
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/WordWrap.png" Width="20" Height="24" Margin="0,0,8,0"/>
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/WordWrap.png" 
+           Width="20" Height="24" Margin="0,0,8,0">
+                                        <Image.ToolTip>Word Wrap Settings</Image.ToolTip>
+                                    </Image>
                                     <ComboBox x:Name="wordwrapComboBox" Height="18" Width="53">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -832,6 +842,7 @@
                                         <ComboBoxItem Content="Wrap to Ruler"/>
                                     </ComboBox>
                                 </StackPanel>
+
                             </Grid>
                         </Grid>
 
