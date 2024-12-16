@@ -585,16 +585,6 @@ namespace Wordpad
 
         #endregion
 
-        private void btnDebug_Click(object sender, RoutedEventArgs e)
-        {
-            ////rulerCanvas.Width *= 1.1;
-            //MessageBox.Show($"ruler cavas widht: {rulerCanvas.Width}");
-
-            ////rulerCanvas.LayoutTransform = new ScaleTransform(1.1, 1);
-            //rulerCanvas.Width *= 1.1;
-            //MessageBox.Show($"ruler cavas widht: {rulerCanvas.Width}"); 
-        }
-
 
     }
 }

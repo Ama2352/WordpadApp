@@ -3,8 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using static System.Windows.MessageBox;
 
 namespace Wordpad
 {
@@ -55,14 +53,6 @@ namespace Wordpad
             statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
         }
 
-        //public void WordCount_Click(object sender, RoutedEventArgs e)
-        //{
-        //    int charCount = GetCharacterCount();
-        //    int lineCount = GetLineCount();
-
-        //    Show($"Character Count: {charCount}\nLine Count: {lineCount}", "Character and Line Count");
-        //    statusBarItem.Content = $"Line: {lineCount} | Characters: {charCount}";
-        //}
         #region Zoom
         public void ZoomIn()
         {

@@ -1,12 +1,9 @@
-﻿using System.IO;
-using System.Windows.Controls; // RichTextBox của WPF
+﻿using DocumentFormat.OpenXml.Wordprocessing; // OpenXML cho .docx
 using Microsoft.Win32; // SaveFileDialog của WPF
-using System.Windows.Documents; // TextRange để xử lý RichTextBox
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle; // Thư viện OpenXML
-using DocumentFormat.OpenXml.Wordprocessing; // OpenXML cho .docx
-using DocumentFormat.OpenXml;
 using System;
+using System.IO;
+using System.Windows.Controls; // RichTextBox của WPF
+using System.Windows.Documents; // TextRange để xử lý RichTextBox
 
 namespace Wordpad
 {

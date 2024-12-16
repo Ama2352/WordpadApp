@@ -96,7 +96,7 @@ namespace Wordpad
 
             };
             ViewManagment = viewManagment;
-
+            #region unused
             //Copy indent của paragraph trước áp dụng cho paragraph sau.
             //richTextBox.PreviewKeyDown += (s, e) =>
             //{
@@ -129,6 +129,7 @@ namespace Wordpad
             //        }
             //    }
             //};
+            #endregion
 
             //MessageBox.Show("Canvas Children Count: " + rulerCanvas.Children.Count);
             //MessageBox.Show($"Ruler Length: {rulerLength}, Canvas Width: {rulerCanvas.Width}");
@@ -249,6 +250,90 @@ namespace Wordpad
 
             return result;
         }
+        public void DrawMargins(double leftMarginPx, double rightMarginPx)
+        {
+            //MessageBox.Show($"Dock width: {dockPanel.Width}\nMargin canvas length: {marginCanvas.Width}\nRuler Lenght: {rulerLength}");
+            // Xóa các thành phần cũ trong marginCanvas
+            marginCanvas.Children.Clear();
+
+            // Vẽ vùng margin trái
+            Rectangle leftMarginRec = new Rectangle
+            {
+                Width = leftMarginPx,
+                Height = marginCanvas.Height,
+                Fill = Brushes.Yellow
+            };
+            Canvas.SetLeft(leftMarginRec, 0);
+            marginCanvas.Children.Add(leftMarginRec);
+
+            // Vẽ vùng margin phải
+            Rectangle rightMarginRec = new Rectangle
+            {
+                Width = rightMarginPx,
+                Height = marginCanvas.Height,
+                Fill = Brushes.Green
+            };
+            Canvas.SetRight(rightMarginRec, 0);
+            marginCanvas.Children.Add(rightMarginRec);
+            leftMargin = leftMarginPx;
+            rightMargin = rightMarginPx;
+            textLength = rulerLength - leftMargin - rightMargin;
+            //MessageBox.Show($"Left margin: {leftMargin}\nRight margin: {rightMargin}\n Text length: {textLength}");
+        }
+        public void IsVisible(bool visible)
+        {
+            rulerCanvas.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        //Scale ruler khi zoom
+        public void ScaleRuler(double zoomScale, double preDPWidth)
+        {
+            this.zoomScale = zoomScale;
+            double targetWidth = dockPanel.Width; // Kích thước cố định mong muốn
+
+            // Tính toán tỷ lệ
+            double scaleX = targetWidth / oriRulerWidth;
+            delta = dockPanel.Width - preDPWidth;
+
+            // Áp dụng scale theo kích thước ban đầu của ruler
+            rulerCanvas.LayoutTransform = new ScaleTransform(scaleX, 1);
+        }
+        
+        //Hàm cập nhật chiều dài của canvas do khi đang chạy hàm adjust dockpanel, kích thước của dock panel chưa thực sự được đổi nên cần đổi trực
+        //tiếp trong class Ruler
+        public void UpdateCanvasSize(double length)
+        {
+            rulerLength = length;
+            marginCanvas.Width = length;
+            tickCanvas.Width = length;
+            thumbCanvas.Width = length;
+        }
+
+        public void SetAdorner(GlobalDashedLineAdorner adorner)
+        {
+            _adorner = adorner;
+            // Nếu cần, cập nhật lại giao diện hoặc các logic khác liên quan đến Adorner
+        }
+        public void SetViewManager(ViewManagment viewManagment)
+        {
+            this.ViewManagment = viewManagment;
+        }
+
+        public void IncreaseIndentSimplified(Paragraph paragraph, double length)
+        {
+            if ((paragraph.Margin.Left + length) <= textLength)
+            {
+                paragraph.Margin = new Thickness (paragraph.Margin.Left + length,0,0,0);
+            }
+        }
+        public void DecreaseIndentSimplified(Paragraph paragraph, double length)
+        {
+            if ((paragraph.Margin.Left - length) >= 0)
+            {
+                paragraph.Margin = new Thickness (paragraph.Margin.Left - length,0,0,0);
+            }
+        }
+        #region Unused
 
         public void InitializeThumbs()
         {
@@ -355,38 +440,6 @@ namespace Wordpad
             }
             template.VisualTree = factory;
             return template;
-        }
-
-
-        public void DrawMargins(double leftMarginPx, double rightMarginPx)
-        {
-            //MessageBox.Show($"Dock width: {dockPanel.Width}\nMargin canvas length: {marginCanvas.Width}\nRuler Lenght: {rulerLength}");
-            // Xóa các thành phần cũ trong marginCanvas
-            marginCanvas.Children.Clear();
-
-            // Vẽ vùng margin trái
-            Rectangle leftMarginRec = new Rectangle
-            {
-                Width = leftMarginPx,
-                Height = marginCanvas.Height,
-                Fill = Brushes.Yellow
-            };
-            Canvas.SetLeft(leftMarginRec, 0);
-            marginCanvas.Children.Add(leftMarginRec);
-
-            // Vẽ vùng margin phải
-            Rectangle rightMarginRec = new Rectangle
-            {
-                Width = rightMarginPx,
-                Height = marginCanvas.Height,
-                Fill = Brushes.Green
-            };
-            Canvas.SetRight(rightMarginRec, 0);
-            marginCanvas.Children.Add(rightMarginRec);
-            leftMargin = leftMarginPx;
-            rightMargin = rightMarginPx;
-            textLength = rulerLength - leftMargin - rightMargin;
-            //MessageBox.Show($"Left margin: {leftMargin}\nRight margin: {rightMargin}\n Text length: {textLength}");
         }
 
 
@@ -560,37 +613,6 @@ namespace Wordpad
             //    $"\nParagraph indent: {paragraphIndent}\nLeft margin: {paragraph.Margin.Left}");
         }
 
-
-
-        public void IsVisible(bool visible)
-        {
-            rulerCanvas.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        //Scale ruler khi zoom
-        public void ScaleRuler(double zoomScale, double preDPWidth)
-        {
-            this.zoomScale = zoomScale;
-            double targetWidth = dockPanel.Width; // Kích thước cố định mong muốn
-
-            // Tính toán tỷ lệ
-            double scaleX = targetWidth / oriRulerWidth;
-            delta = dockPanel.Width - preDPWidth;
-
-            // Áp dụng scale theo kích thước ban đầu của ruler
-            rulerCanvas.LayoutTransform = new ScaleTransform(scaleX, 1);
-        }
-        
-        //Hàm cập nhật chiều dài của canvas do khi đang chạy hàm adjust dockpanel, kích thước của dock panel chưa thực sự được đổi nên cần đổi trực
-        //tiếp trong class Ruler
-        public void UpdateCanvasSize(double length)
-        {
-            rulerLength = length;
-            marginCanvas.Width = length;
-            tickCanvas.Width = length;
-            thumbCanvas.Width = length;
-        }
-
         //Tạo các nét đứt
         public void InitializeDashLines()
         {
@@ -654,7 +676,7 @@ namespace Wordpad
                     preFirstLineIndent = (_firstLineAdornerPosition - leftMargin - absolutePosition.X);       //Biến lưu vị trí cũ của first line thumb để tính thumb kéo k/c bn
                     isFirstLineChanged = true;
                 }
-                    
+
                 else if (thumb == hangingIndentThumb)
                 {
                     _hangingAdornerPosition = left + 5 * zoomScale;
@@ -716,12 +738,6 @@ namespace Wordpad
             isHangingChanged = false;
             isFirstLineChanged = false;
             isParagraphChanged = false;
-        }
-
-        public void SetAdorner(GlobalDashedLineAdorner adorner)
-        {
-            _adorner = adorner;
-            // Nếu cần, cập nhật lại giao diện hoặc các logic khác liên quan đến Adorner
         }
 
         //In/Decrease indent là sẽ điều chỉnh vị trí của para thumb nên sẽ copy code ở trên đem xuống: di chuyển thumb, cập nhật nét đứt, apply indent
@@ -790,24 +806,8 @@ namespace Wordpad
             }
         }
 
-        public void IncreaseIndentSimplified(Paragraph paragraph, double length)
-        {
-            if ((paragraph.Margin.Left + length) <= textLength)
-            {
-                paragraph.Margin = new Thickness (paragraph.Margin.Left + length,0,0,0);
-            }
-        }
-        public void DecreaseIndentSimplified(Paragraph paragraph, double length)
-        {
-            if ((paragraph.Margin.Left - length) >= 0)
-            {
-                paragraph.Margin = new Thickness (paragraph.Margin.Left - length,0,0,0);
-            }
-        }
+        #endregion
 
-        public void SetViewManager(ViewManagment viewManagment)
-        {
-            this.ViewManagment = viewManagment;
-        }
+
     }
 }

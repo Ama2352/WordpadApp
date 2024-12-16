@@ -5,19 +5,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms;
-using Brushes = System.Drawing.Brushes;
-using con = System.Windows.Controls;
-using PrintDialog = System.Windows.Forms.PrintDialog;
-using MessageBox = System.Windows.MessageBox;
-using Wordpad.Files;
-using System.Printing;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
-using System.Windows.Documents.Serialization;
-using System.Windows.Xps;
-using System.Windows.Xps.Packaging;
 using System.Windows.Markup;
-using Xceed.Wpf.Toolkit;
+using System.Windows.Media;
+using Wordpad.Files;
+using con = System.Windows.Controls;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Wordpad
 {
@@ -120,39 +112,9 @@ namespace Wordpad
             // Đồng bộ padding
             flowDocument.PagePadding = richTextBox.Padding;
 
-            //// Điều chỉnh tỷ lệ hình ảnh
-            //foreach (var block in flowDocument.Blocks)
-            //{
-            //    if (block is Paragraph paragraph)
-            //    {
-            //        foreach (var inline in paragraph.Inlines)
-            //        {
-            //            if (inline is InlineUIContainer inlineUIContainer && inlineUIContainer.Child is Image image)
-            //            {
-            //                if (image.Source is BitmapImage bitmapImage)
-            //                {
-            //                    // Tính toán tỷ lệ từ RichTextBox
-            //                    double aspectRatio = insertManager.CalculateAspectRatio(bitmapImage);
-
-            //                    // Điều chỉnh kích thước hình ảnh
-            //                    //AdjustImageSize(image, aspectRatio);
-            //                    MessageBox.Show($"BitMap(H;W): {bitmapImage.PixelHeight}; {bitmapImage.PixelWidth}" +
-            //                        $"\nImage(H;W): {image.Height}; {image.Width}");
-            //                }
-
-            //            }
-            //        }
-            //    }
-            //}
             return flowDocument;
         }
 
-        //private void AdjustImageSize(Image image, double aspectRatio)
-        //{
-        //    double convertBM = 0.1;
-        //    image.Width *= (aspectRatio + convertBM);
-        //    image.Height *= (aspectRatio + convertBM);
-        //}
 
 
 
@@ -228,16 +190,6 @@ namespace Wordpad
             return fixedDoc;
         }
 
-
-
-
-        //public void ShowPrintPreview()
-        //{
-        //    // Hiển thị PrintPreview (nếu cần)
-        //    currentPageNumber = 1;
-        //    printPreviewDialog.ShowDialog();
-        //}
-
         // Hiển thị Page Setup
         public void ShowPageSetupDialog()
         {
@@ -276,7 +228,6 @@ namespace Wordpad
             ruler.UpdateCanvasSize(dockPanel.Width);
             ruler.DrawMargins(pageSettings.Margins.Left, pageSettings.Margins.Right);
         }
-
 
         public void QuickPrint()
         {

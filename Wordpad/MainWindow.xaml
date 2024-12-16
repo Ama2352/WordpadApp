@@ -158,8 +158,7 @@
                     <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
                     <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
                 </WrapPanel>
-                <Button x:Name="btnDebug" Grid.Column="4" Content="Debug" HorizontalAlignment="Left" Margin="36,36,0,0" VerticalAlignment="Top" Click="btnDebug_Click"/>
-            </Grid>
+        </Grid>
 
             <!-- Status Bar -->
             <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
