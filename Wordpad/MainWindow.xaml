@@ -6,175 +6,857 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="928" Loaded="Window_Loaded" 
+        Title="MainWindow" Height="450" Width="1230" Loaded="Window_Loaded" 
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
-    <DockPanel x:Name="mainContainer">
-            <!-- Menu Bar -->
-            <Menu DockPanel.Dock="Top" Panel.ZIndex="1">
-                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" >
-                    <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click"/>
-                    <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click"/>
-                    <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click"/>
-                    <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click"/>
-                    <MenuItem Header="Print" Foreground="Black">
-                        <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click"/>
-                        <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click" />
-                        <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click"/>
+    <Window.Resources>
+        <!-- Style cho nút Toolbar -->
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="48"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFE0E0E0"/>
+                                <!-- Màu khi hover -->
+                                <Setter Property="BorderBrush" Value="#FFB0B0B0"/>
+                                <!-- Đường viền khi hover -->
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <!-- Màu khi click -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="FontComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="CustomColorPickerStyle" TargetType="xctk:ColorPicker">
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="ShowDropDownButton" Value="False"/>
+        </Style>
+    </Window.Resources>
+    <DockPanel x:Name="mainContainer" >
+        <!-- Menu Bar -->
+        <Grid DockPanel.Dock="Top" Background="#E8E8E8" Height="20">
+            <Grid.ColumnDefinitions>
+                <!-- Cột chứa Menu File -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Cột chứa nút Save, Undo và Redo -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Khoảng trống còn lại -->
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Menu File -->
+            <Menu Grid.Column="0">
+                <MenuItem Header="File" Background="#FF1979CA" Foreground="White" Height="17">
+                    <MenuItem Header="New" Foreground="Black" Click="NewMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/New.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click"/>
-                    <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click"/>
-                    <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click"/>
-                    <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click"/>
+                    <MenuItem Header="Open" Foreground="Black" Click="OpenMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Open.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save" Foreground="Black" Click="SaveMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Save.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save As" Foreground="Black" Click="SaveAsMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Save As.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Print" Foreground="Black">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Print.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                        <MenuItem Header="Print" Foreground="Black" Click="PrintMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Print.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Quick Print.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click">
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/Wordpad;component/Images/Print Preview.png"
+                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Page Setup" Foreground="Black" Click="PageSetupMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Page SetUp.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Send in Email" Foreground="Black" Click="SendEmailMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Send Email.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="About WordPad" Foreground="Black" Click="AboutMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/About.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Exit" Foreground="Black" Click="ExitMenuItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="pack://application:,,,/Wordpad;component/Images/Exit.png"
+                           Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 
-            <!-- Toolbar -->
-            <!-- Tab view -->
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Panel.ZIndex="1" Background="White">
-                <Button Content="Zoom In" Click="ZoomIn_Click"/>
-                <Button Content="Zoom Out" Click="ZoomOut_Click"/>
-                <Button x:Name="bthResetZoom" Content="100%" Click="btnResetZoom_Click"/>
-                <ComboBox Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Width="100">
-                    <ComboBoxItem Content="Inches"/>
-                    <ComboBoxItem Content="Centimeters"/>
-                    <ComboBoxItem Content="Picas"/>
-                </ComboBox>
-                <Button Content="Toggle Ruler" Click="ToggleRuler_Click"/>
-                <Button Content="Toggle Status Bar" Click="ToggleStatusBar_Click"/>
+            <!-- Save, Undo và Redo Buttons -->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0,0,0">
+                <!-- Save Button -->
+                <Button Name="btnQuickSave" ToolTip="Save" Style="{StaticResource ToolbarButtonStyle}" Click="QuickSave_Click" Width="16" Height="15">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Save.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+                <!-- Undo Button -->
+                <Button Name="btnQuickUndo" ToolTip="Undo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickUndo_Click" Height="15" Width="16">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Undo.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+                <!-- Redo Button -->
+                <Button Name="btnQuickRedo" ToolTip="Redo" Style="{StaticResource ToolbarButtonStyle}" Click="QuickRedo_Click" Width="16" Height="15">
+                    <Image Source="pack://application:,,,/Wordpad;component/Images/Redo.png"
+                   Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
             </StackPanel>
-            <!-- Tab home -->
-            <Grid DockPanel.Dock="Top" Panel.ZIndex="1" Background="#FFF5F6F7">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=".7*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width=".865*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button x:Name="btnPaste" Background="FloralWhite" Click="btnPaste_Click">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <Image Source="/Images/paste1.png" Width="32" Height="32"/>
-                            <TextBlock Text="Paste" Margin="5,0,0,0" FontSize="15"/>
-
-                        </StackPanel>
-                    </Button>
-
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-
-                        <Button Grid.Row="0" Name="btnCut" Background="FloralWhite" Margin="0,0,2,0" Click="btnCut_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/cut.png" Width="20" Height="20"/>
-                                <TextBlock Text="Cut" Margin="5,0,0,0" FontSize="15"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Grid.Row="1" Name="btnCopy" Background="FloralWhite" Margin="0,0,2,0" Click="btnCopy_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/copy.png" Width="20" Height="20"/>
-                                <TextBlock Text="Copy" Margin="5,0,0,0" FontSize="15"/>
-                            </StackPanel>
-                        </Button>
-                    </Grid>
-                </Grid>
-
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal">
-                        <ComboBox Name="cbFontFamily" Width="150" SelectionChanged="cbFontFamily_SelectionChanged" />
-                        <ComboBox Name="cbFontSize" Width="70" SelectionChanged="cbFontSize_SelectionChanged" />
-                        <Button x:Name="btnGrowFont" Width="30" Content="A1" Background="Transparent" Margin="1,0,2,0" Click="btnGrowFont_Click"/>
-                        <Button x:Name="btnShrinkFont" Width="30" Content="A2" Background="Transparent" Margin="0,0,1,0" Click="btnShrinkFont_Click"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <ToolBar>
-                            <Button x:Name="btnBold" ToolTip="Bold" Width="30" Click="btnBold_Click">
-                                <Image Source="/Images/bold.png"/>
-                            </Button>
-                            <Button x:Name="btnItalic" ToolTip="Italic" Width="30" Click="btnItalic_Click">
-                                <Image Source="/Images/italic.png"/>
-                            </Button>
-                            <Button x:Name="btnUnderline" ToolTip="Underline" Width="30" Click="btnUnderline_Click">
-                                <Image Source="/Images/underline.png"/>
-                            </Button>
-                            <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" Width="30" Click="btnStrikethrough_Click">
-                                <Image Source="/Images/strikethrough.png"/>
-                            </Button>
-                            <Button x:Name="btnSubscript" ToolTip="Subscript" Width="30" Click="btnSubscript_Click">
-                                <Image Source="/Images/subscript.png"/>
-                            </Button>
-                            <Button x:Name="btnSuperscript" ToolTip="Superscript" Width="30" Click="btnSuperscript_Click">
-                                <Image Source="/Images/superscript.png"/>
-                            </Button>
-                            <xctk:ColorPicker Name="colorPicker" Width="20" SelectedColorChanged="colorPicker_SelectedColorChanged"/>
-                            <xctk:ColorPicker Name="highlightPicker" Width="20" SelectedColorChanged="highlightPicker_SelectedColorChanged"/>
-
-                        </ToolBar>
-                    </StackPanel>
-                </Grid>
-
-                <WrapPanel Grid.Column="2">
-                    <Button Name="btnDecreaseIndent" Content="DeIndent" Click="btnDecreaseIndent_Click"/>
-                    <Button Name="btnIncreaseIndent" Content="InIndent" Click="btnIncreaseIndent_Click"/>
-                    <ComboBox Name="cbLineSpacing" Width="60" SelectionChanged="cbLineSpacing_SelectionChanged">
-                        <ComboBoxItem>1.0</ComboBoxItem>
-                        <ComboBoxItem>1.25</ComboBoxItem>
-                        <ComboBoxItem>1.5</ComboBoxItem>
-                        <ComboBoxItem>2.0</ComboBoxItem>
-                        <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                    </ComboBox>
-                    <Button Name="btnLeftAlignment" Content="LeftA" Click="btnLeftAlignment_Click"/>
-                    <Button Name ="btnCenterAlignment" Content="CenterA" Click="btnCenterAlignment_Click"/>
-                    <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
-                    <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
-                    <Button Name="btnParagraph" Content="Paragraph" Click="btnParagraph_Click_1"/>
-                </WrapPanel>
-
-                <WrapPanel Grid.Column="3">
-                    <Button Name="btnPicture" Content="Picture" Click="btnPicture_Click"/>
-                    <Button Name="btnResizePicture" Content="Resize Picture" Click="btnResizePicture_Click"/>
-                    <Button Name="btnChangePicture" Content="Change Picture" Click="btnChangePicture_Click"/>
-                    <Button Name="btnDateAndTime" Content="Date and Time" Click="btnDateAndTime_Click"/>
-                    <Button Name="btnInsertObject" Content="Insert Object" Click="btnInsertObject_Click"/>
-                    <Button Name="btnPasteSpecial" Content="Paste Special" Click="btnPasteSpecial_Click"/>
-                </WrapPanel>
-
-                <WrapPanel Grid.Column="4">
-                    <Button Name="btnSelectAll" Content="Select All" Click="btnSelectAll_Click"/>
-                    <Button Name="btnFind" Content="Find" Click="btnFind_Click"/>
-                    <Button Name="btnReplace" Content="Replace" Click="btnReplace_Click"/>
-                </WrapPanel>
         </Grid>
 
-            <!-- Status Bar -->
-            <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
-                <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
-                <Label x:Name="zoomPercent" Content="100%" Width="42"/>
-                <Button x:Name="btnDecreaseZoom" Content="-" Width="20" Click="btnDecreaseZoom_Click" />
-                <Slider Name="zoomSlider" Minimum="10" Maximum="400" Value="100" Width="150" TickFrequency="1" 
+
+        <!-- Toolbar -->
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1233" Height="171" HorizontalAlignment="Left">
+            <TabControl Width="1144">
+                <TabItem Header="Home">
+                    <Grid HorizontalAlignment="Left" Width="986">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Clipboard Section -->
+                        <Grid Grid.Column="0" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Header -->
+                            <TextBlock Text="Clipboard" Grid.Row="0" Margin="0,-5,0,10" FontWeight="SemiBold" 
+               Foreground="#666666" HorizontalAlignment="Center"/>
+
+                            <!-- Buttons with Labels -->
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Paste Button with Label -->
+                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button Click="btnPaste_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Paste</Button.ToolTip>
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/paste1.png" 
+               Width="44" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="Paste" FontSize="12" Foreground="#666666" 
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- Cut Button with Label -->
+                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button Click="btnCut_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Cut</Button.ToolTip>
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/cut.png" 
+               Width="32" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="Cut" FontSize="12" Foreground="#666666" 
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- Copy Button with Label -->
+                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button Click="btnCopy_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Button.ToolTip>Copy</Button.ToolTip>
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/copy.png" 
+               Width="32" Height="32" 
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Aliased"
+               SnapsToDevicePixels="True"
+               UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="Copy" FontSize="12" Foreground="#666666" 
+               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!-- SplitButton for Paste -->
+                            <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+                                <!-- Popup Menu -->
+                                <Popup IsOpen="{Binding IsChecked, ElementName=btnSplit}" Placement="Bottom" StaysOpen="False">
+                                    <StackPanel Background="White" Width="100">
+                                        <!-- Adjusted width to avoid clipping -->
+                                        <Button Content="Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
+                                        <Button Content="Special Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
+                                    </StackPanel>
+                                </Popup>
+                                <ToggleButton x:Name="btnSplit" Content="▼" Width="50" Height="20" FontSize="10" HorizontalContentAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+
+
+                        <!-- Separator 1 -->
+                        <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Font Section -->
+                        <Grid Grid.Column="2" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Font" Grid.Row="0" Margin="0,-3,0,5" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Font Controls -->
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,5">
+                                    <!-- ComboBox for Font Family -->
+                                    <ComboBox x:Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
+              Height="24" Margin="0,0,5,0" />
+                                    <!-- ComboBox for Font Size -->
+                                    <ComboBox x:Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
+              Height="24" Margin="0,0,5,0" />
+                                    <!-- Button to Increase Font -->
+                                    <Button x:Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Increase Font Size"
+                                            Click="btnGrowFont_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/IFont.png" 
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"
+           RenderOptions.EdgeMode="Aliased"
+           SnapsToDevicePixels="True"
+           UseLayoutRounding="True"/>
+                                    </Button>
+
+                                    <!-- Button to Decrease Font -->
+                                    <Button x:Name="btnDFont" Width="24" Height="24" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Decrease Font Size"
+                                            Click="btnShrinkFont_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/DFont.png" 
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"
+           RenderOptions.EdgeMode="Aliased"
+           SnapsToDevicePixels="True"
+           UseLayoutRounding="True"/>
+                                    </Button>
+
+                                </StackPanel>
+
+                                <!-- Formatting Controls -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Button x:Name="btnBold" ToolTip="Bold (Ctrl+B)" 
+            Style="{StaticResource ToolbarButtonStyle}" 
+            Click="btnBold_Click" Width="32" Height="32" Margin="10,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/bold.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <Button x:Name="btnItalic" ToolTip="Italic (Ctrl+I)" 
+            Style="{StaticResource ToolbarButtonStyle}" 
+            Click="btnItalic_Click" Width="32" Height="32" Margin="10,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/italic.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <Button x:Name="btnUnderline" ToolTip="Underline (Ctrl+U)" 
+            Style="{StaticResource ToolbarButtonStyle}" 
+            Click="btnUnderline_Click" Width="32" Height="32" Margin="10,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/underline1.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <Button x:Name="btnStrikethrough" ToolTip="Strikethrough" 
+            Style="{StaticResource ToolbarButtonStyle}" 
+            Click="btnStrikethrough_Click" Width="32" Height="32" Margin="10,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/strikethrough.png" 
+               Width="16" Height="16" 
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+                                </StackPanel>
+
+
+
+                                <!-- Additional Controls -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Height="32" VerticalAlignment="Bottom">
+
+                                    <!-- Group for ColorPicker with TextColor Icon -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/underline.png" 
+           Width="18" Height="20" 
+           RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,2,0" 
+           ToolTip="Change Text Color"/>
+                                        <xctk:ColorPicker x:Name="colorPicker" Width="18" Height="18" 
+                      SelectedColorChanged="colorPicker_SelectedColorChanged" 
+                      Margin="0" ToolTip="Pick Text Color"/>
+                                    </StackPanel>
+
+                                    <!-- Group for HighlightPicker with Highlight Icon -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/highlight.png" 
+           Width="28" Height="20" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           ToolTip="Highlight Text"/>
+                                        <xctk:ColorPicker x:Name="highlightPicker" Width="18" Height="18" 
+                      SelectedColorChanged="highlightPicker_SelectedColorChanged" 
+                      ToolTip="Pick Highlight Color"/>
+                                    </StackPanel>
+
+                                    <!-- Subscript Button -->
+                                    <Button x:Name="btnSubscript" ToolTip="Subscript" 
+        Style="{StaticResource ToolbarButtonStyle}" 
+        Click="btnSubscript_Click" Width="45" Height="32" Margin="5,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Sub2.png" 
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+                                    <!-- Superscript Button -->
+                                    <Button x:Name="btnSuperscript" ToolTip="Superscript" 
+        Style="{StaticResource ToolbarButtonStyle}" 
+        Click="btnSuperscript_Click" Width="35" Height="32" Margin="5,0">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Sup2.png" 
+           Width="16" Height="16" 
+           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    </Button>
+
+
+                                </StackPanel>
+
+
+                            </Grid>
+                        </Grid>
+
+                        <!-- Separator 2 -->
+                        <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Insert Section -->
+                        <Grid Grid.Column="4" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Insert" Grid.Row="0" Margin="0,-5,0,10" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnPicture" ToolTip="Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnPicture_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnResizePicture" ToolTip="Resize Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnResizePicture_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/resize picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="0" Grid.Column="2" x:Name="btnChangePicture" ToolTip="Change Picture" Style="{StaticResource ToolbarButtonStyle}" Click="btnChangePicture_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Change picture.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="0" x:Name="btnDateAndTime" ToolTip="Date and Time" Style="{StaticResource ToolbarButtonStyle}" Click="btnDateAndTime_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Date and Time.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="1" x:Name="btnInsertObject" ToolTip="Insert Object" Style="{StaticResource ToolbarButtonStyle}" Click="btnInsertObject_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Insert Object.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Separator 3 -->
+                        <Rectangle Grid.Column="5" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Paragraph Section -->
+                        <Grid Grid.Column="6" Margin="5,0,5,0" Height="135" VerticalAlignment="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="0,0,0,5" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!-- Row 0: Indentation and Spacing -->
+                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click" Grid.ColumnSpan="2" Margin="2,8,50,8">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" 
+                                               Width="32" Height="32" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderOptions.EdgeMode="Aliased"
+                                               SnapsToDevicePixels="True"
+                                               UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Center" Margin="0,2,0,2" Width="48">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" 
+                                               Width="46" Height="32" 
+                                               RenderOptions.BitmapScalingMode="HighQuality"
+                                               RenderOptions.EdgeMode="Aliased"
+                                               SnapsToDevicePixels="True"
+                                               UseLayoutRounding="True" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform AngleX="0"/>
+                                                <RotateTransform/>
+                                                <TranslateTransform X="0"/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Button>
+                                <!-- Group for Line Spacing -->
+                                <Grid Grid.Row="0" Grid.Column="3" Margin="3,14,139,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Width for Image -->
+                                        <ColumnDefinition Width="*"/>
+                                        <!-- Width for ComboBox -->
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Image for Line Spacing -->
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/line-spacing.png" Height="31" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           ToolTip="Line Spacing"
+           Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
+
+                                    <!-- ComboBox for Line Spacing -->
+                                    <ComboBox x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
+              Height="18" Width="18" Margin="3,8,3,13">
+                                        <ComboBoxItem Content="1.0"/>
+                                        <ComboBoxItem Content="1.25"/>
+                                        <ComboBoxItem Content="1.5"/>
+                                        <ComboBoxItem Content="2.0"/>
+                                        <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <!-- Group for Start a List -->
+                                <Grid Grid.Row="0" Grid.Column="3" Margin="87,12,55,20">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="13*"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <!-- Width for Image -->
+                                        <ColumnDefinition Width="*"/>
+                                        <!-- Width for ComboBox -->
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Image for Start a List -->
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
+           Width="32" 
+           RenderOptions.BitmapScalingMode="HighQuality" 
+           ToolTip="Start a List"
+           Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
+
+                                    <!-- ComboBox for Start a List -->
+                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18">
+                                        <ComboBoxItem Content="Bullet"/>
+                                        <ComboBoxItem Content="Number"/>
+                                        <ComboBoxItem Content="Lower Alphabet"/>
+                                        <ComboBoxItem Content="Upper Alphabet"/>
+                                        <ComboBoxItem Content="Roman"/>
+                                    </ComboBox>
+                                </Grid>
+
+                                <!-- Row 1: Alignment -->
+                                <Button Grid.Row="1" Grid.Column="0" x:Name="btnLeftAlignment" ToolTip="Left Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnLeftAlignment_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/LeftA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="1" x:Name="btnCenterAlignment" ToolTip="Center Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnCenterAlignment_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/CenterA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="2" x:Name="btnRightAlignment" ToolTip="Right Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnRightAlignment_Click">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/RightA.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnJustifyAlignment" ToolTip="Justify" Style="{StaticResource ToolbarButtonStyle}" Click="btnJustifyAlignment_Click" Margin="6,2,108,2">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Justify.png" 
+                                           Width="32" Height="31" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                                <Button Grid.Row="1" Grid.Column="3" x:Name="btnParagraph" ToolTip="Paragraph Settings" 
+                                        Style="{StaticResource ToolbarButtonStyle}" Margin="69,2,45,2" Click="btnParagraph_Click_1">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/paragraph.png" 
+                                           Width="32" Height="32" 
+                                           RenderOptions.BitmapScalingMode="HighQuality"
+                                           RenderOptions.EdgeMode="Aliased"
+                                           SnapsToDevicePixels="True"
+                                           UseLayoutRounding="True"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        <!-- Separator 4 -->
+                        <Rectangle Grid.Column="7" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Editing Section -->
+                        <Grid Grid.Column="8" Margin="93,10,-83,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="22*"/>
+                                <ColumnDefinition Width="28*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Editing Title -->
+                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-9,-98,100" FontWeight="SemiBold" 
+               Foreground="#666666" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+
+                            <!-- Buttons Grid -->
+                            <Grid Margin="-90,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Find Button -->
+                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button x:Name="btnFind" ToolTip="Find" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48" Click="btnFind_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Find.png" 
+                       Width="32" Height="32" 
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       SnapsToDevicePixels="True"
+                       UseLayoutRounding="True"/>
+                                    </Button>
+                                    <Label Content="Find" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
+
+                                <!-- Select All Button -->
+                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button x:Name="btnSelectAll" ToolTip="Select All" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48" Click="btnSelectAll_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Select All.png" 
+                       Width="32" Height="32" 
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       SnapsToDevicePixels="True"
+                       UseLayoutRounding="True"/>
+                                    </Button>
+                                    <Label Content="Select All" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
+
+                                <!-- Replace Button -->
+                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="10,5,10,10">
+                                    <Button x:Name="btnReplace" ToolTip="Replace" Style="{StaticResource ToolbarButtonStyle}" Width="48" Height="48" Click="btnReplace_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/Replace.png" 
+                       Width="32" Height="32" />
+                                    </Button>
+                                    <Label Content="Replace" HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="10"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="View">
+                    <Grid Margin="0,0,34,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Zoom Section -->
+                        <Grid Grid.Column="0" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Section Title -->
+                            <TextBlock Text="Zoom" Grid.Row="0" Margin="0,-6,0,10" FontWeight="SemiBold" 
+               Foreground="#666666" HorizontalAlignment="Center"/>
+
+                            <!-- Zoom Buttons with Labels -->
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Zoom In Button with Label -->
+                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="48" Height="48" 
+                    Click="ZoomIn_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomIn.png" 
+                       Width="32" Height="32" 
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       SnapsToDevicePixels="True"
+                       UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="Zoom In" FontSize="9" Foreground="#666666" 
+                       HorizontalAlignment="Center" Margin="0,5,0,0" Width="46"/>
+                                </StackPanel>
+
+                                <!-- Zoom Out Button with Label -->
+                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="48" Height="48" 
+                    Click="ZoomOut_Click" Style="{StaticResource ToolbarButtonStyle}">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomOut.png" 
+                       Width="32" Height="32" 
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       SnapsToDevicePixels="True"
+                       UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="Zoom Out" FontSize="9" Foreground="#666666" 
+                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- 100% Button with Label -->
+                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                    <Button x:Name="btnZoom100" ToolTip="100%" Width="48" Height="48" 
+                    Style="{StaticResource ToolbarButtonStyle}" Click="btnResetZoom_Click">
+                                        <Image Source="pack://application:,,,/Wordpad;component/Images/100%.png" 
+                       Width="32" Height="32" 
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       RenderOptions.EdgeMode="Aliased"
+                       SnapsToDevicePixels="True"
+                       UseLayoutRounding="True"/>
+                                    </Button>
+                                    <TextBlock Text="100%" FontSize="9" Foreground="#666666" 
+                       HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+
+
+                        <!-- Separator 1 -->
+                        <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Show or Hide Section -->
+                        <Grid Grid.Column="2" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Show or Hide" Grid.Row="0" Margin="0,-6,0,10" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Center"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Separator 2 -->
+                        <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+
+                        <!-- Settings Section -->
+                        <Grid Grid.Column="4" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Settings" Grid.Row="0" Margin="45,-5,0,10" FontWeight="SemiBold" 
+             Foreground="#666666" HorizontalAlignment="Left"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="0*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Unit ComboBox -->
+                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="22,4,-31,28">
+                                    <Image Source="pack://application:,,,/Wordpad;component/Images/Unit.png" 
+           Width="20" Height="24" Margin="0,0,8,0">
+                                        <Image.ToolTip>Unit Settings</Image.ToolTip>
+                                    </Image>
+                                    <ComboBox x:Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Height="18" Width="53">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Height="20">
+                                                    <!-- Content for items in the ComboBox -->
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                        <ComboBoxItem Content="Inches"/>
+                                        <ComboBoxItem Content="Centimeters"/>
+                                        <ComboBoxItem Content="Picas"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                            </Grid>
+                        </Grid>
+
+                        <CheckBox Content="Ruler" Margin="8,29,0,35" Grid.Column="2" Checked="CheckBox_Checked_1" IsChecked="True" Unchecked="CheckBox_Unchecked_1"/>
+                        <CheckBox Content="Status Bar" Margin="8,52,10,15" Grid.Column="2" Checked="CheckBox_Checked_2" IsChecked="True" Unchecked="CheckBox_Unchecked_2"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+
+        <!-- Custom ScrollBar -->
+        <ScrollBar x:Name="customScrollBar"
+                           Orientation="Vertical"
+                           Minimum="0"
+                           Maximum="100"
+                           SmallChange="1"
+                           LargeChange="10"
+                           DockPanel.Dock="Right" Height="239"/>
+        <!-- Status Bar -->
+        <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
+            <Label x:Name="zoomPercent" Content="100%" Width="42"/>
+            <Button x:Name="btnDecreaseZoom" Content="-" Width="20" Click="btnDecreaseZoom_Click" />
+            <Slider Name="zoomSlider" Minimum="10" Maximum="400" Value="100" Width="150" TickFrequency="1" 
                     IsSnapToTickEnabled="True" ValueChanged="ZoomSlider_ValueChanged"
                     SmallChange="5" LargeChange="50"/>
-                <Button x:Name="btnIncreaseZoom" Content="+" Width="20" Click="btnIncreaseZoom_Click" />
-            </StatusBar>
-
+            <Button x:Name="btnIncreaseZoom" Content="+" Width="20" Click="btnIncreaseZoom_Click" />
+        </StatusBar>
+        <!-- Main Content Area -->
         <AdornerDecorator>
             <DockPanel Name="textEditor">
-                            <!-- Ruler -->
+                <!-- Ruler -->
                 <!--Đặt ruler canvas bên trong 1 scrollVIewer để nó đồng bộ kich thước và vị trí với RTB-->
                 <ScrollViewer x:Name="rulerScrollViewer" DockPanel.Dock="Top" HorizontalScrollBarVisibility="Hidden" Foreground="{x:Null}">
                     <Grid Name="rulerArea" Background="#FFCED7E6" Height="30" >
@@ -218,5 +900,4 @@
 
         </AdornerDecorator>
     </DockPanel>
-
 </Window>

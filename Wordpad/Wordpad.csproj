@@ -364,27 +364,70 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
+    <Resource Include="Images\100%25.png" />
+    <Resource Include="Images\About.png" />
     <Resource Include="Images\bold.png" />
+    <Resource Include="Images\CenterA.png" />
+    <Resource Include="Images\Change picture.png" />
     <Resource Include="Images\copy.png" />
     <Resource Include="Images\cut.png" />
+    <Resource Include="Images\Date and Time.png" />
+    <Resource Include="Images\DeIndent.png" />
+    <Resource Include="Images\DFont.png" />
     <Resource Include="Images\excel.png" />
-    <Resource Include="Images\file.png" />
+    <Resource Include="Images\Exit.png" />
+    <Resource Include="Images\Find.png" />
+    <Resource Include="Images\highlight.png" />
     <Resource Include="Images\horizontal.png" />
+    <Resource Include="Images\IFont.png" />
+    <Resource Include="Images\InIndent.png" />
+    <Resource Include="Images\Insert Object.png" />
     <Resource Include="Images\italic.png" />
+    <Resource Include="Images\Justify.png" />
+    <Resource Include="Images\LeftA.png" />
+    <Resource Include="Images\line-spacing.png" />
     <Resource Include="Images\list-items.png" />
+    <Resource Include="Images\list.png" />
+    <Resource Include="Images\New.png" />
+    <Resource Include="Images\Open.png" />
+    <Resource Include="Images\Page SetUp.png" />
     <Resource Include="Images\paint.png" />
     <Resource Include="Images\paragraph.png" />
     <Resource Include="Images\paste.png" />
     <Resource Include="Images\paste1.png" />
     <Resource Include="Images\pdf.png" />
+    <Resource Include="Images\picture.png" />
     <Resource Include="Images\powerpoint.png" />
+    <Resource Include="Images\Print Preview.png" />
+    <Resource Include="Images\Print.png" />
+    <Resource Include="Images\Quick Print.png" />
+    <Resource Include="Images\Redo.png" />
+    <Resource Include="Images\Replace.png" />
+    <Resource Include="Images\resize picture.png" />
+    <Resource Include="Images\RightA.png" />
+    <Resource Include="Images\Save As.png" />
+    <Resource Include="Images\Save.png" />
+    <Resource Include="Images\Select All.png" />
+    <Resource Include="Images\Send Email.png" />
     <Resource Include="Images\strikethrough.png" />
+    <Resource Include="Images\Sub.png" />
+    <Resource Include="Images\Sub2.png" />
     <Resource Include="Images\subscript.png" />
+    <Resource Include="Images\subscript1.png" />
+    <Resource Include="Images\Sup.png" />
+    <Resource Include="Images\Sup2.png" />
     <Resource Include="Images\superscript.png" />
     <Resource Include="Images\underline.png" />
+    <Resource Include="Images\underline1.png" />
+    <Resource Include="Images\Undo.png" />
+    <Resource Include="Images\Unit.png" />
     <Resource Include="Images\vertical.png" />
     <Resource Include="Images\word.png" />
+    <Resource Include="Images\WordWrap.png" />
+    <Resource Include="Images\ZoomIn.png" />
+    <Resource Include="Images\ZoomOut.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

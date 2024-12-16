@@ -248,7 +248,7 @@ namespace Wordpad
             // Kiểm tra trạng thái của checkbox (giả sử bạn có `chkAdd10pt`)
             bool checkAdd10pt = chkAdd10pt.IsChecked ?? false;
 
-            MessageBox.Show(checkAdd10pt.ToString());
+            //MessageBox.Show(checkAdd10pt.ToString());
 
             ParagraphManager.lineSpacing = float.Parse(selectedValue);
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);
@@ -606,6 +606,44 @@ namespace Wordpad
             PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
             if (pasteSpecialWindow.ShowDialog() == true) { }
         }
-            #endregion
+
+        private void QuickUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (richTextBox.CanUndo)
+                richTextBox.Undo();
+        }
+
+        private void QuickRedo_Click(object sender, RoutedEventArgs e)
+        {
+            if (richTextBox.CanRedo)
+                richTextBox.Redo();
+        }
+        private void QuickSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveMenuItem_Click(sender, e);
+        }
+
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+            if(rulerCanvas != null)
+                viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
+        {
+            if(rulerCanvas != null)
+                viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
+        #endregion
+
+        private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void CheckBox_Unchecked_2(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
     }
 }
