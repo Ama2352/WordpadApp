@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Input;
 
 
+
 namespace Wordpad
 {
     internal class FontManager
@@ -234,13 +235,16 @@ namespace Wordpad
         // Phương thức định dạng cho các đoạn văn bản được chọn (Trường hợp vùng chọn có nhiều đoạn văn bản)
         private void FormatParagraphs(TextRange formatRange, string formatOption)
         {
-
             bool applied = true;
-            int totalParagraphs = CountNeededFormatParagraphs(formatRange, formatOption);
-            int totalFulliedApplyFormat = CountFormattedParagraphs(formatRange, formatOption);
 
-            if (totalParagraphs != totalFulliedApplyFormat)
-                applied = false;
+            if (formatOption != "Subscript" && formatOption != "Superscript")
+            {
+                int totalParagraphs = CountNeededFormatParagraphs(formatRange, formatOption);
+                int totalFulliedApplyFormat = CountFormattedParagraphs(formatRange, formatOption);
+
+                if (totalParagraphs != totalFulliedApplyFormat)
+                    applied = false;
+            }    
 
             var paragraphs = _richTextBox.Document.Blocks.OfType<Paragraph>().ToList();
             foreach (Paragraph paragraph in paragraphs)
@@ -259,7 +263,10 @@ namespace Wordpad
                     // Bây giờ startPointer và endPointer đại diện cho phần văn bản được chọn trong paragraph này
                     TextRange selectedInParagraph = new TextRange(startPointer, endPointer);
 
-                    FormatTextDecorationsForParagraph(selectedInParagraph, applied, formatOption);
+                    if (formatOption != "Subscript" && formatOption != "Superscript")
+                        FormatTextDecorationsForParagraph(selectedInParagraph, applied, formatOption);
+                    else
+                        SettingBaselineAlignmentFormat(selectedInParagraph, formatOption);
                 }
             }
         }
@@ -270,22 +277,12 @@ namespace Wordpad
             // Lấy giá trị TextDecorations của đoạn văn bản
             var currentTextDecoration = selectedParagraph.GetPropertyValue(Inline.TextDecorationsProperty);
 
-            // Kiểm tra xem giá trị trả về có phải là UnsetValue không (chưa xác định kiểu)
-            if (currentTextDecoration == null
-                || currentTextDecoration.Equals(DependencyProperty.UnsetValue))
-                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
-            else
-            {
-                // Trường hợp != null và UnsetValue tức là định dạng đã được áp dụng trên cả đoạn văn bản được chọn
-                // bool applied = CheckIfFullyApplyTextDecorationsOrNot(selection, formatOption);
-                //ManipulateUnderlineOrStrikethrough(selection, formatOption, applied);
-
-                ManipulateFormatForPropertyCases(selectedParagraph, applied, formatOption);
-            }
+            // Không cần xét != null và UnsetValue vì phương thức này xử lý được hết trường hợp
+            ManipulateFormatForPropertyCases(selectedParagraph, formatOption, applied);
         }
 
         // Phương thức áp dụng định dạng cho các vùng văn bản trong cả trường hợp xác định được và không xác định được kiểu
-        private void ManipulateFormatForPropertyCases(TextRange formatField, bool applied, string formatOption)
+        private void ManipulateFormatForPropertyCases(TextRange formatField, string formatOption, bool applied = false, BaselineAlignment alignment = BaselineAlignment.Baseline)
         {
             var start = formatField.Start;
             var end = formatField.End;
@@ -311,6 +308,10 @@ namespace Wordpad
                         break;
                     case "Strikethrough":
                         ManipulateUnderlineOrStrikethrough(formatRange, formatOption, applied);
+                        break;
+                    case "Subscript":
+                    case "Superscript":
+                        ApplyingBaselineAlignmentForCases(formatRange, formatOption, alignment);
                         break;
                     default:
                         break;
@@ -451,6 +452,68 @@ namespace Wordpad
                 }
             }
         }
+
+        // Phương thức kiểm tra đoạn văn bản cần định dạng để xác định xử lý trên từng kí tự (null case) hay xử lý trên đoạn văn (valid case) 
+        private void SettingBaselineAlignmentFormat(TextRange formatRange, string baselineAlignmentOption)
+        {
+            // Lấy kích cỡ văn bản được chọn
+            var currentFontSize = formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+
+            // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
+            var currentAlignment = formatRange.GetPropertyValue(Inline.BaselineAlignmentProperty);
+
+            // Kiểm tra giá trị Alignment hợp lệ
+            BaselineAlignment alignment = BaselineAlignment.Baseline;
+            if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
+                alignment = (BaselineAlignment)currentAlignment;
+
+            // Nếu giá trị font size không hợp lệ thì đưa vào hàm xử lý riêng từng kí tự
+            if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double))
+                ManipulateFormatForPropertyCases(formatRange, baselineAlignmentOption, false, alignment);
+            else
+                ApplyingBaselineAlignmentForCases(formatRange, baselineAlignmentOption, alignment);          
+        }
+
+        // Phương thức áp dụng loại BaselineAlignment cho từng kí tự (xử lý được cả trường hợp xác định được và không xác định được kiểu)
+        private void ApplyingBaselineAlignmentForCases(TextRange formatRange, string baselineAlignmentOption, BaselineAlignment alignment)
+        {
+            // Xác định loại BaselineAlignment
+            var baselineAlignment = new BaselineAlignment();
+            var oppositeBaselineAlignment = new BaselineAlignment();
+            if (baselineAlignmentOption == "Subscript")
+            {
+                baselineAlignment = BaselineAlignment.Subscript;
+                oppositeBaselineAlignment = BaselineAlignment.Superscript;
+            }
+            else
+            {
+                baselineAlignment = BaselineAlignment.Superscript;
+                oppositeBaselineAlignment = BaselineAlignment.Subscript;
+            }
+
+            double scale = 0.75;
+
+            // Vì chương trình đã mặc định khởi tạo font size = 11.0 nên không thể bằng UnsetValue hoặc null trong trường hợp xét riêng từng kí tự
+            double fontSize = (double)formatRange.GetPropertyValue(TextElement.FontSizeProperty);
+
+            // Thiết lập BaselineAlignment tương ứng
+            if (alignment == BaselineAlignment.Baseline)
+            {
+                double newFontSize = Math.Max(fontSize * scale, 8.0);  // Đặt giới hạn font tối thiểu là 8.0
+                formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                formatRange.ApplyPropertyValue(Inline.BaselineAlignmentProperty, baselineAlignment);
+            }
+            else if (alignment == oppositeBaselineAlignment)
+            {
+                formatRange.ApplyPropertyValue(Inline.BaselineAlignmentProperty, baselineAlignment);
+            }
+            else
+            {
+                double newFontSize = Math.Min(fontSize / scale, 72.0);  // Giới hạn font tối đa là 72.0
+                formatRange.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
+                formatRange.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
+            }
+        }
         #endregion
 
         // Chuyển văn bản sang gạch chân
@@ -492,40 +555,9 @@ namespace Wordpad
             try
             {
                 var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
+                string option = "Subscript";
 
-                // Lấy kích cỡ văn bản được chọn
-                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
-
-                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
-                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-
-                // Kiểm tra giá trị FontSize hợp lệ
-                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
-                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
-                var scaleSubscript = 0.75;
-
-                // Kiểm tra giá trị Alignment hợp lệ
-                BaselineAlignment alignment = BaselineAlignment.Baseline;
-                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
-                    alignment = (BaselineAlignment)currentAlignment;
-
-                // Thay đổi định dạng
-                if (alignment == BaselineAlignment.Baseline)
-                {
-                    double newFontSize = Math.Max(fontSize * scaleSubscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
-                }
-                else if (alignment == BaselineAlignment.Superscript)
-                {
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Subscript);
-                }
-                else
-                {
-                    double newFontSize = Math.Min(fontSize / scaleSubscript, 72.0); // Giới hạn font tối đa là 72.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
-                }
+                FormatParagraphs(selection, option);
             }
             catch (Exception ex)
             {
@@ -548,39 +580,9 @@ namespace Wordpad
             {
                 var selection = new TextRange(_richTextBox.Selection.Start, _richTextBox.Selection.End);
 
-                // Lấy kích cỡ văn bản được chọn
-                var currentFontSize = selection.GetPropertyValue(TextElement.FontSizeProperty);
+                string option = "Superscript";
 
-                // Xác định kiểu định dạng (Subscript, Superscript, hoặc Baseline)
-                var currentAlignment = selection.GetPropertyValue(Inline.BaselineAlignmentProperty);
-
-                // Kiểm tra giá trị FontSize hợp lệ
-                if (currentFontSize == DependencyProperty.UnsetValue || !(currentFontSize is double fontSize))
-                    fontSize = 11.0; // Giá trị mặc định nếu không xác định được kích thước font
-                var scaleSuperscript = 0.75;
-
-                // Kiểm tra giá trị Alignment hợp lệ
-                BaselineAlignment alignment = BaselineAlignment.Baseline;
-                if (currentAlignment != DependencyProperty.UnsetValue && currentAlignment is BaselineAlignment)
-                    alignment = (BaselineAlignment)currentAlignment;
-
-                // Thay đổi định dạng
-                if (alignment == BaselineAlignment.Baseline)
-                {
-                    double newFontSize = Math.Max(fontSize * scaleSuperscript, 8.0); // Đặt giới hạn font tối thiểu là 8.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
-                }
-                else if (alignment == BaselineAlignment.Subscript)
-                {
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Superscript);
-                }
-                else
-                {
-                    double newFontSize = Math.Min(fontSize / scaleSuperscript, 72.0); // Giới hạn font tối đa là 72.0
-                    selection.ApplyPropertyValue(TextElement.FontSizeProperty, newFontSize);
-                    selection.ApplyPropertyValue(Inline.BaselineAlignmentProperty, BaselineAlignment.Baseline);
-                }
+                FormatParagraphs(selection, option);
             }
             catch (Exception ex)
             {
@@ -591,6 +593,8 @@ namespace Wordpad
             // Đảm bảo RichTextBox có focus để con trỏ luôn hiển thị
             _richTextBox.Focus();
         }
+
+       
 
         // Tăng kích thước font
         public void GrowFont()
@@ -604,7 +608,7 @@ namespace Wordpad
             if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
             {
                 string formatOption = "Grow Font";
-                ManipulateFormatForPropertyCases(selection, false, formatOption);
+                ManipulateFormatForPropertyCases(selection, formatOption);
             }
             else
             {
@@ -626,7 +630,7 @@ namespace Wordpad
             if (isVariousFormat == null || isVariousFormat == DependencyProperty.UnsetValue)
             {
                 string formatOption = "Shrink Font";
-                ManipulateFormatForPropertyCases(selection, false, formatOption);
+                ManipulateFormatForPropertyCases(selection, formatOption);
             }
             else
             {

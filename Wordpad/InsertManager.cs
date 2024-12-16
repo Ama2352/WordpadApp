@@ -93,6 +93,44 @@ namespace Wordpad
                 imageDictionary.Remove(entry.Value.Key);
             }
         }
+
+        public void MakeContainerForImageAndInsert(BitmapImage image)
+        {
+            // Tính toán tỷ lệ và lấy ảnh với tỷ lệ duy trì
+            Image imgControl = GetImageWithAspectRatio(image);
+
+            // Tạo một ID duy nhất cho mỗi hình ảnh
+            Guid imageId = Guid.NewGuid();
+
+            // Gắn ID duy nhất của tấm ảnh vào tag của nó
+            imgControl.Tag = imageId;
+
+            // Lưu ảnh vào dictionary với ID duy nhất của nó
+            imageDictionary[imageId] = imgControl;
+
+            // Tạo một InlineUIContainer để chứa hình ảnh
+            InlineUIContainer container = new InlineUIContainer(imgControl);
+
+            // Lấy vị trí con trỏ hiện tại và chèn hình ảnh tại đó
+            TextSelection selection = _richTextBox.Selection;
+            if (!selection.IsEmpty) // Nếu có văn bản được chọn, ta có thể thay thế nó bằng hình ảnh
+            {
+                // Lấy TextPointer từ vị trí con trỏ hiện tại (hoặc vùng chọn)
+                TextPointer selectedContent = selection.Start;
+
+                selection.Text = "";
+
+                // Gọi hàm để tìm hình ảnh tại vị trí con trỏ (nếu có)
+                DeleteImageAtPosition(selectedContent);
+            }
+
+            // Chèn InlineUIContainer vào RichTextBox tại vị trí con trỏ
+            Paragraph para = new Paragraph();
+            para.Inlines.Add(container);
+
+            // Chèn đoạn văn bản (chứa hình ảnh) vào RichTextBox
+            _richTextBox.Document.Blocks.Add(para);
+        }
      
 
         public void InsertImage()
@@ -105,40 +143,8 @@ namespace Wordpad
                 string filePath = openFileDialog.FileName;
                 BitmapImage image = new BitmapImage(new Uri(filePath));
 
-                // Tính toán tỷ lệ và lấy ảnh với tỷ lệ duy trì
-                Image imgControl = GetImageWithAspectRatio(image);
-
-                // Tạo một ID duy nhất cho mỗi hình ảnh
-                Guid imageId = Guid.NewGuid();
-
-                // Gắn ID duy nhất của tấm ảnh vào tag của nó
-                imgControl.Tag = imageId;
-
-                // Lưu ảnh vào dictionary với ID duy nhất của nó
-                imageDictionary[imageId] = imgControl;
-
-                // Tạo một InlineUIContainer để chứa hình ảnh
-                InlineUIContainer container = new InlineUIContainer(imgControl);
-
-                // Lấy vị trí con trỏ hiện tại và chèn hình ảnh tại đó
-                TextSelection selection = _richTextBox.Selection;
-                if (!selection.IsEmpty) // Nếu có văn bản được chọn, ta có thể thay thế nó bằng hình ảnh
-                {
-                    // Lấy TextPointer từ vị trí con trỏ hiện tại (hoặc vùng chọn)
-                    TextPointer selectedContent = selection.Start;
-
-                    selection.Text = "";
-
-                    // Gọi hàm để tìm hình ảnh tại vị trí con trỏ (nếu có)
-                    DeleteImageAtPosition(selectedContent);
-                }
-
-                // Chèn InlineUIContainer vào RichTextBox tại vị trí con trỏ
-                Paragraph para = new Paragraph();
-                para.Inlines.Add(container);
-
-                // Chèn đoạn văn bản (chứa hình ảnh) vào RichTextBox
-                _richTextBox.Document.Blocks.Add(para);
+                // Phương thức gán ảnh vào InlineUIContainer và chèn vào rtb
+               MakeContainerForImageAndInsert(image);
             }
         }
 

@@ -48,10 +48,5 @@ namespace Wordpad
                 this.Close();  // Đóng form FindForm
             }        
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
     }
 }
