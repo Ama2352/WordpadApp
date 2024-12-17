@@ -537,15 +537,22 @@
            ToolTip="Line Spacing"
            Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
 
-                                    <!-- ComboBox for Line Spacing -->
-                                    <ComboBox x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
-              Height="18" Width="18" Margin="3,8,3,13">
-                                        <ComboBoxItem Content="1.0"/>
-                                        <ComboBoxItem Content="1.25"/>
-                                        <ComboBoxItem Content="1.5"/>
-                                        <ComboBoxItem Content="2.0"/>
-                                        <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                                    </ComboBox>
+                                    <!-- DropDownButton cho Line Spacing -->
+                                    <xctk:DropDownButton x:Name="dropDownLineSpacing" Content="Line Spacing" 
+                             Width="18" Height="18" Margin="12,8,8,12">
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <StackPanel>
+                                                <!-- Các tùy chọn cho Line Spacing -->
+                                                <TextBlock Text="1.0" Margin="5"/>
+                                                <TextBlock Text="1.25" Margin="5"/>
+                                                <TextBlock Text="1.5" Margin="5"/>
+                                                <TextBlock Text="2.0" Margin="5"/>
+
+                                                <!-- CheckBox Add 10pt -->
+                                                <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Margin="5"/>
+                                            </StackPanel>
+                                        </xctk:DropDownButton.DropDownContent>
+                                    </xctk:DropDownButton>
                                 </Grid>
 
                                 <!-- Group for Start a List -->
@@ -568,9 +575,9 @@
            ToolTip="Start a List"
            Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
 
-                                    <!-- DropDownButton từ Extended WPF Toolkit -->
+                                    <!-- DropDownButton Star A List -->
                                     <xctk:DropDownButton x:Name="dropDownStartAList" Content="Chọn kiểu danh sách" 
-                             Width="18" Height="18" Margin="10">
+                             Width="18" Height="18" Margin="9,10,12,10">
                                         <xctk:DropDownButton.DropDownContent>
                                             <StackPanel>
                                                 <TextBlock Text="Bullet" Margin="5"/>
@@ -797,7 +804,7 @@
                         <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
 
                         <!-- Settings Section -->
-                        <Grid Grid.Column="4" Margin="5">
+                        <Grid Grid.Column="4" Margin="5,5,0,5" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
