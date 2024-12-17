@@ -441,16 +441,6 @@ namespace Wordpad
         {
             clipboardManager.Paste();
         }
-        private void btnPaste_Paste_Click(object sender, RoutedEventArgs e)
-        {
-            clipboardManager.Paste();
-        }
-
-        private void btnPaste_PasteSpecial_Click(object sender, RoutedEventArgs e)
-        {
-            PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
-            if(pasteSpecialWindow.ShowDialog() == true) { }         
-        }
 
         private void btnGrowFont_Click(object sender, RoutedEventArgs e)
         {
