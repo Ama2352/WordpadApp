@@ -568,81 +568,66 @@
                                         <!-- Width for ComboBox -->
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Image for Start a List -->
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
-           Width="32" 
-           RenderOptions.BitmapScalingMode="HighQuality" 
-           ToolTip="Start a List"
-           Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
                                     <!-- DropDownButton Start A List -->
-                                    <xctk:DropDownButton x:Name="dropDownStartAList" Content="Chọn kiểu danh sách" 
-                     Width="25" Height="25" Margin="9,10,12,10">
-                                        <xctk:DropDownButton.DropDownContent>
-                                            <StackPanel>
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/bullet.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Bullet" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/number.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Number" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/lower alphabet.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Lower Alphabet" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/upper alphabet.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Upper Alphabet" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/lower roman.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Lower Roman" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/upper roman.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Upper Roman" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/square.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Square" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/dot.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Dot" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
-
-                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Source="Images/box.png" Width="16" Height="16" Margin="0,0,5,0"/>
-                                                        <TextBlock Text="Box" VerticalAlignment="Center"/>
-                                                    </StackPanel>
-                                                </Button>
+                                    <xctk:DropDownButton x:Name="dropDownStartAList" Width="50" Height="25" Margin="9,10,12,10" ToolTip="Start a List">
+                                        <!-- Nội dung chính của nút -->
+                                        <xctk:DropDownButton.Content>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- Hình ảnh -->
+                                                <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
+                                                       Width="20" Height="20" 
+                                                       RenderOptions.BitmapScalingMode="HighQuality" 
+                                                       HorizontalAlignment="Left"/>     
                                             </StackPanel>
+                                        </xctk:DropDownButton.Content>
+
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <WrapPanel Width="174" HorizontalAlignment="Center" Background="#fbfcfd">
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/bullet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/number.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/lower alphabet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/upper alphabet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/lower roman.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/upper roman.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/square.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/dot.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/box.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+                                            </WrapPanel>
+
+
+
+
+
                                         </xctk:DropDownButton.DropDownContent>
                                     </xctk:DropDownButton>
+
+
                                 </Grid>
 
                                 <!-- Row 1: Alignment -->

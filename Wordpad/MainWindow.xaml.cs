@@ -239,7 +239,7 @@ namespace Wordpad
 
         private void cbLineSpacing_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Ép kiểu SelectedItem về ComboBoxItem
+           /* // Ép kiểu SelectedItem về ComboBoxItem
             ComboBoxItem selectedItem = (ComboBoxItem)cbLineSpacing.SelectedItem;
 
             // Lấy nội dung của ComboBoxItem
@@ -251,7 +251,7 @@ namespace Wordpad
             //MessageBox.Show(checkAdd10pt.ToString());
 
             ParagraphManager.lineSpacing = float.Parse(selectedValue);
-            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);
+            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);*/
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
