@@ -543,10 +543,10 @@
                                         <xctk:DropDownButton.DropDownContent>
                                             <StackPanel>
                                                 <!-- Các tùy chọn cho Line Spacing -->
-                                                <TextBlock Text="1.0" Margin="5"/>
-                                                <TextBlock Text="1.25" Margin="5"/>
-                                                <TextBlock Text="1.5" Margin="5"/>
-                                                <TextBlock Text="2.0" Margin="5"/>
+                                                <Button Content="1.0" Margin="5"/>
+                                                <Button Content="1.25" Margin="5"/>
+                                                <Button Content="1.5" Margin="5"/>
+                                                <Button Content="2.0" Margin="5"/>
 
                                                 <!-- CheckBox Add 10pt -->
                                                 <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Margin="5"/>
@@ -574,18 +574,72 @@
            RenderOptions.BitmapScalingMode="HighQuality" 
            ToolTip="Start a List"
            Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
-
-                                    <!-- DropDownButton Star A List -->
+                                    <!-- DropDownButton Start A List -->
                                     <xctk:DropDownButton x:Name="dropDownStartAList" Content="Chọn kiểu danh sách" 
-                             Width="18" Height="18" Margin="9,10,12,10">
+                     Width="25" Height="25" Margin="9,10,12,10">
                                         <xctk:DropDownButton.DropDownContent>
                                             <StackPanel>
-                                                <Button Content="Bullet" Margin="5"/>
-                                                <Button Content="Number" Margin="5"/>
-                                                <Button Content="Lower Alphabet" Margin="5"/>
-                                                <Button Content="Upper Alphabet" Margin="5"/>
-                                                <Button Content="Lower Roman" Margin="5"/>
-                                                <Button Content="Upper Roman" Margin="5"/>
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/bullet.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Bullet" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/number.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Number" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/lower alphabet.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Lower Alphabet" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/upper alphabet.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Upper Alphabet" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/lower roman.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Lower Roman" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/upper roman.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Upper Roman" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/square.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Square" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/dot.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Dot" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Margin="5" HorizontalContentAlignment="Left" Focusable="False">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="Images/box.png" Width="16" Height="16" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Box" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
                                             </StackPanel>
                                         </xctk:DropDownButton.DropDownContent>
                                     </xctk:DropDownButton>
