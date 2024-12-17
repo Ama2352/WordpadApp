@@ -537,6 +537,10 @@ namespace Wordpad
         {
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
-    
+
+        private void btnSplit_Checked()
+        {
+
+        }
     }
 }
