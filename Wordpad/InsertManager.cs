@@ -134,33 +134,27 @@ namespace Wordpad
 
         private void InsertAtPosition(Paragraph insertedParagraph, TextPointer currentPointer)
         {
-            if(currentPointer != null && currentPointer.Paragraph != null)
-            {
-                Paragraph para = currentPointer.Paragraph;
-                    _richTextBox.Document.Blocks.InsertAfter(para, insertedParagraph);
-            }    
+            if(currentPointer != null && currentPointer.Parent is Block block)
+                    _richTextBox.Document.Blocks.InsertAfter(block, insertedParagraph);   
             else
             {
                 TextPointer previousPointer = currentPointer.GetNextContextPosition(LogicalDirection.Backward);
-                if(previousPointer != null && previousPointer.Paragraph != null)
+                if(previousPointer != null && previousPointer.Parent is Block block2)
                 {
-                    Paragraph para = currentPointer.Paragraph;
-                    _richTextBox.Document.Blocks.InsertAfter(para, insertedParagraph);
+                    _richTextBox.Document.Blocks.InsertAfter(block2, insertedParagraph);
                 }
                 else
                 {
                     TextPointer nextPointer = currentPointer.GetNextContextPosition(LogicalDirection.Forward);
-                    if(nextPointer != null && nextPointer.Paragraph != null)
+                    if(nextPointer != null && nextPointer.Parent is Block block3)
                     {
-                        Paragraph para = currentPointer.Paragraph;
-                        _richTextBox.Document.Blocks.InsertBefore(para, insertedParagraph);
+                        _richTextBox.Document.Blocks.InsertBefore(block3, insertedParagraph);
                     }    
                 } 
                     
             }    
   
-        }
-     
+        }   
 
         public void InsertImage()
         {

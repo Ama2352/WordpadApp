@@ -655,5 +655,12 @@ namespace Wordpad
         {
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
+
+        private void cbStartAList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem selectedItem = (ComboBoxItem)cbStartAList.SelectedItem;
+            string selectedValue = selectedItem.Content.ToString();
+            paragraphManager.ApplyBulletStyles(selectedValue);
+        }
     }
 }
