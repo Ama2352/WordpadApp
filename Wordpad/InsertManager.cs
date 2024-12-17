@@ -125,11 +125,40 @@ namespace Wordpad
             }
 
             // Chèn InlineUIContainer vào RichTextBox tại vị trí con trỏ
-            Paragraph para = new Paragraph();
-            para.Inlines.Add(container);
+            Paragraph insertedParagraph = new Paragraph();
+            insertedParagraph.Inlines.Add(container);
 
             // Chèn đoạn văn bản (chứa hình ảnh) vào RichTextBox
-            _richTextBox.Document.Blocks.Add(para);
+            InsertAtPosition(insertedParagraph, selection.Start);
+        }
+
+        private void InsertAtPosition(Paragraph insertedParagraph, TextPointer currentPointer)
+        {
+            if(currentPointer != null && currentPointer.Paragraph != null)
+            {
+                Paragraph para = currentPointer.Paragraph;
+                    _richTextBox.Document.Blocks.InsertAfter(para, insertedParagraph);
+            }    
+            else
+            {
+                TextPointer previousPointer = currentPointer.GetNextContextPosition(LogicalDirection.Backward);
+                if(previousPointer != null && previousPointer.Paragraph != null)
+                {
+                    Paragraph para = currentPointer.Paragraph;
+                    _richTextBox.Document.Blocks.InsertAfter(para, insertedParagraph);
+                }
+                else
+                {
+                    TextPointer nextPointer = currentPointer.GetNextContextPosition(LogicalDirection.Forward);
+                    if(nextPointer != null && nextPointer.Paragraph != null)
+                    {
+                        Paragraph para = currentPointer.Paragraph;
+                        _richTextBox.Document.Blocks.InsertBefore(para, insertedParagraph);
+                    }    
+                } 
+                    
+            }    
+  
         }
      
 
@@ -277,7 +306,6 @@ namespace Wordpad
         public void AddObjectTypes(ListBox listBox)
         {
             string[] objectTypes = {
-                "Foxit PhantomPDF Document",
                 "Microsoft Word Document",
                 "Wordpad Document",
                 "Microsoft Excel",
@@ -298,10 +326,6 @@ namespace Wordpad
             string appName = "";
             switch (iconType)
             {
-                case "Foxit PhantomPDF Document":
-                    iconName = "pdf.png";
-                    appName = "Foxit PhantomPDF Document";
-                    break;
                 case "Microsoft Word Document":
                     iconName = "word.png";
                     appName = "Microsoft Word Document";
@@ -415,10 +439,7 @@ namespace Wordpad
             {
                 case "Wordpad Document":
                     fileName = "wordpad";
-                    break;
-                case "Foxit PhantomPDF Document":
-                    fileName = @"C:\Program Files (x86)\Foxit Software\Foxit PhantomPDF\FoxitPhantomPDF.exe";
-                    break;
+                    break;;
                 case "Microsoft Word Document":
                     fileName = "winword";
                     break;

@@ -63,8 +63,12 @@ namespace Wordpad
                     "may active it using the program which create it.";
                 string imagePath = Path.Combine(ClipboardManager.imageDirectory, "paste.png");
                 imgIllustration.Source = _clipboardManager.LoadImage(imagePath);
-            }    
-           
+
+                // Lấy đường dẫn gần nhất mà người dùng truy cập
+                string lastPath = Properties.Settings.Default.LastPath;
+                if (!string.IsNullOrEmpty(lastPath))
+                    txtPath.Text = lastPath; // Hiển thị trên text block
+            }
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -131,9 +135,6 @@ namespace Wordpad
                     case ".ppt":
                     case ".pptx":
                         fileType = "Microsoft PowerPoint Presentation";
-                        break;
-                    case ".pdf":
-                        fileType = "Foxit PhantomPDF Document";
                         break;
                     default:
                         fileType = "HTML Document";

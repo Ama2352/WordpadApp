@@ -31,22 +31,28 @@ namespace Wordpad
             var selection = _richTextBox.Selection;
             if (selection.IsEmpty)
             {
-                // Căn lề cho toàn bộ văn bản nếu không có phần chọn
-                foreach (var block in _richTextBox.Document.Blocks)
-                {
-                    if (block is Paragraph paragraph)
-                    {
-                        paragraph.TextAlignment = TextAlignment.Left;
-                    }
-                }
+                // Căn lề cho đoạn văn bản hiện tại nếu không có vùng chọn
+                Paragraph para = selection.Start.Paragraph;
+                if (para != null)
+                    para.TextAlignment = TextAlignment.Left;
             }
             else
             {
-                // Căn lề cho phần văn bản đã chọn
-                Paragraph para = selection.Start.Paragraph;
-                para.TextAlignment = TextAlignment.Left;
+                // Căn lề cho tất cả các đoạn văn bản trong vùng chọn
+                TextPointer start = selection.Start;
+                TextPointer end = selection.End;
+
+                while (start != null && start.CompareTo(end) < 0)
+                {
+                    Paragraph para = start.Paragraph;
+                    if (para != null)
+                        para.TextAlignment = TextAlignment.Left;
+                    start = start.GetNextContextPosition(LogicalDirection.Forward);
+                }
             }
+            _richTextBox.Focus();
         }
+
 
         // Căn lề phải
         public void AlignRight()
@@ -54,21 +60,23 @@ namespace Wordpad
             var selection = _richTextBox.Selection;
             if (selection.IsEmpty)
             {
-                // Căn lề cho toàn bộ văn bản nếu không có phần chọn
-                foreach (var block in _richTextBox.Document.Blocks)
-                {
-                    if (block is Paragraph paragraph)
-                    {
-                        paragraph.TextAlignment = TextAlignment.Right;
-                    }
-                }
-            }
-            else
-            {
                 // Căn lề cho phần văn bản đã chọn
                 Paragraph para = selection.Start.Paragraph;
                 para.TextAlignment = TextAlignment.Right;
             }
+            else
+            {
+                TextPointer start = selection.Start;
+                TextPointer end = selection.End;
+                while(start != null && start.CompareTo(end) < 0)
+                {
+                    Paragraph para = start.Paragraph;
+                    if(para != null)
+                        para.TextAlignment = TextAlignment.Right;
+                    start = start.GetNextContextPosition(LogicalDirection.Forward);
+                }    
+            }
+            _richTextBox.Focus();
         }
 
         // Căn giữa
@@ -77,21 +85,23 @@ namespace Wordpad
             var selection = _richTextBox.Selection;
             if (selection.IsEmpty)
             {
-                // Căn lề cho toàn bộ văn bản nếu không có phần chọn
-                foreach (var block in _richTextBox.Document.Blocks)
-                {
-                    if (block is Paragraph paragraph)
-                    {
-                        paragraph.TextAlignment = TextAlignment.Center;
-                    }
-                }
-            }
-            else
-            {
                 // Căn lề cho phần văn bản đã chọn
                 Paragraph para = selection.Start.Paragraph;
                 para.TextAlignment = TextAlignment.Center;
             }
+            else
+            {
+                TextPointer start = selection.Start;
+                TextPointer end = selection.End;
+                while (start != null && start.CompareTo(end) < 0)
+                {
+                    Paragraph para = start.Paragraph;
+                    if (para != null)
+                        para.TextAlignment = TextAlignment.Center;
+                    start = start.GetNextContextPosition(LogicalDirection.Forward);
+                }
+            }
+            _richTextBox.Focus();
         }
 
         // Căn giữa
@@ -100,21 +110,23 @@ namespace Wordpad
             var selection = _richTextBox.Selection;
             if (selection.IsEmpty)
             {
-                // Căn lề cho toàn bộ văn bản nếu không có phần chọn
-                foreach (var block in _richTextBox.Document.Blocks)
-                {
-                    if (block is Paragraph paragraph)
-                    {
-                        paragraph.TextAlignment = TextAlignment.Justify;
-                    }
-                }
-            }
-            else
-            {
                 // Căn lề cho phần văn bản đã chọn
                 Paragraph para = selection.Start.Paragraph;
                 para.TextAlignment = TextAlignment.Justify;
             }
+            else
+            {
+                TextPointer start = selection.Start;
+                TextPointer end = selection.End;
+                while (start != null && start.CompareTo(end) < 0)
+                {
+                    Paragraph para = start.Paragraph;
+                    if (para != null)
+                        para.TextAlignment = TextAlignment.Justify;
+                    start = start.GetNextContextPosition(LogicalDirection.Forward);
+                }
+            }
+            _richTextBox.Focus();
         }
 
         // Tăng thụt lề
@@ -152,7 +164,7 @@ namespace Wordpad
                     ruler.IncreaseIndentSimplified(para, 48);
                 }
             }
-
+            _richTextBox.Focus();
         }
 
 
@@ -185,6 +197,7 @@ namespace Wordpad
                     ruler.DecreaseIndentSimplified(para, 48);
                 }
             }
+            _richTextBox.Focus();
         }
 
         // Hàm Set Line Spacing
@@ -262,7 +275,7 @@ namespace Wordpad
                     }
                 }
             }
-
+            _richTextBox.Focus();
         }
 
 
