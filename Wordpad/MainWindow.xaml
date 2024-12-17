@@ -568,14 +568,19 @@
            ToolTip="Start a List"
            Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
 
-                                    <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18">
-                                        <ComboBoxItem Content="Bullet"/>
-                                        <ComboBoxItem Content="Number"/>
-                                        <ComboBoxItem Content="Lower Alphabet"/>
-                                        <ComboBoxItem Content="Upper Alphabet"/>
-                                        <ComboBoxItem Content="Roman"/>
-                                    </ComboBox>
+                                    <!-- DropDownButton từ Extended WPF Toolkit -->
+                                    <xctk:DropDownButton x:Name="dropDownStartAList" Content="Chọn kiểu danh sách" 
+                             Width="18" Height="18" Margin="10">
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <StackPanel>
+                                                <TextBlock Text="Bullet" Margin="5"/>
+                                                <TextBlock Text="Number" Margin="5"/>
+                                                <TextBlock Text="Lower Alphabet" Margin="5"/>
+                                                <TextBlock Text="Upper Alphabet" Margin="5"/>
+                                                <TextBlock Text="Roman" Margin="5"/>
+                                            </StackPanel>
+                                        </xctk:DropDownButton.DropDownContent>
+                                    </xctk:DropDownButton>
                                 </Grid>
 
                                 <!-- Row 1: Alignment -->
@@ -836,13 +841,6 @@
         </StackPanel>
 
         <!-- Custom ScrollBar -->
-        <ScrollBar x:Name="customScrollBar"
-                           Orientation="Vertical"
-                           Minimum="0"
-                           Maximum="100"
-                           SmallChange="1"
-                           LargeChange="10"
-                           DockPanel.Dock="Right" Height="239"/>
         <!-- Status Bar -->
         <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
             <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>
