@@ -173,7 +173,7 @@
 
         <!-- Toolbar -->
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Width="1210" Height="230" HorizontalAlignment="Left">
-            <TabControl Width="1144">
+            <TabControl Width="1196">
                 <TabItem Header="Home">
                     <Grid HorizontalAlignment="Left" Width="986">
                         <Grid.ColumnDefinitions>
@@ -322,7 +322,7 @@
                                 </StackPanel>
 
                                 <!-- Formatting Controls -->
-                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,59" Grid.RowSpan="2">
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,20,0,52">
                                     <Button x:Name="btnBold" ToolTip="Bold (Ctrl+B)" 
             Style="{StaticResource ToolbarButtonStyle}" 
             Click="btnBold_Click" Width="32" Height="32" Margin="10,0">
@@ -359,7 +359,7 @@
 
 
                                 <!-- Additional Controls -->
-                                <StackPanel Grid.Row="2" Orientation="Horizontal" Height="32" VerticalAlignment="Top" Margin="0,60,0,0">
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Height="32" VerticalAlignment="Top" Margin="0,81,0,0">
 
                                     <!-- Group for ColorPicker with TextColor Icon -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
@@ -482,8 +482,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="0,0,0,5" FontWeight="SemiBold" 
-                                     Foreground="#666666" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Paragraph" Grid.Row="0" Margin="145,0,0,5" FontWeight="SemiBold" 
+                                     Foreground="#666666" HorizontalAlignment="Left"/>
                             <Grid Height="123" VerticalAlignment="Top" Margin="0,7,-5,0" Grid.RowSpan="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -497,7 +497,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <!-- Row 0: Indentation and Spacing -->
-                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click" Grid.ColumnSpan="2" Margin="2,8,50,8">
+                                <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click" Margin="2,16,2,7">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/DeIndent.png" 
                                                Width="32" Height="32" 
                                                RenderOptions.BitmapScalingMode="HighQuality"
@@ -505,7 +505,7 @@
                                                SnapsToDevicePixels="True"
                                                UseLayoutRounding="True"/>
                                 </Button>
-                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Left" Margin="18,10,0,13" Width="48" Grid.ColumnSpan="2">
+                                <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Left" Margin="33,16,0,7" Width="48" Grid.ColumnSpan="2">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/InIndent.png" 
                                                Width="46" Height="32" 
                                                RenderOptions.BitmapScalingMode="HighQuality"
@@ -535,11 +535,11 @@
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/line-spacing.png" Height="31" 
            RenderOptions.BitmapScalingMode="HighQuality" 
            ToolTip="Line Spacing"
-           Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
+           Grid.Column="0" VerticalAlignment="Top" Margin="-8,8,0,0" Width="31"/>
 
                                     <!-- ComboBox for Line Spacing -->
                                     <ComboBox x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
-              Height="18" Width="18" Margin="3,8,3,13">
+              Height="18" Width="18" Margin="0,8,-17,13" Grid.Column="1">
                                         <ComboBoxItem Content="1.0"/>
                                         <ComboBoxItem Content="1.25"/>
                                         <ComboBoxItem Content="1.5"/>
@@ -600,7 +600,7 @@
 
                         </Grid>
                         <!-- Separator 4 -->
-                        <Rectangle Grid.Column="7" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+                        <Rectangle Grid.Column="8" Width="1" Margin="23,5,32,5" Fill="#DDDDDD"/>
 
                         <!-- Editing Section -->
                         <Grid Grid.Column="8" Margin="93,10,-83,0">
@@ -615,11 +615,11 @@
                             </Grid.RowDefinitions>
 
                             <!-- Editing Title -->
-                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-9,-98,100" FontWeight="SemiBold" 
-               Foreground="#666666" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+                            <TextBlock Text="     Editing" Grid.Row="0" Margin="0,-9,-137,47" FontWeight="SemiBold" 
+               Foreground="#666666" Grid.ColumnSpan="2" Grid.Column="1"/>
 
                             <!-- Buttons Grid -->
-                            <Grid Margin="-89,19,-133,-39" Grid.ColumnSpan="3" Grid.RowSpan="2">
+                            <Grid Margin="-56,34,-166,-54" Grid.ColumnSpan="3" Grid.RowSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -662,127 +662,6 @@
                                 </StackPanel>
                             </Grid>
                         </Grid>
-                        <Grid Height="123" VerticalAlignment="Top" Margin="211,0,-548,0" Grid.Column="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <!-- Row 0: Indentation and Spacing -->
-                            <Button Grid.Row="0" Grid.Column="0" x:Name="btnDecreaseIndent1" ToolTip="Decrease Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnDecreaseIndent_Click" Grid.ColumnSpan="2" Margin="2,8,50,8">
-                                <Image Source="/Images/DeIndent.png" 
-                                    Width="32" Height="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True"/>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="1" x:Name="btnIncreaseIndent1" ToolTip="Increase Indent" Style="{StaticResource ToolbarButtonStyle}" Click="btnIncreaseIndent_Click" HorizontalAlignment="Center" Margin="0,2,0,2" Width="48">
-                                <Image Source="/Images/InIndent.png" 
-                                    Width="46" Height="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True" RenderTransformOrigin="0.5,0.5">
-                                    <Image.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform AngleX="0"/>
-                                            <RotateTransform/>
-                                            <TranslateTransform X="0"/>
-                                        </TransformGroup>
-                                    </Image.RenderTransform>
-                                </Image>
-                            </Button>
-                            <!-- Group for Line Spacing -->
-                            <Grid Grid.Row="0" Grid.Column="3" Margin="3,14,139,18">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <!-- Width for ComboBox -->
-                                    <!-- Width for Image -->
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Image for Line Spacing -->
-                                <Image Source="/Images/line-spacing.png" Height="31" 
-                                    RenderOptions.BitmapScalingMode="HighQuality" 
-                                    ToolTip="Line Spacing"
-                                    Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
-
-                                <!-- ComboBox for Line Spacing -->
-                                <ComboBox x:Name="cbLineSpacing1" SelectionChanged="cbLineSpacing_SelectionChanged" 
-                                    Height="18" Width="18" Margin="3,8,3,13">
-                                    <ComboBoxItem Content="1.0"/>
-                                    <ComboBoxItem Content="1.25"/>
-                                    <ComboBoxItem Content="1.5"/>
-                                    <ComboBoxItem Content="2.0"/>
-                                </ComboBox>
-                            </Grid>
-
-                            <!-- Group for Start a List -->
-                            <Grid Grid.Row="0" Grid.Column="3" Margin="87,12,55,20">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="13*"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <!-- Width for ComboBox -->
-                                    <!-- Width for Image -->
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Image for Start a List -->
-                                <Image Source="/Images/list.png" 
-                                    Width="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality" 
-                                    ToolTip="Start a List"
-                                    Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
-
-
-                            </Grid>
-
-                            <!-- Row 1: Alignment -->
-                            <Button Grid.Row="1" Grid.Column="0" x:Name="btnLeftAlignment1" ToolTip="Left Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnLeftAlignment_Click">
-                                <Image Source="/Images/LeftA.png" 
-                                    Width="32" Height="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True"/>
-                            </Button>
-                            <Button Grid.Row="1" Grid.Column="1" x:Name="btnCenterAlignment1" ToolTip="Center Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnCenterAlignment_Click">
-                                <Image Source="/Images/CenterA.png" 
-                                    Width="32" Height="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True"/>
-                            </Button>
-                            <Button Grid.Row="1" Grid.Column="2" x:Name="btnRightAlignment1" ToolTip="Right Align" Style="{StaticResource ToolbarButtonStyle}" Click="btnRightAlignment_Click">
-                                <Image Source="/Images/RightA.png" 
-                                    Width="32" Height="32" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True"/>
-                            </Button>
-                            <Button Grid.Row="1" Grid.Column="3" x:Name="btnJustifyAlignment1" ToolTip="Justify" Style="{StaticResource ToolbarButtonStyle}" Click="btnJustifyAlignment_Click" Margin="6,2,108,2">
-                                <Image Source="/Images/Justify.png" 
-                                    Width="32" Height="31" 
-                                    RenderOptions.BitmapScalingMode="HighQuality"
-                                    RenderOptions.EdgeMode="Aliased"
-                                    SnapsToDevicePixels="True"
-                                    UseLayoutRounding="True"/>
-                            </Button>
-
-                        </Grid>
                         <Button Grid.Column="6" x:Name="btnBullet" ToolTip="Bullet List" Style="{StaticResource ToolbarButtonStyle}" Margin="9,139,296,22" Width="42" Height="42">
                             <Image Source="/Images/list.png" 
                                 Width="32" Height="32" 
@@ -791,7 +670,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnParagraph" ToolTip="Paragraph Settings" Style="{StaticResource ToolbarButtonStyle}" Margin="226,25,73,130">
+                        <Button Grid.Column="6" x:Name="btnParagraph" ToolTip="Paragraph Settings" Style="{StaticResource ToolbarButtonStyle}" Margin="261,23,38,132">
                             <Image Source="/Images/paragraph.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -799,7 +678,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnNumber" ToolTip="Number List" Style="{StaticResource ToolbarButtonStyle}" Margin="64,139,241,22" Width="42" Height="42">
+                        <Button Grid.Column="6" x:Name="btnNumber" ToolTip="Number List" Style="{StaticResource ToolbarButtonStyle}" Margin="69,139,236,22" Width="42" Height="42">
                             <Image Source="/Images/number.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -807,7 +686,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnLowerAlphabet" ToolTip="Lower Alphabet List" Style="{StaticResource ToolbarButtonStyle}" Margin="119,139,186,22" Width="42" Height="42">
+                        <Button Grid.Column="6" x:Name="btnLowerAlphabet" ToolTip="Lower Alphabet List" Style="{StaticResource ToolbarButtonStyle}" Margin="123,139,182,22" Width="42" Height="42">
                             <Image Source="/Images/lower alphabet.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -815,7 +694,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnUpperAlphabet" ToolTip="Upper Alphabet List" Style="{StaticResource ToolbarButtonStyle}" Margin="170,139,135,22" Width="42" Height="42">
+                        <Button Grid.Column="6" x:Name="btnUpperAlphabet" ToolTip="Upper Alphabet List" Style="{StaticResource ToolbarButtonStyle}" Margin="178,139,127,22" Width="42" Height="42">
                             <Image Source="/Images/upper alphabet.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -823,7 +702,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnLowerRoman" ToolTip="Lower Roman List" Style="{StaticResource ToolbarButtonStyle}" Margin="226,139,79,22" Width="42" Height="42">
+                        <Button Grid.Column="6" x:Name="btnLowerRoman" ToolTip="Lower Roman List" Style="{StaticResource ToolbarButtonStyle}" Margin="233,139,72,22" Width="42" Height="42">
                             <Image Source="/Images/lower roman.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -831,7 +710,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnUpperRoman" ToolTip="Upper Roman List" Style="{StaticResource ToolbarButtonStyle}" Margin="291,139,14,22" Width="42" Height="42">
+                        <Button Grid.Column="6" x:Name="btnUpperRoman" ToolTip="Upper Roman List" Style="{StaticResource ToolbarButtonStyle}" Margin="301,139,4,22" Width="42" Height="42">
                             <Image Source="/Images/upper roman.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -839,7 +718,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnSquare" ToolTip="Square List" Style="{StaticResource ToolbarButtonStyle}" Margin="223,85,86,80" Width="38" Height="38">
+                        <Button Grid.Column="6" x:Name="btnSquare" ToolTip="Square List" Style="{StaticResource ToolbarButtonStyle}" Margin="218,85,91,80" Width="38" Height="38">
                             <Image Source="/Images/square.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -847,7 +726,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnBox" ToolTip="Box List" Style="{StaticResource ToolbarButtonStyle}" Margin="266,85,43,80" Width="38" Height="38">
+                        <Button Grid.Column="6" x:Name="btnBox" ToolTip="Box List" Style="{StaticResource ToolbarButtonStyle}" Margin="271,85,38,80" Width="38" Height="38">
                             <Image Source="/Images/box.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -855,7 +734,7 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"/>
                         </Button>
-                        <Button Grid.Column="6" x:Name="btnDot" ToolTip="Dot List" Style="{StaticResource ToolbarButtonStyle}" Margin="309,85,0,80" Width="38" Height="38">
+                        <Button Grid.Column="6" x:Name="btnDot" ToolTip="Dot List" Style="{StaticResource ToolbarButtonStyle}" Margin="324,85,42,80" Width="38" Height="38" Grid.ColumnSpan="3">
                             <Image Source="/Images/dot.png" 
                                 Width="32" Height="32" 
                                 RenderOptions.BitmapScalingMode="HighQuality"
@@ -899,7 +778,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Zoom In Button with Label -->
-                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" Margin="-5,12,0,-12">
                                     <Button x:Name="btnZoomIn" ToolTip="Zoom In" Width="48" Height="48" 
                     Click="ZoomIn_Click" Style="{StaticResource ToolbarButtonStyle}">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomIn.png" 
@@ -914,7 +793,7 @@
                                 </StackPanel>
 
                                 <!-- Zoom Out Button with Label -->
-                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,-10">
                                     <Button x:Name="btnZoomOut" ToolTip="Zoom Out" Width="48" Height="48" 
                     Click="ZoomOut_Click" Style="{StaticResource ToolbarButtonStyle}">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/ZoomOut.png" 
@@ -929,7 +808,7 @@
                                 </StackPanel>
 
                                 <!-- 100% Button with Label -->
-                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,12,0,-12">
                                     <Button x:Name="btnZoom100" ToolTip="100%" Width="48" Height="48" 
                     Style="{StaticResource ToolbarButtonStyle}">
                                         <Image Source="pack://application:,,,/Wordpad;component/Images/100%.png" 
@@ -1005,7 +884,7 @@
                                 </StackPanel>
 
                                 <!-- Word Wrap ComboBox -->
-                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="23,35,-31,0">
+                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="20,63,-29,0">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/WordWrap.png" 
            Width="20" Height="24" Margin="0,0,8,0">
                                         <Image.ToolTip>Word Wrap Settings</Image.ToolTip>
@@ -1027,8 +906,8 @@
                             </Grid>
                         </Grid>
 
-                        <CheckBox Content="Ruler" Margin="8,29,0,35" Grid.Column="2" Checked="CheckBox_Checked_1"/>
-                        <CheckBox Content="Status Bar" Margin="8,52,10,15" Grid.Column="2" Checked="CheckBox_Checked_2"/>
+                        <CheckBox Content="Ruler" Margin="5,48,3,16" Grid.Column="2" Checked="CheckBox_Checked_1"/>
+                        <CheckBox Content="Status Bar" Margin="8,77,10,-10" Grid.Column="2" Checked="CheckBox_Checked_2"/>
                     </Grid>
                 </TabItem>
             </TabControl>
