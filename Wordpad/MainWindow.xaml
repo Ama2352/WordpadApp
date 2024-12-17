@@ -537,15 +537,22 @@
            ToolTip="Line Spacing"
            Grid.Column="0" VerticalAlignment="Top" Margin="-31,7,23,0" Width="31"/>
 
-                                    <!-- ComboBox for Line Spacing -->
-                                    <ComboBox x:Name="cbLineSpacing" SelectionChanged="cbLineSpacing_SelectionChanged" 
-              Height="18" Width="18" Margin="3,8,3,13">
-                                        <ComboBoxItem Content="1.0"/>
-                                        <ComboBoxItem Content="1.25"/>
-                                        <ComboBoxItem Content="1.5"/>
-                                        <ComboBoxItem Content="2.0"/>
-                                        <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                                    </ComboBox>
+                                    <!-- DropDownButton cho Line Spacing -->
+                                    <xctk:DropDownButton x:Name="dropDownLineSpacing" Content="Line Spacing" 
+                             Width="18" Height="18" Margin="12,8,8,12">
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <StackPanel>
+                                                <!-- Các tùy chọn cho Line Spacing -->
+                                                <Button Content="1.0" Margin="5"/>
+                                                <Button Content="1.25" Margin="5"/>
+                                                <Button Content="1.5" Margin="5"/>
+                                                <Button Content="2.0" Margin="5"/>
+
+                                                <!-- CheckBox Add 10pt -->
+                                                <CheckBox x:Name="chkAdd10pt" Content="Add 10pt" Margin="5"/>
+                                            </StackPanel>
+                                        </xctk:DropDownButton.DropDownContent>
+                                    </xctk:DropDownButton>
                                 </Grid>
 
                                 <!-- Group for Start a List -->
@@ -561,22 +568,66 @@
                                         <!-- Width for ComboBox -->
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Image for Start a List -->
-                                    <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
-           Width="32" 
-           RenderOptions.BitmapScalingMode="HighQuality" 
-           ToolTip="Start a List"
-           Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
+                                    <!-- DropDownButton Start A List -->
+                                    <xctk:DropDownButton x:Name="dropDownStartAList" Width="50" Height="25" Margin="9,10,12,10" ToolTip="Start a List">
+                                        <!-- Nội dung chính của nút -->
+                                        <xctk:DropDownButton.Content>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- Hình ảnh -->
+                                                <Image Source="pack://application:,,,/Wordpad;component/Images/list.png" 
+                                                       Width="20" Height="20" 
+                                                       RenderOptions.BitmapScalingMode="HighQuality" 
+                                                       HorizontalAlignment="Left"/>     
+                                            </StackPanel>
+                                        </xctk:DropDownButton.Content>
 
-                                    <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18" SelectionChanged="cbStartAList_SelectionChanged">
-                                        <ComboBoxItem Content="Bullet"/>
-                                        <ComboBoxItem Content="Numbering"/>
-                                        <ComboBoxItem Content="Alphabet - Lower case"/>
-                                        <ComboBoxItem Content="Alphabet - Upper case"/>
-                                        <ComboBoxItem Content="Roman Numeral - Lower case"/>
-                                        <ComboBoxItem Content="Roman Numeral - Upper case"/>
-                                    </ComboBox>
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <WrapPanel Width="174" HorizontalAlignment="Center" Background="#fbfcfd">
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/bullet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/number.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/lower alphabet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/upper alphabet.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/lower roman.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/upper roman.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/square.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/dot.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+
+                                                <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Image Source="Images/box.png" Width="40" Height="40" Stretch="Fill"/>
+                                                </Button>
+                                            </WrapPanel>
+
+
+
+
+
+                                        </xctk:DropDownButton.DropDownContent>
+                                    </xctk:DropDownButton>
+
+
                                 </Grid>
 
                                 <!-- Row 1: Alignment -->
@@ -793,7 +844,7 @@
                         <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
 
                         <!-- Settings Section -->
-                        <Grid Grid.Column="4" Margin="5">
+                        <Grid Grid.Column="4" Margin="5,5,0,5" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -837,13 +888,6 @@
         </StackPanel>
 
         <!-- Custom ScrollBar -->
-        <ScrollBar x:Name="customScrollBar"
-                           Orientation="Vertical"
-                           Minimum="0"
-                           Maximum="100"
-                           SmallChange="1"
-                           LargeChange="10"
-                           DockPanel.Dock="Right" Height="239"/>
         <!-- Status Bar -->
         <StatusBar Name="statusBar" DockPanel.Dock="Bottom">
             <StatusBarItem Content="Line: 1 | Characters: 0" Name="statusBarItem"/>

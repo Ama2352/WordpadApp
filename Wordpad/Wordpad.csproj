@@ -364,7 +364,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\bullet.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\100%25.png" />
     <Resource Include="Images\About.png" />
@@ -428,6 +430,30 @@
     <Resource Include="Images\WordWrap.png" />
     <Resource Include="Images\ZoomIn.png" />
     <Resource Include="Images\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\number.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\lower alphabet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\upper alphabet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\lower roman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\upper roman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\box.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
