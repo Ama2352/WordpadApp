@@ -568,14 +568,18 @@
            ToolTip="Start a List"
            Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
 
-                                    <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18">
-                                        <ComboBoxItem Content="Bullet"/>
-                                        <ComboBoxItem Content="Number"/>
-                                        <ComboBoxItem Content="Lower Alphabet"/>
-                                        <ComboBoxItem Content="Upper Alphabet"/>
-                                        <ComboBoxItem Content="Roman"/>
-                                    </ComboBox>
+                                    <xctk:DropDownButton x:Name="dropDownStartAList" Content="" 
+                             Width="28" Height="28" Margin="10">
+                                        <xctk:DropDownButton.DropDownContent>
+                                            <StackPanel>
+                                                <TextBlock Text="Bullet" Margin="5"/>
+                                                <TextBlock Text="Number" Margin="5"/>
+                                                <TextBlock Text="Lower Alphabet" Margin="5"/>
+                                                <TextBlock Text="Upper Alphabet" Margin="5"/>
+                                                <TextBlock Text="Roman" Margin="5"/>
+                                            </StackPanel>
+                                        </xctk:DropDownButton.DropDownContent>
+                                    </xctk:DropDownButton>
                                 </Grid>
 
                                 <!-- Row 1: Alignment -->
@@ -623,7 +627,7 @@
                             </Grid>
                         </Grid>
                         <!-- Separator 4 -->
-                        <Rectangle Grid.Column="7" Width="1" Margin="0,5" Fill="#DDDDDD" VerticalAlignment="Stretch"/>
+                        <Rectangle Grid.Column="6" Width="1" Margin="343,5,14,5" Fill="#DDDDDD"/>
 
                         <!-- Editing Section -->
                         <Grid Grid.Column="8" Margin="93,10,-83,0">
@@ -638,11 +642,11 @@
                             </Grid.RowDefinitions>
 
                             <!-- Editing Title -->
-                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-19,-9,-98,100" FontWeight="SemiBold" 
+                            <TextBlock Text="     Editing" Grid.Row="0" Margin="-32,-11,-85,103" FontWeight="SemiBold" 
                Foreground="#666666" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 
                             <!-- Buttons Grid -->
-                            <Grid Margin="-90,10,-132,-1" Grid.Row="1" Grid.ColumnSpan="3">
+                            <Grid Margin="-105,9,-117,0" Grid.Row="1" Grid.ColumnSpan="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
