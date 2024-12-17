@@ -581,23 +581,59 @@ namespace Wordpad
 
         private void btnParagraph_Click_1(object sender, RoutedEventArgs e)
         {
-            var paragraphWindow = new ParagraphWindow();
-            bool? dialogResult = paragraphWindow.ShowDialog();
+            // Lấy đoạn văn tại vị trí con trỏ hoặc đoạn văn được chọn
+            TextPointer caretPosition = richTextBox.CaretPosition;
+            Paragraph paragraphAtCaret = caretPosition.Paragraph;
 
-            if (dialogResult == true)
+            // Nếu có text được chọn
+            TextSelection selection = richTextBox.Selection;
+            Paragraph selectedParagraph = selection?.Start.Paragraph ?? paragraphAtCaret;
+
+            if (selectedParagraph != null)
             {
-                // Lấy giá trị từ ParagraphWindow
-                double leftIndent = paragraphWindow.IndentLeft;
-                double rightIndent = paragraphWindow.IndentRight;
-                double firstLineIndent = paragraphWindow.FirstLineIndent;
-                float lineSpacing = paragraphWindow.LineSpacing;
-                bool addSpacing = paragraphWindow.AddSpacingAfterParagraphs;
-                TextAlignment alignment = paragraphWindow.Alignment;
+                // Lấy thông tin paragraph
+                double leftIndent = selectedParagraph.Margin.Left;
+                double rightIndent = selectedParagraph.Margin.Right;
+                double firstLineIndent = selectedParagraph.TextIndent;
+                TextAlignment alignment = selectedParagraph.TextAlignment;
 
-                // Truyền các giá trị này vào ParagraphManager
-                paragraphManager.SetIndentation(leftIndent, rightIndent, firstLineIndent);
-                paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, addSpacing);
-                paragraphManager.SetAlignment(alignment);
+                // Lấy Line Spacing và kiểm tra Add Spacing After Paragraphs
+                double lineSpacing = selectedParagraph.LineHeight > 0
+                    ? selectedParagraph.LineHeight / selectedParagraph.FontSize / ParagraphManager.LineHeightMultiplierPublic
+                    : 1.0; // Mặc định là 1.0 nếu LineHeight không được đặt.
+
+                bool addSpacingAfterParagraphs = selectedParagraph.Margin.Bottom > 10;
+
+                // Mở ParagraphWindow
+                ParagraphWindow paragraphWindow = new ParagraphWindow(
+                    leftIndent,
+                    rightIndent,
+                    firstLineIndent,
+                    alignment,
+                    lineSpacing,
+                    addSpacingAfterParagraphs);
+
+                if (paragraphWindow.ShowDialog() == true) // Người dùng nhấn OK
+                {
+                    // Lấy giá trị từ ParagraphWindow
+                    double leftIndentInput = paragraphWindow.IndentLeft;
+                    double rightIndentInput = paragraphWindow.IndentRight;
+                    double firstLineIndentInput = paragraphWindow.FirstLineIndent;
+                    float lineSpacingInput = paragraphWindow.LineSpacing;
+                    bool addSpacingInput = paragraphWindow.AddSpacingAfterParagraphs;
+                    TextAlignment alignmentInput = paragraphWindow.Alignment;
+
+                    // Truyền các giá trị này vào ParagraphManager
+                    paragraphManager.SetIndentation(leftIndentInput, rightIndentInput, firstLineIndentInput);
+                    paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(lineSpacingInput, addSpacingInput);
+                    paragraphManager.SetAlignment(alignmentInput);
+                }
+
+            }
+            //Trường hợp lấy thông tin bị thất bại
+            else
+            {
+                MessageBox.Show("No paragraph available.");
             }
 
         }

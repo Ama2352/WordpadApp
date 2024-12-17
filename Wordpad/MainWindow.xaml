@@ -261,8 +261,8 @@
                                 <Popup IsOpen="{Binding IsChecked, ElementName=btnSplit}" Placement="Bottom" StaysOpen="False">
                                     <StackPanel Background="White" Width="100">
                                         <!-- Adjusted width to avoid clipping -->
-                                        <Button Content="Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
-                                        <Button Content="Special Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" />
+                                        <Button Content="Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" Click="btnPaste_Click" />
+                                        <Button Content="Special Paste" Width="100" Height="32" FontSize="12" HorizontalContentAlignment="Center" Click="btnPasteSpecial_Click" />
                                     </StackPanel>
                                 </Popup>
                                 <ToggleButton x:Name="btnSplit" Content="▼" Width="50" Height="20" FontSize="10" HorizontalContentAlignment="Center" />

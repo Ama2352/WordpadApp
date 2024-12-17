@@ -13,7 +13,8 @@ namespace Wordpad
         private Ruler ruler;
         public static float lineSpacing = 1.0f;
         //Biến đề đồng bộ line height để bằng với wordpad(đoán mò ~~)
-        private float LineHeightMultiplier = 1.3f;
+        private const float LineHeightMultiplier = 1.3f;
+        public static float LineHeightMultiplierPublic = LineHeightMultiplier;
         //Biến lưu giá trị của margin.bottom của paragraph khi check add 10pt
         private float marginBot = 17;
 
@@ -281,38 +282,61 @@ namespace Wordpad
         public void SetIndentation(double leftIndent, double rightIndent, double firstLineIndent)
         {
             var selection = _richTextBox.Selection;
+
             if (!selection.IsEmpty)
             {
+                // Lấy vị trí bắt đầu và kết thúc của vùng chọn
+                TextPointer startPosition = selection.Start;
+                TextPointer endPosition = selection.End;
+
+                // Duyệt qua tất cả các block trong tài liệu
                 foreach (var block in _richTextBox.Document.Blocks)
                 {
                     if (block is Paragraph paragraph)
                     {
-                        paragraph.Margin = new Thickness(leftIndent, 0, rightIndent, 0);
-                        paragraph.TextIndent = firstLineIndent;
+                        // Kiểm tra nếu đoạn văn nằm trong vùng chọn
+                        if (IsParagraphInSelection(paragraph, startPosition, endPosition))
+                        {
+                            // Áp dụng chỉnh sửa cho đoạn văn nằm trong vùng chọn
+                            paragraph.Margin = new Thickness(leftIndent, 0, rightIndent, 0);
+                            paragraph.TextIndent = firstLineIndent;
+                        }
                     }
                 }
             }
             else
             {
+                // Nếu không có vùng chọn, áp dụng chỉnh sửa cho đoạn văn tại vị trí con trỏ
                 Paragraph para = selection.Start.Paragraph;
                 if (para != null)
                 {
-                    para.Margin = new Thickness(leftIndent,0, rightIndent, 0);
+                    para.Margin = new Thickness(leftIndent, 0, rightIndent, 0);
                     para.TextIndent = firstLineIndent;
                 }
             }
         }
+
 
         public void SetAlignment(TextAlignment alignment)
         {
             var selection = _richTextBox.Selection;
             if (!selection.IsEmpty)
             {
+                // Lấy vị trí bắt đầu và kết thúc của vùng chọn
+                TextPointer startPosition = selection.Start;
+                TextPointer endPosition = selection.End;
+
+                // Duyệt qua tất cả các block trong tài liệu
                 foreach (var block in _richTextBox.Document.Blocks)
                 {
                     if (block is Paragraph paragraph)
                     {
-                        paragraph.TextAlignment = alignment;
+                        // Kiểm tra nếu đoạn văn nằm trong vùng chọn
+                        if (IsParagraphInSelection(paragraph, startPosition, endPosition))
+                        {
+                            // Áp dụng chỉnh sửa cho đoạn văn nằm trong vùng chọn
+                            paragraph.TextAlignment = alignment;
+                        }
                     }
                 }
             }
