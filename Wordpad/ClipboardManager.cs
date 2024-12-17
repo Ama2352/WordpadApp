@@ -32,20 +32,26 @@ namespace Wordpad
             TextRange textRange = _richTextBox.Selection;
             if (!textRange.IsEmpty)
             {
-                // Copy RTF text
+                // Copy văn bản RTF
                 MemoryStream stream = new MemoryStream();
                 textRange.Save(stream, DataFormats.Rtf);
-                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
 
-                // Set to Clipboard and remove text
-                Clipboard.SetData(DataFormats.Rtf, rtfText);
-                textRange.Text = string.Empty;  // Delete selected text
+                // Đặt lại con trỏ đầu stream
+                stream.Position = 0;
+
+                // Lưu vào Clipboard
+                string rtfText = Encoding.Default.GetString(stream.ToArray());
+                Clipboard.SetDataObject(new DataObject(DataFormats.Rtf, rtfText), true);
+
+                // Xóa văn bản đã chọn
+                textRange.Text = string.Empty;
             }
             else
             {
                 MessageBox.Show("No text selected to cut.");
             }
         }
+
 
 
         // Phương thức Sao chép
@@ -99,13 +105,9 @@ namespace Wordpad
         {
             List<string> options = new List<string>();
 
-            if (Clipboard.ContainsData(DataFormats.Rtf))
+            if (Clipboard.ContainsData(DataFormats.Rtf) || Clipboard.ContainsText())
             {
                 options.Add("Rich Text (RTF)");
-            }
-
-            if (Clipboard.ContainsText())
-            {
                 options.Add("Unformatted Text");
             }
 
@@ -143,12 +145,6 @@ namespace Wordpad
                     imagePath = Path.Combine(imageDirectory, "paste.png");
                     iconPath = Path.Combine(imageDirectory, "word.png");
                     return ("Inserts the contents of the clipboard into your document so that you may activate it using WordPad.",
-                            LoadImage(imagePath), LoadImage(iconPath));
-
-                case "Foxit PhantomPDF Document":
-                    imagePath = Path.Combine(imageDirectory, "paste.png");
-                    iconPath = Path.Combine(imageDirectory, "pdf.png");
-                    return ("Inserts a new Foxit PhantomPDF Document object into your document. It will be displayed as an icon.",
                             LoadImage(imagePath), LoadImage(iconPath));
 
                 case "Microsoft Word Document":
@@ -213,9 +209,6 @@ namespace Wordpad
                                 case "Wordpad Document":
                                     fileName = "wordpad";
                                     break;
-                                case "Foxit PhantomPDF Document":
-                                    fileName = "FoxitPhantomPDF";
-                                    break;
                                 case "Microsoft Word Document":
                                     fileName = "winword";
                                     break;
@@ -248,11 +241,11 @@ namespace Wordpad
         {
             TextRange textRange = _richTextBox.Selection;
 
-            if ((selectedOption == "Rich Text (RTF)" || selectedOption == "Wordpad Document") && Clipboard.ContainsData(DataFormats.Rtf))
+            if ((selectedOption == "Rich Text (RTF)") && Clipboard.ContainsData(DataFormats.Rtf))
             {
-                    Paste();
+                Paste();
             }
-            else if ((selectedOption == "Unformatted Text" || selectedOption == "Wordpad Document") && Clipboard.ContainsText())
+            else if ((selectedOption == "Unformatted Text") && Clipboard.ContainsText())
             {
                 textRange.Text = Clipboard.GetText();
             }

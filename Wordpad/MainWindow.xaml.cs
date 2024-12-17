@@ -441,6 +441,16 @@ namespace Wordpad
         {
             clipboardManager.Paste();
         }
+        private void btnPaste_Paste_Click(object sender, RoutedEventArgs e)
+        {
+            clipboardManager.Paste();
+        }
+
+        private void btnPaste_PasteSpecial_Click(object sender, RoutedEventArgs e)
+        {
+            PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
+            if(pasteSpecialWindow.ShowDialog() == true) { }         
+        }
 
         private void btnGrowFont_Click(object sender, RoutedEventArgs e)
         {
@@ -680,6 +690,13 @@ namespace Wordpad
         private void CheckBox_Unchecked_2(object sender, RoutedEventArgs e)
         {
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
+
+        private void cbStartAList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem selectedItem = (ComboBoxItem)cbStartAList.SelectedItem;
+            string selectedValue = selectedItem.Content.ToString();
+            paragraphManager.ApplyBulletStyles(selectedValue);
         }
     }
 }

@@ -569,12 +569,13 @@
            Grid.Column="0" Margin="-28,0,35,-3" Grid.RowSpan="2"/>
 
                                     <!-- ComboBox for Start a List -->
-                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18">
+                                    <ComboBox x:Name="cbStartAList" Height="18" Margin="9,9,12,10" RenderTransformOrigin="0.359,0.4" Width="18" SelectionChanged="cbStartAList_SelectionChanged">
                                         <ComboBoxItem Content="Bullet"/>
-                                        <ComboBoxItem Content="Number"/>
-                                        <ComboBoxItem Content="Lower Alphabet"/>
-                                        <ComboBoxItem Content="Upper Alphabet"/>
-                                        <ComboBoxItem Content="Roman"/>
+                                        <ComboBoxItem Content="Numbering"/>
+                                        <ComboBoxItem Content="Alphabet - Lower case"/>
+                                        <ComboBoxItem Content="Alphabet - Upper case"/>
+                                        <ComboBoxItem Content="Roman Numeral - Lower case"/>
+                                        <ComboBoxItem Content="Roman Numeral - Upper case"/>
                                     </ComboBox>
                                 </Grid>
 

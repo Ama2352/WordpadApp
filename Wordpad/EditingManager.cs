@@ -108,7 +108,7 @@ namespace Wordpad
             }
             else
             {
-                MessageBox.Show("Không tìm thấy từ khóa.", "Thông báo");
+                MessageBox.Show("Keyword not found.", "Notification", MessageBoxButton.OK, MessageBoxImage.Error);
                 _lastSearchPosition = null;
             }
         }
