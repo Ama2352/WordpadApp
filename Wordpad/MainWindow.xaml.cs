@@ -229,6 +229,19 @@ namespace Wordpad
             ParagraphManager.lineSpacing = float.Parse(selectedValue);
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);
         }
+
+        private void cbStartAList_DropDownClosed(object sender, EventArgs e)
+        {
+            ComboBoxItem selectedItem = (ComboBoxItem)cbStartAList.SelectedItem;
+            string selectedValue = selectedItem.Content.ToString();
+            paragraphManager.ApplyBulletStyles(selectedValue);
+        }
+
+        private void cbStartAList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, true);
@@ -554,6 +567,8 @@ namespace Wordpad
             PasteSpecialWindow pasteSpecialWindow = new PasteSpecialWindow(clipboardManager);
             if(pasteSpecialWindow.ShowDialog() == true) { }
         }
+
+
 
         #endregion
 

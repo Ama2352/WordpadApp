@@ -144,6 +144,14 @@
                 <Button Name ="btnRightAlignment" Content="RightA" Click="btnRightAlignment_Click"/>
                 <Button Name="btnJustifyAlignment" Content="JustifyA" Click="btnJustifyAlignment_Click"/>
                 <Button Name="btnParagraph" Content="Paragraph"/>
+                <ComboBox Name="cbStartAList" Width="136" SelectionChanged="cbStartAList_SelectionChanged" DropDownClosed="cbStartAList_DropDownClosed">
+                    <ComboBoxItem>Bullet</ComboBoxItem>
+                    <ComboBoxItem>Numbering</ComboBoxItem>
+                    <ComboBoxItem>Alphabet - Lower case</ComboBoxItem>
+                    <ComboBoxItem>Alphabet - Upper case</ComboBoxItem>
+                    <ComboBoxItem>Roman Numeral - Lower case</ComboBoxItem>
+                    <ComboBoxItem>Roman Numeral - Upper case</ComboBoxItem>
+                </ComboBox>
             </WrapPanel>
 
             <WrapPanel Grid.Column="3">
