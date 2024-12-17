@@ -494,5 +494,32 @@
   <ItemGroup>
     <Resource Include="Images\underline1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\number.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\lower alphabet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\upper alphabet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\lower roman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\upper roman.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
