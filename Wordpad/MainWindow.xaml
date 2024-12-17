@@ -580,11 +580,12 @@
                              Width="18" Height="18" Margin="9,10,12,10">
                                         <xctk:DropDownButton.DropDownContent>
                                             <StackPanel>
-                                                <TextBlock Text="Bullet" Margin="5"/>
-                                                <TextBlock Text="Number" Margin="5"/>
-                                                <TextBlock Text="Lower Alphabet" Margin="5"/>
-                                                <TextBlock Text="Upper Alphabet" Margin="5"/>
-                                                <TextBlock Text="Roman" Margin="5"/>
+                                                <Button Content="Bullet" Margin="5"/>
+                                                <Button Content="Number" Margin="5"/>
+                                                <Button Content="Lower Alphabet" Margin="5"/>
+                                                <Button Content="Upper Alphabet" Margin="5"/>
+                                                <Button Content="Lower Roman" Margin="5"/>
+                                                <Button Content="Upper Roman" Margin="5"/>
                                             </StackPanel>
                                         </xctk:DropDownButton.DropDownContent>
                                     </xctk:DropDownButton>
