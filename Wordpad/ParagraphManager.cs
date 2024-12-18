@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -404,12 +405,7 @@ namespace Wordpad
             }
             else if (countLists != 0 && countParagraphs == 0)
             {
-                if (bulletStyle != currentBulletStyle)
-                {
-                    ReApplyBulletStyleForListsCase(formatRange, bulletStyle, countListItems);
-                }
-                else
-                    RemoveBulletStyle(formatRange, out TextPointer startFormatRangePointer, out TextPointer endFormatRangePointer);
+               FormatEachListsInSelectedRange(formatRange, bulletStyle);
             }
             _richTextBox.Focus();
         }
@@ -797,61 +793,6 @@ namespace Wordpad
             _richTextBox.Document.Blocks.Remove(listToRemove);
         }
 
-        private ListItem RemoveTabForList(ListItem item)
-        {
-            /*// Tạo TextRange từ item để lấy RTF
-            TextRange range = new TextRange(item.ContentStart, item.ContentEnd);
-
-
-            // Lấy nội dung RTF từ TextRange (không mất định dạng)
-            string rtfContent = range.Text;
-
-            // Xóa khoảng trắng thừa ở đầu và cuối văn bản
-            rtfContent = rtfContent.Trim();
-
-            // Tạo ListItem mới với nội dung RTF đã xử lý
-            ListItem clonedItem = new ListItem(new Paragraph(new Run(rtfContent)));
-
-            return clonedItem;*/
-
-            // Tạo TextRange từ item để lấy RTF
-            TextRange range = new TextRange(item.ContentStart, item.ContentEnd);
-            ListItem clonedItem = new ListItem();
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                range.Save(stream, DataFormats.Rtf);
-                stream.Position = 0;
-
-                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
-
-                // Loại bỏ tab ở đầu chuỗi RTF
-                if (rtfText.StartsWith(@"\t"))
-                {
-                    rtfText = rtfText.Remove(0, 2); // Xóa ký tự \t
-                }
-
-                stream.SetLength(0);  // Xóa nội dung cũ
-                stream.Write(Encoding.UTF8.GetBytes(rtfText), 0, rtfText.Length);
-                stream.Position = 0;
-
-                range.Load(stream, DataFormats.Rtf);
-
-                // Tạo ListItem và Paragraph
-                ListItem listItem = new ListItem(new Paragraph());
-
-                // Sao chép nội dung đã chỉnh sửa vào ListItem
-                TextRange listItemRange = new TextRange(
-                    listItem.Blocks.FirstBlock.ContentStart,
-                    listItem.Blocks.FirstBlock.ContentEnd
-                );
-                listItemRange.Load(stream, DataFormats.Rtf);
-                clonedItem = listItem;
-            }
-
-            return clonedItem;
-        }
-
         private bool PasteMethodForParagraph_ParagraphCase(TextPointer insertionPoint)
         {
             TextPointer previousPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Backward);
@@ -912,61 +853,279 @@ namespace Wordpad
             }
         }
 
-        private void ReApplyBulletStyleForListsCase(TextRange formatRange, TextMarkerStyle bulletStyle, int countListItems)
+        // Hàm di chuyển con trỏ tới Paragraph tiếp theo
+        private TextPointer GetNextParagraph(TextPointer current)
         {
-            bool isListItemInList = false;
+            // Lấy TextPointer của Paragraph tiếp theo
+            TextPointer nextParagraph = current.GetNextContextPosition(LogicalDirection.Forward);
 
-            // Sao chép danh sách Blocks trước khi duyệt
-            List<Block> copiedBlocks = _richTextBox.Document.Blocks.ToList();
-
-            foreach (Block block in copiedBlocks)
+            // Duyệt qua các vị trí cho đến khi tìm thấy một Paragraph hợp lệ
+            while (nextParagraph != null && nextParagraph.Paragraph == null)
             {
-                if (block is List list)
+                nextParagraph = nextParagraph.GetNextContextPosition(LogicalDirection.Forward);
+            }
+
+            return nextParagraph;
+        }
+
+        private Dictionary<List, List<ListItem>> ExtractFormatRangeIntoLists_OnlyListsCase(TextRange formatRange)
+        {
+            Dictionary<List, List<ListItem>> listRanges = new Dictionary<List, List<ListItem>>();
+
+            // Duyệt qua từng Paragraph trong TextRange
+            TextPointer current = formatRange.Start;
+
+            while (current != null && current.CompareTo(formatRange.End) < 0)
+            {
+                // Tìm Paragraph tại vị trí hiện tại
+                Paragraph para = current.Paragraph;
+                if (para != null)
                 {
-                    isListItemInList = false;
-                    TextMarkerStyle currentMarkerStyle = list.MarkerStyle;
-                    list.MarkerStyle = TextMarkerStyle.None;
+                    TextRange paraText = new TextRange(para.ContentStart, para.ContentEnd); 
+                    if(paraText.Text != null) { }
 
-                    foreach (ListItem listItem in list.ListItems)
+                    // Tìm phần tử cha là List
+                    List parentList = GetParentList(para);
+
+                    if (parentList != null)
                     {
-                        TextPointer listItemStart = listItem.ContentStart;
-                        TextPointer listItemEnd = listItem.ContentEnd;
+                        // Tạo ListItem từ Paragraph (đây là cách giả định về ListItem)
+                        ListItem listItem = FindListItemFromParagraph(para, parentList);
 
-                        if (formatRange.Start.CompareTo(listItemEnd) < 0 && formatRange.End.CompareTo(listItemStart) > 0)
+                        // Nhóm các TextRange theo List
+                        if (!listRanges.ContainsKey(parentList))
                         {
-                            TextRange selectedInListItem = new TextRange(listItemStart, listItemEnd);
-
-                            if (selectedInListItem.Text != "")
-                                isListItemInList = true;
+                            listRanges[parentList] = new List<ListItem>();
                         }
+                        listRanges[parentList].Add(listItem);
                     }
-                    list.MarkerStyle = currentMarkerStyle;
+                    current = para.ContentEnd;
+                }
 
-                    if (isListItemInList)
-                    {
-                        if (list.ListItems.Count == countListItems)
-                        {
-                            list.MarkerStyle = bulletStyle;
-                            return;
-                        }
-                        else
-                            break;
-                    }
+                // Di chuyển đến Paragraph tiếp theo
+                current = GetNextParagraph(current);
+            }
+            return listRanges;
+        }
+
+        private List GetParentList(Paragraph para)
+        {
+            DependencyObject parent = para;
+            while(parent != null && !(parent is List))
+            {
+                parent = LogicalTreeHelper.GetParent(parent);
+            }
+
+            // Khi tìm thấy phần tử kiểu List, dừng vòng lặp và trả về phần tử đó.
+            // Nếu không tìm thấy List, trả về null.
+            return parent as List;         
+        }
+        private ListItem FindListItemFromParagraph(Paragraph para, List parentList)
+        {
+            // Lặp qua tất cả các ListItem trong List để tìm ListItem chứa Paragraph
+            foreach (var listItem in parentList.ListItems)
+            {
+                // Kiểm tra xem listItem có chứa Paragraph hay không
+                if (listItem.ContentStart.CompareTo(para.ContentStart) <= 0 &&
+                    listItem.ContentEnd.CompareTo(para.ContentEnd) >= 0)
+                {
+                    return listItem;  // Trả về ListItem tìm thấy
                 }
             }
 
-            if (isListItemInList)
+            // Nếu không tìm thấy, trả về null
+            return null;
+        }
+
+        private List<Paragraph> ExtractParagraphsFromList(List<ListItem> listItems)
+        {
+            List<Paragraph> paragraphs = new List<Paragraph>();
+            foreach (ListItem item in listItems)
             {
-                RemoveBulletStyle(formatRange, out TextPointer startFormatRangePointer, out TextPointer endFormatRangePointer);
-                if (startFormatRangePointer != null && endFormatRangePointer != null)
+                foreach(Block block in item.Blocks)
                 {
-                    TextRange newFormatRange = new TextRange(startFormatRangePointer, endFormatRangePointer);
-                    if (newFormatRange.Text == " ") { }
-                    bool isReFormattedParagraphCase = true;
-                    ApplyBulletStyleForMixedParagraphsAndListsCase(newFormatRange, bulletStyle, isReFormattedParagraphCase);
+                    if(block is Paragraph para)
+                    {
+                        paragraphs.Add(para);
+                    }    
+                }    
+            } 
+            return paragraphs;              
+        }
+
+        private List ReApplyingMarkerStyleForParagraph(List<Paragraph> paragraphs, TextMarkerStyle bulletStyle)
+        {
+            List newList = new List();
+            newList.MarkerStyle = bulletStyle;
+            foreach(var para in paragraphs)
+            {
+                ListItem item = new ListItem(para);
+                newList.ListItems.Add(item);   
+            }    
+            return newList;
+        }
+
+        private void InsertListAfterReApplyingMarkerStyle(List newMarkerStyleList, List previousList)
+        {
+            _richTextBox.Document.Blocks.InsertAfter(previousList, newMarkerStyleList);
+        }
+
+        private void InsertParagraphAfterRemovingMarkerStyle(List<Paragraph> paragraphs, List previousList)
+        {
+            Block currentBlock = previousList;
+            foreach (Paragraph para in paragraphs)
+            {
+                Paragraph clonedPara = CloneParagraph(para);
+                _richTextBox.Document.Blocks.InsertAfter(currentBlock, clonedPara);
+                currentBlock = clonedPara;
+            }
+            currentBlock = null;
+        }
+        private ListItem RemoveTabForList(ListItem item)
+        {
+            // Tạo TextRange từ item để lấy RTF
+            TextRange range = new TextRange(item.ContentStart, item.ContentEnd);
+            ListItem clonedItem = new ListItem();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                range.Save(stream, DataFormats.Rtf);
+                stream.Position = 0;
+
+                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
+
+                // Loại bỏ tab ở đầu chuỗi RTF
+                if (rtfText.StartsWith(@"\t"))
+                {
+                    rtfText = rtfText.Remove(0, 2); // Xóa ký tự \t
+                }
+
+                stream.SetLength(0);  // Xóa nội dung cũ
+                stream.Write(Encoding.UTF8.GetBytes(rtfText), 0, rtfText.Length);
+                stream.Position = 0;
+
+                range.Load(stream, DataFormats.Rtf);
+
+                // Tạo ListItem và Paragraph
+                ListItem listItem = new ListItem(new Paragraph());
+
+                // Sao chép nội dung đã chỉnh sửa vào ListItem
+                TextRange listItemRange = new TextRange(
+                    listItem.Blocks.FirstBlock.ContentStart,
+                    listItem.Blocks.FirstBlock.ContentEnd
+                );
+                listItemRange.Load(stream, DataFormats.Rtf);
+                clonedItem = listItem;
+            }
+
+            return clonedItem;
+        }
+
+        private void RemoveFormattedListItems(Dictionary<List, List<ListItem>> listRanges)
+        {
+            // Sau khi vòng lặp kết thúc, xóa các ListItem từ các List trong Dictionary
+            foreach (var entry in listRanges)
+            {
+                List list = entry.Key;
+                List<ListItem> itemsToRemove = entry.Value;
+
+                // Xóa các ListItem đã chọn khỏi List
+                foreach (ListItem item in itemsToRemove)
+                {
+                    list.ListItems.Remove(item);
+                }
+
+                // Kiểm tra nếu ListItems trống, có thể xóa luôn List nếu cần thiết
+                if (list.ListItems.Count == 0)
+                {
+                    _richTextBox.Document.Blocks.Remove(list);  // Xóa list khỏi danh sách copiedBlocks nếu không còn ListItem nào
                 }
             }
         }
+
+        private List InsertParagraphsIntoList(List<Paragraph> paragraphs, TextMarkerStyle bulletStyle)
+        {
+            List newMarkerStyleList = new List();
+            newMarkerStyleList.MarkerStyle = bulletStyle;
+            foreach(var para in paragraphs)
+            {
+                ListItem newItem = new ListItem(para);
+                newMarkerStyleList.ListItems.Add(newItem);
+            }
+            return newMarkerStyleList;
+        }
+
+        private void FormatEachListsInSelectedRange(TextRange formatRange, TextMarkerStyle bulletStyle)
+        {
+            Dictionary<List, List<ListItem>> listRanges = ExtractFormatRangeIntoLists_OnlyListsCase(formatRange);
+            List<Paragraph> paragraphs = new List<Paragraph>();
+            List<ListItem> clonedListItems = new List<ListItem>();
+            List firstList = new List();
+
+            List firstKey = null;
+            List<ListItem> firstValue = null;
+
+            if (listRanges.Count > 0)
+            {
+                firstKey = listRanges.Keys.First();   // Gán key đầu tiên
+                firstValue = listRanges[firstKey];    // Gán value tương ứng
+            }
+
+            firstList = firstKey;
+
+            if (listRanges.Count == 1)
+            {
+                TextMarkerStyle currentMarkerStyle = firstList.MarkerStyle;
+
+                firstList.MarkerStyle = TextMarkerStyle.None; // remember to return current markerstyle
+                List<ListItem> listItems = firstValue;
+
+                foreach (ListItem item in listItems)
+                {
+                    ListItem clonedItem = RemoveTabForList(item);
+                    clonedListItems.Add(clonedItem);
+                }
+                paragraphs = ExtractParagraphsFromList(clonedListItems);
+
+                if (currentMarkerStyle == bulletStyle)
+                {
+                    InsertParagraphAfterRemovingMarkerStyle(paragraphs, firstList);
+                }
+                else
+                {
+                    List newMarkerStyleList = InsertParagraphsIntoList(paragraphs, bulletStyle);
+                    InsertListAfterReApplyingMarkerStyle(newMarkerStyleList, firstList);
+                }
+                firstKey.MarkerStyle = currentMarkerStyle;
+            }
+            else
+            {
+                foreach (var entry in listRanges)
+                {
+                    List list = entry.Key;
+
+                    TextMarkerStyle currentMarkerStyle = list.MarkerStyle;
+
+                    list.MarkerStyle = TextMarkerStyle.None; // remember to return current markerstyle
+                    List<ListItem> listItems = entry.Value;
+
+                    foreach (ListItem item in listItems)
+                    {
+                        ListItem clonedItem = RemoveTabForList(item);
+                        clonedListItems.Add(clonedItem);
+                    }
+
+                    list.MarkerStyle = currentMarkerStyle;
+                }
+
+                paragraphs = ExtractParagraphsFromList(clonedListItems);
+                List newMarkerStyleList = InsertParagraphsIntoList(paragraphs, bulletStyle);
+                InsertListAfterReApplyingMarkerStyle(newMarkerStyleList, firstList);
+            }
+            RemoveFormattedListItems(listRanges);
+        }
+
+      
         private bool PasteMethodForReApplyParagraphCase(TextPointer insertionPoint)
         {
             TextPointer previousPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Backward);
