@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 using MessageBox = System.Windows.MessageBox;
 using Wordpad.View;
+using System.Windows.Controls.Primitives;
 
 namespace Wordpad
 {
@@ -253,12 +254,12 @@ namespace Wordpad
             ParagraphManager.lineSpacing = float.Parse(selectedValue);
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);*/
         }
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void chkAdd10pt_Checked(object sender, RoutedEventArgs e)
         {
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, true);
         }
 
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void chkAdd10pt_Unchecked(object sender, RoutedEventArgs e)
         {
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, false);
         }
@@ -277,6 +278,48 @@ namespace Wordpad
             }
         }
 
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            // Đảm bảo chỉ một ToggleButton được chọn
+            if (sender is ToggleButton selectedButton)
+            {
+                if (!IsLoaded) return;
+                btnSpacing1.IsChecked = selectedButton == btnSpacing1;
+                btnSpacing1_25.IsChecked = selectedButton == btnSpacing1_25;
+                btnSpacing1_5.IsChecked = selectedButton == btnSpacing1_5;
+                btnSpacing2.IsChecked = selectedButton == btnSpacing2;
+                // Lấy giá trị khoảng cách dòng từ nút được chọn
+                if (float.TryParse(selectedButton.Content.ToString(), out float lineSpacing))
+                {
+                    // Lấy trạng thái của CheckBox "Add 10pt Space"
+                    bool add10pt = chkAdd10pt.IsChecked ?? false;
+
+                    // Cập nhật vào ParagraphManager
+                    ParagraphManager.lineSpacing = lineSpacing;
+                    paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(lineSpacing, add10pt);
+                }
+            }
+        }
+        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+        {
+            if (rulerCanvas != null)
+                viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
+        {
+            if (rulerCanvas != null)
+                viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
+        private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
+        }
+
+        private void CheckBox_Unchecked_2(object sender, RoutedEventArgs e)
+        {
+            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
+        }
         #endregion
 
         #region ShortCuts
@@ -659,28 +702,10 @@ namespace Wordpad
             SaveMenuItem_Click(sender, e);
         }
 
-        private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
-        {
-            if(rulerCanvas != null)
-                viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
-        }
 
-        private void CheckBox_Checked_2(object sender, RoutedEventArgs e)
-        {
-            if(rulerCanvas != null)
-                viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
-        }
         #endregion
 
-        private void CheckBox_Unchecked_1(object sender, RoutedEventArgs e)
-        {
-            viewManagment.ShowRuler(rulerCanvas.Visibility != Visibility.Visible);
-        }
 
-        private void CheckBox_Unchecked_2(object sender, RoutedEventArgs e)
-        {
-            viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
-        }
 
     }
 }
