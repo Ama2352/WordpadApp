@@ -392,6 +392,15 @@ namespace Wordpad
                 case "Roman Numeral - Upper case":
                     bulletStyle = TextMarkerStyle.UpperRoman;
                     break;
+                case "Box":
+                    bulletStyle = TextMarkerStyle.Box;
+                    break;
+                case "Square":
+                    bulletStyle = TextMarkerStyle.Square;
+                    break;
+                case "Circle":
+                    bulletStyle = TextMarkerStyle.Circle;
+                    break;
                 default:
                     bulletStyle = TextMarkerStyle.None;
                     break;

@@ -604,39 +604,48 @@
 
                                             <xctk:DropDownButton.DropDownContent>
                                                 <WrapPanel Width="174" HorizontalAlignment="Center" Background="#fbfcfd">
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnBullet" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnBullet_Click">
                                                         <Image Source="Images/bullet.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnNumbering" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnNumbering_Click">
                                                         <Image Source="Images/number.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnLowerAlphabet" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnLowerAlphabet_Click">
                                                         <Image Source="Images/lower alphabet.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnUpperAlphabet" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnUpperAlphabet_Click">
                                                         <Image Source="Images/upper alphabet.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnLowerRoman" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnLowerRoman_Click">
                                                         <Image Source="Images/lower roman.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnUpperRoman" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnUpperRoman_Click">
                                                         <Image Source="Images/upper roman.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnSquare" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnSquare_Click">
                                                         <Image Source="Images/square.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnDot" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnDot_Click">
                                                         <Image Source="Images/dot.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
-                                                    <Button Width="50" Height="50" Margin="4" Padding="0" Focusable="False" Background="White">
+                                                    <Button x:Name="btnBox" Width="50" Height="50" Margin="4" Padding="0" 
+                                                            Focusable="False" Background="White" Click="btnBox_Click">
                                                         <Image Source="Images/box.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
                                                 </WrapPanel>

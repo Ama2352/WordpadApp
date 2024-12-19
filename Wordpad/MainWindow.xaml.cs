@@ -702,6 +702,53 @@ namespace Wordpad
             SaveMenuItem_Click(sender, e);
         }
 
+        #region StartAListClick
+        private void btnBullet_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Bullet");
+        }
+
+        private void btnNumbering_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Numbering");
+        }
+
+        private void btnLowerAlphabet_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Alphabet - Lower case");
+        }
+
+        private void btnUpperAlphabet_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Alphabet - Upper case");
+        }
+
+        private void btnLowerRoman_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Roman Numeral - Lower case");
+        }
+
+        private void btnUpperRoman_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Roman Numeral - Upper case");
+        }
+
+        private void btnSquare_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Square");
+        }
+
+        private void btnDot_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Circle");
+        }
+
+        private void btnBox_Click(object sender, RoutedEventArgs e)
+        {
+            paragraphManager.ApplyBulletStyles("Box");
+        }
+
+        #endregion
 
         #endregion
 
