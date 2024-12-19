@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="InsertObjectWindow" Height="300" Width="500">
+        Title="Insert Object" Height="300" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".75*"/>

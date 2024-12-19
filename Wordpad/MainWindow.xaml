@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1230" Loaded="Window_Loaded" 
+        Title="WordPad" Height="450" Width="1230" Loaded="Window_Loaded" 
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
     <Window.Resources>
         <!-- Style cho nút Toolbar -->

@@ -6,7 +6,7 @@
          xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="ResizeWindow" Height="220" Width="400">
+        Title="Resize" Height="220" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".7*"/>
