@@ -415,6 +415,7 @@ namespace Wordpad
             FormatBlocks(selection, bulletStyle);
         }
 
+        // Phương thức xác định trường hợp cần xử lý đối với việc áp dụng/ hủy bỏ BulletStyles
         private void FormatBlocks(TextRange formatRange, TextMarkerStyle bulletStyle)
         {
             CountParagraphsAndLists(formatRange, out int countParagraphs, out int countLists);
@@ -424,8 +425,7 @@ namespace Wordpad
             }
             else if (countLists != 0 && countParagraphs != 0)
             {
-                bool isReFormattedParagraphCase = false;
-                ApplyBulletStyleForMixedParagraphsAndListsCase(formatRange, bulletStyle, isReFormattedParagraphCase);
+                ApplyBulletStyleForMixedParagraphsAndListsCase(formatRange, bulletStyle);
             }
             else if (countLists != 0 && countParagraphs == 0)
             {
@@ -435,6 +435,7 @@ namespace Wordpad
         }
 
 
+        // Phương thức đếm số list và paragraph có trong vùng được chọn
         private void CountParagraphsAndLists(TextRange formatRange, out int countParagraphs, out int countLists)
         {
             countParagraphs = 0;
@@ -483,6 +484,7 @@ namespace Wordpad
             }
         }
 
+        // Phương thức áp dụng bullet style cho trường hợp vùng chọn chỉ bao gồm văn bản 
         private void ApplyBulletStyleForOnlyParagraphsCase(TextRange formatRange, TextMarkerStyle bulletStyle)
         {
             TextPointer formatRangeStart = null;
@@ -521,8 +523,7 @@ namespace Wordpad
 
             _formattedList = bulletStyleList;
 
-            bool isReFormattedParagraphCase = false;
-            PasteCutListBlockAtTextPointer(formatRangeStart, isReFormattedParagraphCase);
+            PasteCutListBlockAtTextPointer(formatRangeStart);
             copiedBlocks = null;
         }
 
@@ -530,30 +531,12 @@ namespace Wordpad
         {
             if (block is Paragraph para)
             {
-                if (para.Parent is ListItem currentListItem)
-                {
-                    if (currentListItem.Parent is List currentList)
-                    {
-                        if (currentList.MarkerStyle.CompareTo(bulletStyleList.MarkerStyle) == 0)
-                            return;
-                        else
-                        {
-                            currentList.ListItems.Remove(currentListItem);
-                            ListItem newItem = new ListItem(para);
-                            bulletStyleList.ListItems.Add(newItem);
-                        }
-                    }
-
-                }
-                else
-                {
-                    ListItem newItem = new ListItem(para);
-                    bulletStyleList.ListItems.Add(newItem);
-                }
+                ListItem newItem = new ListItem(para);
+                bulletStyleList.ListItems.Add(newItem);
             }
         }
 
-        private void ApplyBulletStyleForMixedParagraphsAndListsCase(TextRange formatRange, TextMarkerStyle bulletStyle, bool isReFormattedParagraphCase)
+        private void ApplyBulletStyleForMixedParagraphsAndListsCase(TextRange formatRange, TextMarkerStyle bulletStyle)
         {
             TextPointer formatRangeStart = null;
             bool isSetFormatRangeStart = false;
@@ -657,11 +640,12 @@ namespace Wordpad
 
             _formattedList = bulletStyleList;
 
-            PasteCutListBlockAtTextPointer(formatRangeStart, isReFormattedParagraphCase);
+            PasteCutListBlockAtTextPointer(formatRangeStart);
             copiedBlocks = null;
         }
 
-        public void PasteCutListBlockAtTextPointer(TextPointer insertionPoint, bool isReFormattedParagraphCase)
+        // Phương thức dán List áp dụng Bullet Style được chọn vào đúng vị trí của nó
+        public void PasteCutListBlockAtTextPointer(TextPointer insertionPoint)
         {
             if (_formattedList == null)
             {
@@ -669,59 +653,62 @@ namespace Wordpad
                 return;
             }
 
-            if (!isReFormattedParagraphCase)
+            bool isListCase = PasteMethodForParagraph_ListCase(insertionPoint);
+            if (!isListCase)
             {
-                bool isListCase = PasteMethodForParagraph_ListCase(insertionPoint);
-                if (!isListCase)
-                {
-                    bool isParagraphCase = PasteMethodForParagraph_ParagraphCase(insertionPoint);
-                }
+                bool isParagraphCase = PasteMethodForParagraph_ParagraphCase(insertionPoint);
             }
-            else
-            {
-                PasteMethodForReApplyParagraphCase(insertionPoint);
-            }
-
         }
 
+        // Phương thức dán List cho trường hợp trên và dưới vị trí nó cần chèn là List
         private bool PasteMethodForParagraph_ListCase(TextPointer insertionPoint)
         {
+            // Lấy vị trí trước insertionPoint
             TextPointer previousPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Backward);
+
+            // Kiểm tra nếu vị trí trước không nằm trong FlowDocument
             if (previousPointer != null && (previousPointer.Parent is FlowDocument) == false)
             {
                 List parentList = null;
+
+                // Kiểm tra xem vị trí trước có nằm trong một danh sách hay không
                 if (previousPointer.Parent is List)
                 {
                     parentList = previousPointer.Parent as List;
                 }
                 else if (previousPointer.Parent is ListItem previousListItem)
                 {
+                    // Nếu thuộc ListItem, lấy danh sách cha
                     if (previousListItem.Parent is List)
                     {
                         parentList = previousListItem.Parent as List;
                     }
                 }
 
+                // Nếu tìm thấy danh sách cha
                 if (parentList != null)
                 {
-                    _formattedList.MarkerStyle = TextMarkerStyle.None;
+                    _formattedList.MarkerStyle = TextMarkerStyle.None; // Tạm xóa kiểu bullet để xử lý text nó chứa thôi
                     foreach (ListItem item in _formattedList.ListItems.ToList())
                     {
-                        ListItem clonedItem = RemoveTabForList(item);
-                        parentList.ListItems.Add(item);
+                        ListItem clonedItem = RemoveTabForList(item); // Xóa tab thừa
+                        parentList.ListItems.Add(item); // Thêm vào danh sách cha
                     }
 
-                    _formattedList = null;
-                    CheckingAfterPasteForListCase(parentList.ContentEnd, parentList);
+                    _formattedList = null; // Giải phóng danh sách đã xử lý
+                    CheckingAfterPasteForListCase(parentList.ContentEnd, parentList); 
                     return true;
                 }
             }
             else
             {
+                // Lấy vị trí sau insertionPoint
                 TextPointer afterPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Forward);
                 if (afterPointer != null)
                 {
                     List parentList = null;
+
+                    // Kiểm tra nếu vị trí sau nằm trong một danh sách
                     if (afterPointer.Parent is List)
                     {
                         parentList = afterPointer.Parent as List;
@@ -735,14 +722,15 @@ namespace Wordpad
                     }
                     else if (afterPointer.Parent is FlowDocument)
                     {
+                        // Nếu nằm ngoài danh sách, thêm toàn bộ danh sách vào tài liệu
                         _richTextBox.Document.Blocks.Add(_formattedList);
-                        _formattedList = null;
+                        _formattedList = null; 
                         return true;
                     }
 
                     if (parentList != null)
                     {
-                        _formattedList.MarkerStyle = TextMarkerStyle.None;
+                        _formattedList.MarkerStyle = TextMarkerStyle.None; 
                         ListItem firstItem = parentList.ListItems.FirstListItem;
                         if (firstItem != null)
                         {
@@ -769,6 +757,7 @@ namespace Wordpad
                     }
                 }
 
+                // Nếu không có phần tử trước hoặc sau
                 if (previousPointer == null && afterPointer == null)
                 {
                     _richTextBox.Document.Blocks.Add(_formattedList);
@@ -780,17 +769,21 @@ namespace Wordpad
             return false;
         }
 
+        // Phương thức kiểm tra nếu trong trường hợp chèn sau con trỏ previousList, kiểm tra list dưới nó có cùng kiểu 
         private void CheckingAfterPasteForListCase(TextPointer currentPointer, List previousList)
         {
+            // Lấy vị trí tiếp theo để kiểm tra
             currentPointer = currentPointer.GetNextContextPosition(LogicalDirection.Forward);
-            List listToRemove = new List();
+            List listToRemove = new List(); // Danh sách sẽ bị xóa
 
             if (currentPointer.Parent is FlowDocument)
                 currentPointer = currentPointer.GetNextContextPosition(LogicalDirection.Forward);
 
-            if (currentPointer.Parent is ListItem || currentPointer.Parent is List) // Vị trí ContentStart của list khác nằm ngay sau đó
+            if (currentPointer != null && (currentPointer.Parent is ListItem || currentPointer.Parent is List)) // Vị trí ContentStart của list khác nằm ngay sau đó
             {
                 List nextList = new List();
+
+                // Lấy danh sách tiếp theo nếu có
                 if (currentPointer.Parent is List)
                     nextList = currentPointer.Parent as List;
                 else if (currentPointer.Parent is ListItem nextListItem)
@@ -799,18 +792,23 @@ namespace Wordpad
                         nextList = nextListItem.Parent as List;
                 }
 
-                listToRemove = nextList;
+                listToRemove = nextList; // Ghi nhớ danh sách cần xóa
 
+                // Duyệt qua các phần tử trong danh sách tiếp theo
                 foreach (ListItem item in nextList.ListItems.ToList())
-                {
-                    nextList.ListItems.Remove(item);
-                    previousList.ListItems.Add(item);
+                { 
+                    nextList.ListItems.Remove(item);  // Xóa phần tử khỏi danh sách tiếp theo
+                    previousList.ListItems.Add(item); // Thêm phần tử vào danh sách trước đó
                 }
             }
 
-            _richTextBox.Document.Blocks.Remove(listToRemove);
+            // Xóa danh sách nếu nó không rỗng
+            if (listToRemove != null)
+                _richTextBox.Document.Blocks.Remove(listToRemove);
         }
 
+
+        // Phương thức dán List trong trường hợp trước sau vị trí cần chèn là paragraph
         private bool PasteMethodForParagraph_ParagraphCase(TextPointer insertionPoint)
         {
             TextPointer previousPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Backward);
@@ -858,6 +856,8 @@ namespace Wordpad
             return false;
         }
 
+
+        // Phương thức tách các paragraph nằm trong list item vào danh sách paragraph
         private void ExtractListItemsAsParagraphs(ListItem listItem, List<Paragraph> paragraphs)
         {
             // Duyệt qua tất cả các Block bên trong ListItem
@@ -886,6 +886,7 @@ namespace Wordpad
             return nextParagraph;
         }
 
+        // Phương thức tách từng list items tương ứng với list chứa nó (những đối tượng thuộc vùng chọn)
         private Dictionary<List, List<ListItem>> ExtractFormatRangeIntoLists_OnlyListsCase(TextRange formatRange, out List remainedList)
         {
             Dictionary<List, List<ListItem>> listRanges = new Dictionary<List, List<ListItem>>();
@@ -938,9 +939,6 @@ namespace Wordpad
                         Paragraph currentPara = currentPointer.Paragraph;
                         if (currentPara != null)
                         {
-                            TextRange currentParaText = new TextRange(currentPara.ContentStart, currentPara.ContentEnd);
-                            if (currentParaText.Text != null) { }
-
                             ListItem currentListItem = FindListItemFromParagraph(currentPara, endParentList);
                             remainedList.ListItems.Add(currentListItem);
                         }
@@ -952,6 +950,7 @@ namespace Wordpad
             return listRanges;
         }
 
+        // Phương thức tìm List cha
         private List GetParentList(Paragraph para)
         {
             DependencyObject parent = para;
@@ -964,6 +963,8 @@ namespace Wordpad
             // Nếu không tìm thấy List, trả về null.
             return parent as List;
         }
+
+        // Phương thức tìm ListItem chứa paragraph nào đó từ para đó và list cha của nó
         private ListItem FindListItemFromParagraph(Paragraph para, List parentList)
         {
             // Lặp qua tất cả các ListItem trong List để tìm ListItem chứa Paragraph
@@ -981,6 +982,8 @@ namespace Wordpad
             return null;
         }
 
+
+        // Phương thức tách các paragraphs ra khỏi danh sách list item
         private List<Paragraph> ExtractParagraphsFromList(List<ListItem> listItems)
         {
             List<Paragraph> paragraphs = new List<Paragraph>();
@@ -1055,6 +1058,7 @@ namespace Wordpad
             return clonedItem;
         }
 
+        // Phương thức xóa các list cũ (sau khi đã áp dụng list đó thành kiểu bullet style khác)
         private void RemoveFormattedListItems(Dictionary<List, List<ListItem>> listRanges)
         {
             // Sau khi vòng lặp kết thúc, xóa các ListItem từ các List trong Dictionary
@@ -1077,6 +1081,7 @@ namespace Wordpad
             }
         }
 
+        // Phương thức chèn các paragraph vào list mới
         private List InsertParagraphsIntoList(List<Paragraph> paragraphs, TextMarkerStyle bulletStyle)
         {
             List newMarkerStyleList = new List();
@@ -1099,98 +1104,7 @@ namespace Wordpad
             _richTextBox.Document.Blocks.InsertAfter(previousParagraph, remainedList);
         }
 
-        /* private void CheckingForMergingListsAfterInsertion(List insertedList, List previousList, List nextList)
-         {
-             if (previousList != null && previousList.MarkerStyle == insertedList.MarkerStyle)
-             {
-                 // Gộp danh sách trước với danh sách được chèn
-                 foreach (var item in insertedList.ListItems.ToList())
-                 {
-                     previousList.ListItems.Add(item);
-                 }
-                 // Xóa danh sách được chèn vì đã gộp xong
-                 _richTextBox.Document.Blocks.Remove(insertedList);
-             }
-
-             if (nextList != null && nextList.MarkerStyle == insertedList.MarkerStyle)
-             {
-                 // Gộp danh sách phía sau vào danh sách được chèn
-                 foreach (var item in nextList.ListItems.ToList())
-                 {
-                     insertedList.ListItems.Add(item);
-                 }
-                 // Xóa danh sách phía sau vì đã gộp xong
-                 _richTextBox.Document.Blocks.Remove(nextList);
-             }
-
-             *//*TextPointer startParaList = insertedList.ContentStart;
-             TextPointer endParaList = insertedList.ContentEnd;
-
-             TextPointer currentPointer = startParaList.GetNextContextPosition(LogicalDirection.Backward);
-             while(currentPointer != null && !(currentPointer.Parent is ListItem || currentPointer.Parent is List))
-             {
-                 currentPointer = currentPointer.GetNextContextPosition(LogicalDirection.Backward);
-             }
-
-             List previousList = null;
-             if(currentPointer != null)
-             {
-                 if (currentPointer.Parent is ListItem listItem)
-                 {
-                     if (listItem.Parent is List list)
-                     {
-                         previousList = list;
-                     }
-                 }
-                 else if (currentPointer.Parent is List list)
-                 {
-                     previousList = list;
-                 } 
-
-                 if (previousList != null && previousMarkerStyle == insertedList.MarkerStyle)
-                 {
-                     // Gộp danh sách trước với danh sách được chèn
-                     foreach (var item in insertedList.ListItems.ToList())
-                     {
-                         previousList.ListItems.Add(item);
-                     }
-                     // Xóa danh sách được chèn vì đã gộp xong
-                     _richTextBox.Document.Blocks.Remove(insertedList);
-                 }    
-             }
-
-             // Đặt lại currentPointer
-             currentPointer = endParaList.GetNextContextPosition(LogicalDirection.Forward);
-             while (currentPointer != null && !(currentPointer.Parent is ListItem || currentPointer.Parent is List))
-             {
-                 currentPointer = currentPointer.GetNextContextPosition(LogicalDirection.Forward);
-             }
-             List nextList = null;
-             if (currentPointer != null)
-             {
-                 if (currentPointer.Parent is ListItem listItem)
-                 {
-                     if (listItem.Parent is List)
-                         nextList = listItem.Parent as List;
-                 }
-                 else if (currentPointer.Parent is List list)
-                     nextList = list;
-
-                 if (nextList != null && nextMarkerStyle == insertedList.MarkerStyle)
-                 {
-                     // Gộp danh sách phía sau vào danh sách được chèn
-                     foreach (var item in nextList.ListItems.ToList())
-                     {
-                         insertedList.ListItems.Add(item);
-                     }
-                     // Xóa danh sách phía sau vì đã gộp xong
-                     _richTextBox.Document.Blocks.Remove(nextList);
-                 }
-             }*//*
-         }*/
-
-
-
+        // Phương thức xử lý riêng cho trường hợp vùng chọn toàn là list
         private void FormatEachListsInSelectedRange(TextRange formatRange, TextMarkerStyle bulletStyle)
         {
             Dictionary<List, List<ListItem>> listRanges = ExtractFormatRangeIntoLists_OnlyListsCase(formatRange, out List remainedList);
@@ -1262,78 +1176,6 @@ namespace Wordpad
                 InsertRemainingListItems(remainedList, newMarkerStyleList);
             }
             RemoveFormattedListItems(listRanges);
-        }
-
-
-        private bool PasteMethodForReApplyParagraphCase(TextPointer insertionPoint)
-        {
-            TextPointer previousPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Backward);
-            Block block = null;
-            if (previousPointer != null && (previousPointer.Parent is FlowDocument) == false)
-            {
-                if (previousPointer.Parent is List)
-                {
-                    block = previousPointer.Parent as List;
-                }
-                else if (previousPointer.Parent is ListItem previousListItem)
-                {
-                    if (previousListItem.Parent is List)
-                    {
-                        block = previousListItem.Parent as List;
-                    }
-                }
-                else if (previousPointer.Paragraph != null)
-                    block = previousPointer.Paragraph;
-
-                if (block != null)
-                {
-                    _richTextBox.Document.Blocks.InsertAfter(block, _formattedList);
-                    _formattedList = null;
-                    return true;
-                }
-            }
-            else
-            {
-                TextPointer afterPointer = insertionPoint.GetNextContextPosition(LogicalDirection.Forward);
-                if (afterPointer != null)
-                {
-                    if (afterPointer.Parent is List)
-                    {
-                        block = afterPointer.Parent as List;
-                    }
-                    else if (afterPointer.Parent is ListItem nextListItem)
-                    {
-                        if (nextListItem.Parent is List)
-                        {
-                            block = nextListItem.Parent as List;
-                        }
-                    }
-                    else if (afterPointer.Parent is FlowDocument)
-                    {
-                        _richTextBox.Document.Blocks.Add(_formattedList);
-                        _formattedList = null;
-                        return true;
-                    }
-                    else if (afterPointer.Paragraph != null)
-                        block = afterPointer.Paragraph;
-
-                    if (block != null)
-                    {
-                        _richTextBox.Document.Blocks.InsertBefore(block, _formattedList);
-                        _formattedList = null;
-                        return true;
-                    }
-                }
-
-                if (previousPointer == null && afterPointer == null)
-                {
-                    _richTextBox.Document.Blocks.Add(_formattedList);
-                    _formattedList = null;
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private Paragraph CloneParagraph(Paragraph sourceParagraph)
