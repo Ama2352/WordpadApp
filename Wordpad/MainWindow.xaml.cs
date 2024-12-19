@@ -326,42 +326,45 @@ namespace Wordpad
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             //Save
-            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 _SaveManager.Save();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+S shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.N && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 _NewManager.CreateNew();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+N shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if (e.Key == Key.O && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.O && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 _OpenManager.Open();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+O shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if (e.Key == Key.P && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.P && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
                 _PrintManager.PrintRichTextBoxContent();
                 e.Handled = true;
                 //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
+                e.Handled = true;
                 clipboardManager.Copy();
                 e.Handled = true;
             }
-            else if (e.Key == Key.X && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.X && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
+                e.Handled = true;
                 clipboardManager.Cut();
                 e.Handled = true;
             }
-            else if (e.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control)
+            else if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
+                e.Handled = true;
                 clipboardManager.Paste();
                 e.Handled = true;
             }

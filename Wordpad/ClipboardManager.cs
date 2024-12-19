@@ -35,13 +35,17 @@ namespace Wordpad
                 // Copy văn bản RTF
                 MemoryStream stream = new MemoryStream();
                 textRange.Save(stream, DataFormats.Rtf);
-
-                // Đặt lại con trỏ đầu stream
                 stream.Position = 0;
-
-                // Lưu vào Clipboard
                 string rtfText = Encoding.Default.GetString(stream.ToArray());
-                Clipboard.SetDataObject(new DataObject(DataFormats.Rtf, rtfText), true);
+
+                // Copy văn bản thô (Plain Text)
+                string plainText = textRange.Text;
+
+                // Lưu cả RTF và Text vào Clipboard
+                DataObject dataObject = new DataObject();
+                dataObject.SetData(DataFormats.Rtf, rtfText);
+                dataObject.SetData(DataFormats.Text, plainText);
+                Clipboard.SetDataObject(dataObject, true);
 
                 // Xóa văn bản đã chọn
                 textRange.Text = string.Empty;
@@ -51,6 +55,7 @@ namespace Wordpad
                 MessageBox.Show("No text selected to cut.");
             }
         }
+
 
 
 
@@ -65,8 +70,14 @@ namespace Wordpad
                 textRange.Save(stream, DataFormats.Rtf);
                 string rtfText = Encoding.UTF8.GetString(stream.ToArray());
 
-                // Set to Clipboard
-                Clipboard.SetData(DataFormats.Rtf, rtfText);
+                // Copy văn bản thô (Plain Text)
+                string plainText = textRange.Text;
+
+                // Lưu cả RTF và Text vào Clipboard
+                DataObject dataObject = new DataObject();
+                dataObject.SetData(DataFormats.Rtf, rtfText);
+                dataObject.SetData(DataFormats.Text, plainText);
+                Clipboard.SetDataObject(dataObject, true);
             }
             else
             {
@@ -247,7 +258,20 @@ namespace Wordpad
             }
             else if ((selectedOption == "Unformatted Text") && Clipboard.ContainsText())
             {
-                textRange.Text = Clipboard.GetText();
+                // Lấy nội dung từ Clipboard dưới dạng plain text
+                string plainText = Clipboard.GetText();
+
+                // Xóa mọi định dạng bằng cách xóa vùng chọn và dán plain text
+                textRange.Text = plainText;
+
+                // Đặt lại định dạng về giá trị mặc định
+                textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Segoe UI")); // Font mặc định
+                textRange.ApplyPropertyValue(TextElement.FontSizeProperty, 12.0); // Kích thước mặc định
+                textRange.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black); // Màu chữ mặc định
+                textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent); // Xóa highlight
+                textRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal); // Xóa bold
+                textRange.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal); // Xóa italic
+                textRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null); // Xóa underline, strikethrough
             }
             else if (selectedOption == "Bitmap" && Clipboard.ContainsImage())
             {

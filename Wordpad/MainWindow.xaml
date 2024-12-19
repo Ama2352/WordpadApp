@@ -635,7 +635,7 @@
                                                     </Button>
 
                                                     <Button x:Name="btnSquare" Width="50" Height="50" Margin="4" Padding="0" 
-                                                            Focusable="False" Background="White" Click="btnSquare_Click">
+                                                            Focusable="False" Background="White" Click="btnBox_Click">
                                                         <Image Source="Images/square.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
 
@@ -645,7 +645,7 @@
                                                     </Button>
 
                                                     <Button x:Name="btnBox" Width="50" Height="50" Margin="4" Padding="0" 
-                                                            Focusable="False" Background="White" Click="btnBox_Click">
+                                                            Focusable="False" Background="White" Click="btnSquare_Click">
                                                         <Image Source="Images/box.png" Width="40" Height="40" Stretch="Fill"/>
                                                     </Button>
                                                 </WrapPanel>
