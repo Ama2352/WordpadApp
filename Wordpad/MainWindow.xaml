@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
         Title="WordPad" Height="450" Width="1230" Loaded="Window_Loaded" 
-        Icon="Images/logo.ico"
+        Icon="Images/logo2.ico"
         SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
     <Window.Resources>
         <!-- Style cho nút Toolbar -->
