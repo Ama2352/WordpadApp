@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
         Title="WordPad" Height="450" Width="1230" Loaded="Window_Loaded" 
-        SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown">
+        SizeChanged="Window_SizeChanged" PreviewKeyDown="Window_PreviewKeyDown" KeyDown="Window_KeyDown">
     <Window.Resources>
         <!-- Style cho nút Toolbar -->
         <Style x:Key="ToolbarButtonStyle" TargetType="Button">
@@ -295,10 +295,12 @@
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,5">
                                     <!-- ComboBox for Font Family -->
                                     <ComboBox x:Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
-                                                Height="24" Margin="0,0,5,0" />
+                                                Height="24" Margin="0,0,5,0" IsEditable="True"
+                                               />
                                     <!-- ComboBox for Font Size -->
                                     <ComboBox x:Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
-                                                Height="24" Margin="0,0,5,0" />
+                                                Height="24" Margin="0,0,5,0" IsEditable="True" IsTextSearchEnabled="False"
+                                              />
                                     <!-- Button to Increase Font -->
                                     <Button x:Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Increase Font Size"
                                             Click="btnGrowFont_Click">

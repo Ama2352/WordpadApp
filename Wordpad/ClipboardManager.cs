@@ -29,85 +29,60 @@ namespace Wordpad
         // Phương thức Cắt
         public void Cut()
         {
-            TextRange textRange = _richTextBox.Selection;
-            if (!textRange.IsEmpty)
-            {
-                // Copy văn bản RTF
-                MemoryStream stream = new MemoryStream();
-                textRange.Save(stream, DataFormats.Rtf);
-                stream.Position = 0;
-                string rtfText = Encoding.Default.GetString(stream.ToArray());
+           ApplicationCommands.Cut.Execute(null, _richTextBox);
 
-                // Copy văn bản thô (Plain Text)
-                string plainText = textRange.Text;
-
-                // Lưu cả RTF và Text vào Clipboard
-                DataObject dataObject = new DataObject();
-                dataObject.SetData(DataFormats.Rtf, rtfText);
-                dataObject.SetData(DataFormats.Text, plainText);
-                Clipboard.SetDataObject(dataObject, true);
-
-                // Xóa văn bản đã chọn
-                textRange.Text = string.Empty;
-            }
-            else
-            {
-                MessageBox.Show("No text selected to cut.");
-            }
+           if(!_richTextBox.Selection.IsEmpty)
+           {
+                TextSelection selection = _richTextBox.Selection;
+                selection.Text = "";
+           }    
         }
-
-
-
 
         // Phương thức Sao chép
         public void Copy()
         {
-            TextRange textRange = _richTextBox.Selection;
-            if (!textRange.IsEmpty)
-            {
-                // Save RTF format
-                MemoryStream stream = new MemoryStream();
-                textRange.Save(stream, DataFormats.Rtf);
-                string rtfText = Encoding.UTF8.GetString(stream.ToArray());
-
-                // Copy văn bản thô (Plain Text)
-                string plainText = textRange.Text;
-
-                // Lưu cả RTF và Text vào Clipboard
-                DataObject dataObject = new DataObject();
-                dataObject.SetData(DataFormats.Rtf, rtfText);
-                dataObject.SetData(DataFormats.Text, plainText);
-                Clipboard.SetDataObject(dataObject, true);
-            }
-            else
-            {
-                MessageBox.Show("No text selected to copy.");
-            }
+            ApplicationCommands.Copy.Execute(null, _richTextBox);
         }
-
 
         // Phương thức Dán
         public void Paste()
         {
-            if (Clipboard.ContainsData(DataFormats.Rtf))
+            if (Clipboard.ContainsImage())
             {
-                string rtfText = (string)Clipboard.GetData(DataFormats.Rtf);
-                TextRange textRange = _richTextBox.Selection;
-                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(rtfText)))
+                InsertManager insertManager = new InsertManager(_richTextBox);
+                BitmapSource bitmapSource = Clipboard.GetImage();
+                BitmapImage bitmapImage = new BitmapImage();
+
+                using (var memoryStream = new MemoryStream())
                 {
-                    textRange.Load(stream, DataFormats.Rtf);
+                    // Mã hóa hình ảnh từ kiểu BitmapSource sang png và lưu vào MemoryStream (encode để lưu trữ hình ành ở dạng png)
+                    BitmapEncoder encoder = new PngBitmapEncoder(); // Định dạng png
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource)); // Tạo và thêm khung hình vào bộ mã hóa (encoder)
+                    encoder.Save(memoryStream); // Ghi vào bộ nhớ
+
+                    /*Đặt lại con trỏ vị trí của MemoryStream về vị trí bắt đầu để đọc lại từ đầu dòng bộ nhớ (Vì khi ghi dữ liệu vào bộ nhớ thì con trỏ
+                     đã di chuyển đến cuối dữ liệu vừa ghi)*/
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+
+                    // Bắt đầu khởi tạo
+                    bitmapImage.BeginInit();
+
+                    // Đặt tùy chọn bộ nhớ cache của bitmapImage để tải hình ảnh ngay lập tức vào bộ nhớ khi khởi tạo.
+                    // Điều này đảm bảo hình ảnh sẽ được tải hoàn toàn từ memoryStream ngay khi bắt đầu khởi tạo, không cần phải tải lại sau đó.
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+
+                    // Xác định nguồn dữ liệu cho bitmapImage là một memory stream chứa hình ảnh.
+                    // Đây là nơi BitmapImage sẽ đọc dữ liệu hình ảnh từ (trong trường hợp này là từ bộ nhớ, không phải từ file hoặc URI).
+                    bitmapImage.StreamSource = memoryStream;
+
+                    // Hoàn thành khởi tạo 
+                    bitmapImage.EndInit();
                 }
-            }
-            else if (Clipboard.ContainsText())
-            {
-                // Fallback to plain text if RTF is unavailable
-                TextRange textRange = _richTextBox.Selection;
-                textRange.Text = Clipboard.GetText();
+
+                insertManager.MakeContainerForImageAndInsert(bitmapImage);
             }
             else
-            {
-                MessageBox.Show("Clipboard does not contain valid text.");
-            }
+                ApplicationCommands.Paste.Execute(null, _richTextBox);
         }
 
 
@@ -248,6 +223,18 @@ namespace Wordpad
             }
         }
 
+        private void ResetFormat(TextRange textRange)
+        {
+            // Đặt lại định dạng về giá trị mặc định
+            //textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Calibri")); // Font mặc định
+            //textRange.ApplyPropertyValue(TextElement.FontSizeProperty, 11.0); // Kích thước mặc định
+            textRange.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black); // Màu chữ mặc định
+            textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent); // Xóa highlight
+            textRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal); // Xóa bold
+            textRange.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal); // Xóa italic
+            textRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null); // Xóa underline, strikethrough
+        }
+
         public void PasteSpecial(string selectedOption)
         {
             TextRange textRange = _richTextBox.Selection;
@@ -264,14 +251,7 @@ namespace Wordpad
                 // Xóa mọi định dạng bằng cách xóa vùng chọn và dán plain text
                 textRange.Text = plainText;
 
-                // Đặt lại định dạng về giá trị mặc định
-                textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, new FontFamily("Segoe UI")); // Font mặc định
-                textRange.ApplyPropertyValue(TextElement.FontSizeProperty, 12.0); // Kích thước mặc định
-                textRange.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black); // Màu chữ mặc định
-                textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent); // Xóa highlight
-                textRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal); // Xóa bold
-                textRange.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Normal); // Xóa italic
-                textRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null); // Xóa underline, strikethrough
+                ResetFormat(textRange);
             }
             else if (selectedOption == "Bitmap" && Clipboard.ContainsImage())
             {

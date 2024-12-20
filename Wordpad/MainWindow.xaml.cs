@@ -93,8 +93,6 @@ namespace Wordpad
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             IsTextChanged = true;
-
-
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -132,23 +130,57 @@ namespace Wordpad
 
         private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fontManager.ChangeFontFamily(cbFontFamily.SelectedItem.ToString());
+            // Kiểm tra xem có mục nào được chọn không
+            string selectedFontFamily = cbFontFamily.SelectedItem as string;
+
+            // Nếu không có mục nào được chọn, kiểm tra text nhập vào
+            if (string.IsNullOrEmpty(selectedFontFamily))
+            {
+                selectedFontFamily = cbFontFamily.Text;  // Lấy giá trị người dùng nhập vào
+            }
+
+            // Nếu selectedFontFamily hợp lệ
+            if (!string.IsNullOrEmpty(selectedFontFamily))
+            {
+                try
+                {
+                    fontManager.ChangeFontFamily(selectedFontFamily);
+                }
+                catch (Exception ex)
+                {
+                    // Xử lý lỗi (nếu có)
+                    MessageBox.Show($"An error occurred while changing the font: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                // Nếu không có giá trị hợp lệ
+                MessageBox.Show("Please select a valid font or enter a valid font name.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void cbFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                if (double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
+                // Kiểm tra nếu có giá trị được chọn và giá trị có thể chuyển đổi thành double
+                if (cbFontSize.SelectedItem != null && double.TryParse(cbFontSize.SelectedItem.ToString(), out double fontSize))
                 {
-                    fontManager.ChangeFontSize(fontSize);
+                    fontManager.ChangeFontSize(fontSize); // Thay đổi kích thước font
+                }
+                else
+                {
+                    // Nếu không thể chuyển đổi hoặc không có giá trị được chọn
+                    MessageBox.Show("Please select a valid font size.", "Invalid Font Size", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.ToString());
+                // Xử lý lỗi và thông báo cho người dùng
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void SettingFontType(FontManager _fontManager)
         {
@@ -167,7 +199,7 @@ namespace Wordpad
             cbFontSize.SelectionChanged -= cbFontSize_SelectionChanged;
 
             // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước (Chỉ thay đổi text của size đang hiển thị)
-            cbFontSize.Text = newSize.ToString();
+            cbFontSize.Text = ((int)Math.Round(newSize)).ToString();
 
             // Đăng ký lại sự kiện cập nhật font size
             cbFontSize.SelectionChanged += cbFontSize_SelectionChanged;
@@ -238,22 +270,6 @@ namespace Wordpad
             }
         }
 
-        private void cbLineSpacing_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           /* // Ép kiểu SelectedItem về ComboBoxItem
-            ComboBoxItem selectedItem = (ComboBoxItem)cbLineSpacing.SelectedItem;
-
-            // Lấy nội dung của ComboBoxItem
-            string selectedValue = selectedItem.Content.ToString();
-
-            // Kiểm tra trạng thái của checkbox (giả sử bạn có `chkAdd10pt`)
-            bool checkAdd10pt = chkAdd10pt.IsChecked ?? false;
-
-            //MessageBox.Show(checkAdd10pt.ToString());
-
-            ParagraphManager.lineSpacing = float.Parse(selectedValue);
-            paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, checkAdd10pt);*/
-        }
         private void chkAdd10pt_Checked(object sender, RoutedEventArgs e)
         {
             paragraphManager.SetLineSpacingWithSpacingAfterParagraphs(ParagraphManager.lineSpacing, true);
@@ -323,53 +339,55 @@ namespace Wordpad
         #endregion
 
         #region ShortCuts
+        private bool isCtrlPressed = false;
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            // Kiểm tra xem phím Ctrl có được nhấn hay không
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+            {
+                isCtrlPressed = true;  // Đánh dấu phím Ctrl đã được nhấn
+                e.Handled = true;  // Ngừng sự kiện tại đây, không cho các đối tượng khác xử lý
+            }
+        }
+
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //Save
-            if (e.Key == Key.S && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            // Kiểm tra nếu phím Ctrl được nhấn và xem phím kết hợp với Ctrl
+            if (isCtrlPressed)
             {
-                _SaveManager.Save();
-                e.Handled = true;
-                //System.Windows.MessageBox.Show("Ctrl+S shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (e.Key == Key.N && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                _NewManager.CreateNew();
-                e.Handled = true;
-                //System.Windows.MessageBox.Show("Ctrl+N shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (e.Key == Key.O && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                _OpenManager.Open();
-                e.Handled = true;
-                //System.Windows.MessageBox.Show("Ctrl+O shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (e.Key == Key.P && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                _PrintManager.PrintRichTextBoxContent();
-                e.Handled = true;
-                //System.Windows.MessageBox.Show("Ctrl+P shortcut triggered!", "Shortcut Example", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else if (e.Key == Key.C && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                e.Handled = true;
-                clipboardManager.Copy();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.X && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                e.Handled = true;
-                clipboardManager.Cut();
+                // Kiểm tra các phím nhấn kết hợp với Ctrl
+                if (e.Key == Key.S)
+                {
+                    _SaveManager.Save();
+                }
+                else if (e.Key == Key.N)
+                {
+                    _NewManager.CreateNew();
+                }
+                else if (e.Key == Key.O)
+                {
+                    _OpenManager.Open();                 
+                }
+                else if (e.Key == Key.P)
+                {
+                    _PrintManager.PrintRichTextBoxContent();
+                }
+                else if (e.Key == Key.C)
+                {
+                    clipboardManager.Copy();
+                }
+                else if (e.Key == Key.X)
+                {
+                    clipboardManager.Cut();
+                }
+                else if (e.Key == Key.V)
+                {
+                    clipboardManager.Paste();
+                }
+                isCtrlPressed = false;
                 e.Handled = true;
             }
-            else if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                e.Handled = true;
-                clipboardManager.Paste();
-                e.Handled = true;
-            }
-
-
         }
 
         #endregion
@@ -751,11 +769,11 @@ namespace Wordpad
             paragraphManager.ApplyBulletStyles("Box");
         }
 
+
+
         #endregion
 
         #endregion
-
-
 
     }
 }

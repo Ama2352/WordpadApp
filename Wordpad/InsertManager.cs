@@ -21,7 +21,7 @@ namespace Wordpad
         private RichTextBox _richTextBox;
 
         // Dictionary để quản lý hình ảnh
-        private Dictionary<Guid, Image> imageDictionary = new Dictionary<Guid, Image>();
+        public static Dictionary<Guid, Image> imageDictionary = new Dictionary<Guid, Image>();
 
 
         // Kho lưu trữ vị trí icon để nhận dạng loại icon
