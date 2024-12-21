@@ -295,11 +295,16 @@
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,10,0,5">
                                     <!-- ComboBox for Font Family -->
                                     <ComboBox x:Name="cbFontFamily" Width="120" SelectionChanged="cbFontFamily_SelectionChanged" 
-                                                Height="24" Margin="0,0,5,0" IsEditable="True"
-                                               />
+                                              PreviewTextInput="cbFontFamily_PreviewTextInput"
+                                              KeyDown="cbFontFamily_KeyDown"
+                                              LostFocus="cbFontFamily_LostFocus"
+                                              DropDownOpened="cbFontFamily_DropDownOpened"
+                                              Height="24" Margin="0,0,5,0" IsEditable="True"
+                                              />
                                     <!-- ComboBox for Font Size -->
-                                    <ComboBox x:Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged" 
-                                                Height="24" Margin="0,0,5,0" IsEditable="True" IsTextSearchEnabled="False"
+                                    <ComboBox x:Name="cbFontSize" Width="50" SelectionChanged="cbFontSize_SelectionChanged"  
+                                              PreviewKeyUp="cbFontSize_PreviewKeyUp"
+                                              Height="24" Margin="0,0,5,0" IsEditable="True" IsTextSearchEnabled="False"
                                               />
                                     <!-- Button to Increase Font -->
                                     <Button x:Name="btnIFont" Width="24" Height="24" Margin="0,0,5,0" Style="{StaticResource ToolbarButtonStyle}" ToolTip="Increase Font Size"
@@ -974,6 +979,7 @@
                             <!-- RichTextBox Area -->
                             <RichTextBox Name="richTextBox" VerticalScrollBarVisibility="Hidden"
                                  AcceptsReturn="True" BorderBrush="{x:Null}"
+                                 AcceptsTab="True"
                                  TextChanged="richTextBox_TextChanged"
                                  Padding="0" 
                                  FocusVisualStyle="{x:Null}" LayoutUpdated="richTextBox_LayoutUpdated" 

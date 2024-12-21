@@ -86,6 +86,27 @@ namespace Wordpad
             _richTextBox.Focus();
         }
 
+        // Phương thức cập nhật font size từ giá trị người dùng nhập vào cbFontSize
+        public void ProcessFontSizeInput(string text)
+        {
+            try
+            {
+                // Lấy giá trị từ Text và kiểm tra hợp lệ
+                if (!string.IsNullOrEmpty(text) && double.TryParse(text, out double fontSize))
+                {
+                    ChangeFontSize(fontSize); // Thay đổi kích thước font
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid font size.", "Invalid Font Size", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         // Thay đổi màu văn bản
         public void ChangeFontColor(Color color)

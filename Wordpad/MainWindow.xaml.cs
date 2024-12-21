@@ -128,37 +128,72 @@ namespace Wordpad
             //_TextBoxBehavior.UpdateCustomScrollBar();
         }
 
+        #region FontFamilly
+        private bool _isTyping = false;
         private void cbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Kiểm tra xem có mục nào được chọn không
-            string selectedFontFamily = cbFontFamily.SelectedItem as string;
-
-            // Nếu không có mục nào được chọn, kiểm tra text nhập vào
-            if (string.IsNullOrEmpty(selectedFontFamily))
+            try
             {
-                selectedFontFamily = cbFontFamily.Text;  // Lấy giá trị người dùng nhập vào
-            }
+                // Nếu người dùng đang gõ, không xử lý sự kiện SelectionChanged
+                if (_isTyping)
+                    return;
 
-            // Nếu selectedFontFamily hợp lệ
-            if (!string.IsNullOrEmpty(selectedFontFamily))
-            {
-                try
+                // Tiến hành thay đổi phông chữ khi lựa chọn được thay đổi
+                if (cbFontFamily.SelectedItem != null)
                 {
+                    string selectedFontFamily = cbFontFamily.SelectedItem.ToString();
                     fontManager.ChangeFontFamily(selectedFontFamily);
                 }
-                catch (Exception ex)
-                {
-                    // Xử lý lỗi (nếu có)
-                    MessageBox.Show($"An error occurred while changing the font: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
             }
-            else
+            catch (Exception ex)
             {
-                // Nếu không có giá trị hợp lệ
-                MessageBox.Show("Please select a valid font or enter a valid font name.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // Log hoặc xử lý ngoại lệ
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
 
+        private void cbFontFamily_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Khi người dùng gõ văn bản, tạm thời ngừng xử lý SelectionChanged
+            _isTyping = true;
+        }
+
+        private void cbFontFamily_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            // Kiểm tra khi người dùng nhấn Enter
+            if (e.Key == Key.Enter)
+            {
+                // Đảm bảo xử lý lựa chọn khi nhấn Enter
+                _isTyping = false;
+
+                if (cbFontFamily.SelectedItem != null)
+                {
+                    string selectedFontFamily = cbFontFamily.SelectedItem.ToString();
+                    fontManager.ChangeFontFamily(selectedFontFamily);
+                }
+            }
+        }
+
+        private void cbFontFamily_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Xử lý khi mất tiêu điểm (focus)
+            _isTyping = false;
+
+            if (cbFontFamily.SelectedItem != null)
+            {
+                string selectedFontFamily = cbFontFamily.SelectedItem.ToString();
+                fontManager.ChangeFontFamily(selectedFontFamily);
+            }
+        }
+
+        private void cbFontFamily_DropDownOpened(object sender, EventArgs e)
+        {
+            // Khi dropdown được mở, đảm bảo rằng việc nhập liệu không bị ngừng
+            _isTyping = false;
+        }
+        #endregion
+
+        #region FontSize
         private void cbFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -168,11 +203,6 @@ namespace Wordpad
                 {
                     fontManager.ChangeFontSize(fontSize); // Thay đổi kích thước font
                 }
-                else
-                {
-                    // Nếu không thể chuyển đổi hoặc không có giá trị được chọn
-                    MessageBox.Show("Please select a valid font size.", "Invalid Font Size", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
             }
             catch (Exception ex)
             {
@@ -180,6 +210,16 @@ namespace Wordpad
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void cbFontSize_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            // Kiểm tra nếu phím được nhấn là Enter
+            if (e.Key == Key.Enter)
+            {
+                fontManager.ProcessFontSizeInput(cbFontSize.Text);
+            }
+        }
+        #endregion
 
 
         private void SettingFontType(FontManager _fontManager)
@@ -199,7 +239,7 @@ namespace Wordpad
             cbFontSize.SelectionChanged -= cbFontSize_SelectionChanged;
 
             // Cập nhật kích cỡ font đang hiển thị nếu có thay đổi về kích thước (Chỉ thay đổi text của size đang hiển thị)
-            cbFontSize.Text = ((int)Math.Round(newSize)).ToString();
+            cbFontSize.Text = ((int)newSize).ToString();
 
             // Đăng ký lại sự kiện cập nhật font size
             cbFontSize.SelectionChanged += cbFontSize_SelectionChanged;
@@ -726,54 +766,121 @@ namespace Wordpad
         #region StartAListClick
         private void btnBullet_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Bullet");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Bullet");
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi tại đây, ví dụ log lỗi hoặc hiển thị thông báo lỗi cho người dùng
+                MessageBox.Show($"Error applying bullet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnNumbering_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Numbering");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Numbering");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying numbering style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnLowerAlphabet_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Alphabet - Lower case");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Alphabet - Lower case");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying lower alphabet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnUpperAlphabet_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Alphabet - Upper case");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Alphabet - Upper case");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying upper alphabet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnLowerRoman_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Roman Numeral - Lower case");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Roman Numeral - Lower case");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying lower roman numeral style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnUpperRoman_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Roman Numeral - Upper case");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Roman Numeral - Upper case");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying upper roman numeral style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnSquare_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Square");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Square");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying square bullet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnDot_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Circle");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Circle");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying dot bullet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnBox_Click(object sender, RoutedEventArgs e)
         {
-            paragraphManager.ApplyBulletStyles("Box");
+            try
+            {
+                paragraphManager.ApplyBulletStyles("Box");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error applying box bullet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
 
+
+
         #endregion
 
         #endregion
+
 
     }
 }
