@@ -1027,6 +1027,7 @@ namespace Wordpad
             previousBlock = currentBlock;
             currentBlock = null;
         }
+
         private ListItem RemoveTabForList(ListItem item)
         {
             // Tạo TextRange từ item để lấy RTF
@@ -1040,7 +1041,15 @@ namespace Wordpad
 
                 string rtfText = Encoding.UTF8.GetString(stream.ToArray());
 
-                // Loại bỏ tab ở đầu chuỗi RTF
+                // Kiểm tra nếu chuỗi RTF chứa các thuộc tính tab (\li hoặc \tx), nếu có thì trả về item luôn
+                bool isSystemTab = rtfText.Contains(@"\li") || rtfText.Contains(@"\tx");
+
+                if (isSystemTab)
+                {
+                    return item;
+                }
+
+                // Loại bỏ tab ở đầu chuỗi RTF nếu không phải thao tác hệ thống
                 if (rtfText.StartsWith(@"\t"))
                 {
                     rtfText = rtfText.Remove(0, 2); // Xóa ký tự \t
@@ -1066,6 +1075,7 @@ namespace Wordpad
 
             return clonedItem;
         }
+
 
         // Phương thức xóa các list cũ (sau khi đã áp dụng list đó thành kiểu bullet style khác)
         private void RemoveFormattedListItems(Dictionary<List, List<ListItem>> listRanges)
