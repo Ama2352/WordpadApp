@@ -29,13 +29,7 @@ namespace Wordpad
         // Phương thức Cắt
         public void Cut()
         {
-           ApplicationCommands.Cut.Execute(null, _richTextBox);
-
-           if(!_richTextBox.Selection.IsEmpty)
-           {
-                TextSelection selection = _richTextBox.Selection;
-                selection.Text = "";
-           }    
+           ApplicationCommands.Cut.Execute(null, _richTextBox);  
         }
 
         // Phương thức Sao chép
@@ -50,40 +44,47 @@ namespace Wordpad
             if (Clipboard.ContainsImage())
             {
                 InsertManager insertManager = new InsertManager(_richTextBox);
-                BitmapSource bitmapSource = Clipboard.GetImage();
-                BitmapImage bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    // Mã hóa hình ảnh từ kiểu BitmapSource sang png và lưu vào MemoryStream (encode để lưu trữ hình ành ở dạng png)
-                    BitmapEncoder encoder = new PngBitmapEncoder(); // Định dạng png
-                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource)); // Tạo và thêm khung hình vào bộ mã hóa (encoder)
-                    encoder.Save(memoryStream); // Ghi vào bộ nhớ
-
-                    /*Đặt lại con trỏ vị trí của MemoryStream về vị trí bắt đầu để đọc lại từ đầu dòng bộ nhớ (Vì khi ghi dữ liệu vào bộ nhớ thì con trỏ
-                     đã di chuyển đến cuối dữ liệu vừa ghi)*/
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    // Bắt đầu khởi tạo
-                    bitmapImage.BeginInit();
-
-                    // Đặt tùy chọn bộ nhớ cache của bitmapImage để tải hình ảnh ngay lập tức vào bộ nhớ khi khởi tạo.
-                    // Điều này đảm bảo hình ảnh sẽ được tải hoàn toàn từ memoryStream ngay khi bắt đầu khởi tạo, không cần phải tải lại sau đó.
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-
-                    // Xác định nguồn dữ liệu cho bitmapImage là một memory stream chứa hình ảnh.
-                    // Đây là nơi BitmapImage sẽ đọc dữ liệu hình ảnh từ (trong trường hợp này là từ bộ nhớ, không phải từ file hoặc URI).
-                    bitmapImage.StreamSource = memoryStream;
-
-                    // Hoàn thành khởi tạo 
-                    bitmapImage.EndInit();
-                }
-
+                BitmapImage bitmapImage = CreateBitmapImageFromClipboard();
                 insertManager.MakeContainerForImageAndInsert(bitmapImage);
             }
             else
                 ApplicationCommands.Paste.Execute(null, _richTextBox);
         }
+
+        private BitmapImage CreateBitmapImageFromClipboard()
+        {
+            BitmapSource bitmapSource = Clipboard.GetImage();
+            BitmapImage bitmapImage = new BitmapImage();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                // Mã hóa hình ảnh từ kiểu BitmapSource sang png và lưu vào MemoryStream (encode để lưu trữ hình ành ở dạng png)
+                BitmapEncoder encoder = new PngBitmapEncoder(); // Định dạng png
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource)); // Tạo và thêm khung hình vào bộ mã hóa (encoder)
+                encoder.Save(memoryStream);
+
+                /*Đặt lại con trỏ vị trí của MemoryStream về vị trí bắt đầu để đọc lại từ đầu dòng bộ nhớ (Vì khi ghi dữ liệu vào bộ nhớ thì con trỏ
+                    đã di chuyển đến cuối dữ liệu vừa ghi)*/
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+                // Bắt đầu khởi tạo
+                bitmapImage.BeginInit();
+
+                // Đặt tùy chọn bộ nhớ cache của bitmapImage để tải hình ảnh ngay lập tức vào bộ nhớ khi khởi tạo.
+                // Điều này đảm bảo hình ảnh sẽ được tải hoàn toàn từ memoryStream ngay khi bắt đầu khởi tạo, không cần phải tải lại sau đó.
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+
+                // Xác định nguồn dữ liệu cho bitmapImage là một memory stream chứa hình ảnh.
+                // Đây là nơi BitmapImage sẽ đọc dữ liệu hình ảnh từ (trong trường hợp này là từ bộ nhớ, không phải từ file hoặc URI).
+                bitmapImage.StreamSource = memoryStream;
+
+                // Hoàn thành khởi tạo 
+                bitmapImage.EndInit();
+            }
+
+            return bitmapImage;
+        }
+
 
 
         // Phương thức lấy các tùy chọn dán từ clipboard
@@ -256,36 +257,7 @@ namespace Wordpad
             else if (selectedOption == "Bitmap" && Clipboard.ContainsImage())
             {
                 InsertManager insertManager = new InsertManager(_richTextBox);
-                BitmapSource bitmapSource = Clipboard.GetImage();
-                BitmapImage bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    // Mã hóa hình ảnh từ kiểu BitmapSource sang png và lưu vào MemoryStream (encode để lưu trữ hình ành ở dạng png)
-                    BitmapEncoder encoder = new PngBitmapEncoder(); // Định dạng png
-                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource)); // Tạo và thêm khung hình vào bộ mã hóa (encoder)
-                    encoder.Save(memoryStream); // Ghi vào bộ nhớ
-
-                    /*Đặt lại con trỏ vị trí của MemoryStream về vị trí bắt đầu để đọc lại từ đầu dòng bộ nhớ (Vì khi ghi dữ liệu vào bộ nhớ thì con trỏ
-                     đã di chuyển đến cuối dữ liệu vừa ghi)*/
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    // Bắt đầu khởi tạo
-                    bitmapImage.BeginInit();
-
-                    // Đặt tùy chọn bộ nhớ cache của bitmapImage để tải hình ảnh ngay lập tức vào bộ nhớ khi khởi tạo.
-                    // Điều này đảm bảo hình ảnh sẽ được tải hoàn toàn từ memoryStream ngay khi bắt đầu khởi tạo, không cần phải tải lại sau đó.
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-
-                    // Xác định nguồn dữ liệu cho bitmapImage là một memory stream chứa hình ảnh.
-                    // Đây là nơi BitmapImage sẽ đọc dữ liệu hình ảnh từ (trong trường hợp này là từ bộ nhớ, không phải từ file hoặc URI).
-                    bitmapImage.StreamSource = memoryStream;
-
-                    // Hoàn thành khởi tạo 
-                    bitmapImage.EndInit();
-                    
-                }
-
+                BitmapImage bitmapImage = CreateBitmapImageFromClipboard();
                 insertManager.MakeContainerForImageAndInsert(bitmapImage);
             }    
             else
