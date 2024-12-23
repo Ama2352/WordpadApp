@@ -376,6 +376,11 @@ namespace Wordpad
         {
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
+
+        private void Window_Closing(object sender, EventArgs e)
+        {
+            _NewManager.ConfirmSaveChanges();
+        }
         #endregion
 
         #region ShortCuts
@@ -872,6 +877,7 @@ namespace Wordpad
                 MessageBox.Show($"Error applying box bullet style: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
 
 
