@@ -377,10 +377,33 @@ namespace Wordpad
             viewManagment.ShowStatusBar(statusBar.Visibility != Visibility.Visible);
         }
 
-        private void Window_Closing(object sender, EventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _NewManager.ConfirmSaveChanges();
+            // Kiểm tra xem người dùng có cần lưu hay không
+            if (MainWindow.IsTextChanged) // Hàm kiểm tra tài liệu đã được sửa đổi
+            {
+                // Hiển thị hộp thoại Save
+                MessageBoxResult result = MessageBox.Show(
+                    "Do you want to save changes to Document?",
+                    "Save Changes",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning
+                );
+
+                // Xử lý theo lựa chọn của người dùng
+                if (result == MessageBoxResult.Yes)
+                {
+                    _SaveManager.Save(); // Gọi hàm Save
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    // Hủy đóng cửa sổ
+                    e.Cancel = true;
+                }
+                // Nếu chọn No, không làm gì và tiếp tục đóng
+            }
         }
+
         #endregion
 
         #region ShortCuts
@@ -485,8 +508,8 @@ namespace Wordpad
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.MessageBox.Show("WordPad Clone\nPhiên bản 1.0\nĐược phát triển bởi Nhóm 7",
-                            "Giới thiệu",
+            System.Windows.MessageBox.Show("WordPad\nVersion 1.0\nDeveloped by Group 7",
+                            "About",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
 

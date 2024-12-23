@@ -39,7 +39,7 @@ namespace Wordpad
                     SaveAsDocx(filePath);
                     break;
                 default:
-                    System.Windows.MessageBox.Show("Định dạng không được hỗ trợ!", "Lỗi", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("Unsupported format!", "Error!", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                     break;
             }
         }

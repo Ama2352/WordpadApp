@@ -35,8 +35,8 @@ namespace Wordpad
             {
                 // Hiển thị hộp thoại xác nhận
                 MessageBoxResult result = MessageBox.Show(
-                    "Bạn có muốn lưu thay đổi trước khi đóng không?", // Thông điệp hiển thị
-                    "Lưu thay đổi", // Tiêu đề hộp thoại
+                    "Do you want to save changes to Document?", // Thông điệp hiển thị
+                    "Save Changes", // Tiêu đề hộp thoại
                     MessageBoxButton.YesNoCancel, // Các nút lựa chọn
                     MessageBoxImage.Warning // Biểu tượng cảnh báo
                 );
