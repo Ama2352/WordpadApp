@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
-        Title="Date and Time" Height="450" Width="400">
+        Icon="Images/logo5.ico"
+        Title="Date and Time" Height="450" Width="400"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*"/>

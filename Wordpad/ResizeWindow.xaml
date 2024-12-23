@@ -6,6 +6,8 @@
          xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
+        Icon="Images/logo5.ico"
+        KeyDown="Window_KeyDown"
         Title="Resize" Height="220" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>

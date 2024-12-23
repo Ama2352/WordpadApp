@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
+        Icon="Images/logo5.ico"
+        KeyDown="Window_KeyDown"
        Title="Replace" Height="180" Width="430">
     <Grid>
         <Grid.ColumnDefinitions>

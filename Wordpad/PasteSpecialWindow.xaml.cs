@@ -96,5 +96,20 @@ namespace Wordpad
             this.DialogResult = false;
             this.Close();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Thoát bằng phím ESC
+            if (e.Key == Key.Escape)
+            {
+                this.Close();
+            }
+
+            // Xác nhận bằng phím Enter
+            if (e.Key == Key.Enter)
+            {
+                btnOK_Click(sender, e);
+            }
+        }
     }
 }

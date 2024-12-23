@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad"
         mc:Ignorable="d"
+        Icon="Images/logo5.ico"
+        KeyDown="Window_KeyDown"
         Title="Paragraph" Height="442" Width="261">
     <Grid Margin="10">
         <!-- Main Layout -->
