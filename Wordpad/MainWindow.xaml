@@ -110,12 +110,6 @@
                                Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Quick print" Foreground="Black" Click="QuickPrintMenuItem_Click">
-                            <MenuItem.Icon>
-                                <Image Source="pack://application:,,,/Wordpad;component/Images/Quick Print.png"
-                               Width="16" Height="16" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
                         <MenuItem Header="Print preview" Foreground="Black" Click="PrintPreviewMenuItem_Click">
                             <MenuItem.Icon>
                                 <Image Source="pack://application:,,,/Wordpad;component/Images/Print Preview.png"
