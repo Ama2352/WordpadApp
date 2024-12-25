@@ -6,7 +6,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace Wordpad
 {
@@ -697,16 +696,25 @@ namespace Wordpad
                 // Nếu tìm thấy danh sách cha
                 if (parentList != null)
                 {
-                    _formattedList.MarkerStyle = TextMarkerStyle.None; // Tạm xóa kiểu bullet để xử lý text nó chứa thôi
-                    foreach (ListItem item in _formattedList.ListItems.ToList())
+                    if(parentList.MarkerStyle == _formattedList.MarkerStyle)
                     {
-                        ListItem clonedItem = RemoveTabForList(item); // Xóa tab thừa
-                        parentList.ListItems.Add(item); // Thêm vào danh sách cha
-                    }
+                        _formattedList.MarkerStyle = TextMarkerStyle.None; // Tạm xóa kiểu bullet để xử lý text nó chứa thôi
+                        foreach (ListItem item in _formattedList.ListItems.ToList())
+                        {
+                            ListItem clonedItem = RemoveTabForList(item); // Xóa tab thừa
+                            parentList.ListItems.Add(item); // Thêm vào danh sách cha
+                        }
 
-                    _formattedList = null; // Giải phóng danh sách đã xử lý
-                    CheckingAfterPasteForListCase(parentList.ContentEnd, parentList); 
-                    return true;
+                        _formattedList = null; // Giải phóng danh sách đã xử lý
+                        CheckingAfterPasteForListCase(parentList.ContentEnd, parentList);
+                        return true;
+                    }    
+                    else
+                    {
+                        _richTextBox.Document.Blocks.InsertAfter(parentList, _formattedList);
+                        CheckingAfterPasteForListCase(_formattedList.ContentEnd, _formattedList);
+                        return true;
+                    }    
                 }
             }
             else
@@ -739,30 +747,39 @@ namespace Wordpad
 
                     if (parentList != null)
                     {
-                        _formattedList.MarkerStyle = TextMarkerStyle.None; 
-                        ListItem firstItem = parentList.ListItems.FirstListItem;
-                        if (firstItem != null)
+                        if(parentList.MarkerStyle == _formattedList.MarkerStyle)
                         {
-                            // Duyệt qua ListItems từ cuối lên đầu
-                            for (int i = _formattedList.ListItems.Count - 1; i >= 0; i--)
+                            _formattedList.MarkerStyle = TextMarkerStyle.None;
+                            ListItem firstItem = parentList.ListItems.FirstListItem;
+                            if (firstItem != null)
                             {
-                                ListItem item = _formattedList.ListItems.ElementAt(i);  // Lấy ListItem theo chỉ số bằng ElementAt()
-                                ListItem clonedItem = RemoveTabForList(item);
-                                parentList.ListItems.InsertBefore(firstItem, clonedItem);
-                                firstItem = parentList.ListItems.FirstListItem;
+                                // Duyệt qua ListItems từ cuối lên đầu
+                                for (int i = _formattedList.ListItems.Count - 1; i >= 0; i--)
+                                {
+                                    ListItem item = _formattedList.ListItems.ElementAt(i);  // Lấy ListItem theo chỉ số bằng ElementAt()
+                                    ListItem clonedItem = RemoveTabForList(item);
+                                    parentList.ListItems.InsertBefore(firstItem, clonedItem);
+                                    firstItem = parentList.ListItems.FirstListItem;
+                                }
                             }
-                        }
+                            else
+                            {
+                                foreach (ListItem item in _formattedList.ListItems.ToList())
+                                {
+                                    ListItem clonedItem = RemoveTabForList(item);
+                                    parentList.ListItems.Add(clonedItem);
+                                }
+                            }
+
+                            _formattedList = null;
+                            return true;
+                        }    
                         else
                         {
-                            foreach (ListItem item in _formattedList.ListItems.ToList())
-                            {
-                                ListItem clonedItem = RemoveTabForList(item);
-                                parentList.ListItems.Add(clonedItem);
-                            }
-                        }
-
-                        _formattedList = null;
-                        return true;
+                            _richTextBox.Document.Blocks.InsertBefore(parentList, _formattedList);
+                            _formattedList = null;
+                            return true;
+                        }    
                     }
                 }
 
@@ -801,14 +818,17 @@ namespace Wordpad
                         nextList = nextListItem.Parent as List;
                 }
 
-                listToRemove = nextList; // Ghi nhớ danh sách cần xóa
+                if(nextList != null && nextList.MarkerStyle == previousList.MarkerStyle)
+                {
+                    listToRemove = nextList; // Ghi nhớ danh sách cần xóa
 
-                // Duyệt qua các phần tử trong danh sách tiếp theo
-                foreach (ListItem item in nextList.ListItems.ToList())
-                { 
-                    nextList.ListItems.Remove(item);  // Xóa phần tử khỏi danh sách tiếp theo
-                    previousList.ListItems.Add(item); // Thêm phần tử vào danh sách trước đó
-                }
+                    // Duyệt qua các phần tử trong danh sách tiếp theo
+                    foreach (ListItem item in nextList.ListItems.ToList())
+                    {
+                        nextList.ListItems.Remove(item);  // Xóa phần tử khỏi danh sách tiếp theo
+                        previousList.ListItems.Add(item); // Thêm phần tử vào danh sách trước đó
+                    }
+                }    
             }
 
             // Xóa danh sách nếu nó không rỗng
