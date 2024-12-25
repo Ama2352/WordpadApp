@@ -229,19 +229,5 @@ namespace Wordpad
             ruler.DrawMargins(pageSettings.Margins.Left, pageSettings.Margins.Right);
         }
 
-        public void QuickPrint()
-        {
-            try
-            {
-                currentPageNumber = 1;
-
-                // Thực hiện in nhanh qua FlowDocument
-                PrintRichTextBoxContent();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error during Quick Print: {ex.Message}");
-            }
-        }
     }
 }

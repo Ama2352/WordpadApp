@@ -485,10 +485,6 @@ namespace Wordpad
         {
             _PrintManager.PrintRichTextBoxContent();
         }
-        private void QuickPrintMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            _PrintManager.QuickPrint();
-        }
 
         private void PrintPreviewMenuItem_Click(object sender, RoutedEventArgs e)
         {
