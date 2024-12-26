@@ -2,25 +2,26 @@
 
 ```mermaid
 graph TD
-    A[Start ResizeImage Method] --> B{Image Exists?}
-    B -- No --> C[Show Warning: No image found]
-    B -- Yes --> D[Retrieve Image and Aspect Ratio]
-    D --> E[Open ResizeWindow Dialog]
-    E --> F{User Confirms Resize?}
-    F -- No --> G[Close Dialog Without Changes]
-    F -- Yes --> H[Update Image Width & Height]
-    H --> I[End ResizeImage Method]
+    A[Khởi đầu phương thức ResizeImage] --> B{Hình ảnh có tồn tại không?}
+    B -- Không --> C[Hiển thị cảnh báo: Không tìm thấy hình ảnh]
+    B -- Có --> D[Truy xuất hình ảnh và tỷ lệ khung hình]
+    D --> E[Mở hộp thoại ResizeWindow]
+    E --> F{Người dùng có xác nhận thay đổi kích thước không?}
+    F -- Không --> G[Đóng hộp thoại mà không thay đổi]
+    F -- Có --> H[Cập nhật chiều rộng và chiều cao của hình ảnh]
+    H --> I[Kết thúc phương thức ResizeImage]
     G --> I
 
-    subgraph ResizeWindow Logic
-        J[Initialize ResizeWindow]
-        J --> K[Display Current Size]
-        K --> L{Aspect Ratio Locked?}
-        L -- Yes --> M[Synchronize Width & Height Inputs]
-        L -- No --> N[Allow Independent Input Changes]
-        N --> O[User Confirms Resize]
+    subgraph Logic ResizeWindow
+        J[Khởi tạo ResizeWindow]
+        J --> K[Hiển thị kích thước hiện tại]
+        K --> L{Tỷ lệ khung hình có bị khóa không?}
+        L -- Có --> M[Đồng bộ chiều rộng và chiều cao]
+        L -- Không --> N[Cho phép thay đổi độc lập]
+        N --> O[Người dùng xác nhận thay đổi kích thước]
         M --> O
-        O --> P[Calculate New Dimensions]
-        P --> Q[Update Aspect Ratios Dictionary]
-        Q --> R[Return to ResizeImage]
+        O --> P[Tính toán kích thước mới]
+        P --> Q[Cập nhật từ điển tỷ lệ khung hình]
+        Q --> R[Trở lại ResizeImage]
     end
+
