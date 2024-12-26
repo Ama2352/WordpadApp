@@ -1,18 +1,18 @@
 ```mermaid
 flowchart TD
-    A[Start DateAndTime Function] --> B[Open DateAndTimeWindow for User to Select DateTime Format]
-    B --> C[Display Available DateTime Formats to User]
-    C --> D[User Selects a DateTime Format]
-    D --> E[User Clicks OK Button]
-    E --> F[Validate User Selection]
-    F --> G{Is a Format Selected?}
-    G -->|No| H[Show Warning Message: Please select a format.]
-    G -->|Yes| I[Store Selected DateTime Format]
-    I --> J[Close DateAndTimeWindow]
-    J --> K[Return Selected DateTime to Main Window]
-    K --> L[Insert Selected DateTime into Text Field in Main Window]
-    L --> M[Update Text in RichTextBox]
-    M --> N[End DateAndTime Function]
-    E --> O[User Clicks Cancel Button]
-    O --> P[Close DateAndTimeWindow Without Saving Selection]
+    A[Khởi đầu phương thức DateAndTime] --> B[Mở cửa sổ DateAndTimeWindow cho người dùng chọn định dạng ngày giờ]
+    B --> C[Hiển thị các định dạng ngày giờ có sẵn cho người dùng]
+    C --> D[Người dùng chọn một định dạng ngày giờ]
+    D --> E[Người dùng nhấn nút OK]
+    E --> F[Xác nhận lựa chọn của người dùng]
+    F --> G{Đã chọn định dạng chưa?}
+    G -->|Không| H[Hiển thị thông báo cảnh báo: Vui lòng chọn một định dạng.]
+    G -->|Có| I[Lưu định dạng ngày giờ đã chọn]
+    I --> J[Đóng cửa sổ DateAndTimeWindow]
+    J --> K[Trả lại định dạng ngày giờ đã chọn về cửa sổ chính]
+    K --> L[Chèn định dạng ngày giờ đã chọn vào trường văn bản trong cửa sổ chính]
+    L --> M[Cập nhật văn bản trong RichTextBox]
+    M --> N[Kết thúc phương thức DateAndTime]
+    E --> O[Người dùng nhấn nút Hủy]
+    O --> P[Đóng cửa sổ DateAndTimeWindow mà không lưu lựa chọn]
     P --> N
