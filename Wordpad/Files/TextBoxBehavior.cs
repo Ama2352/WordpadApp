@@ -9,14 +9,12 @@ namespace Wordpad
     {
         private RichTextBox _richTextBox;
         //private ScrollBar _customScrollBar;
-        private Grid editorArea;
         private DockPanel _dockPanel;
 
-        public TextBoxBehavior(RichTextBox richTextBox, Grid grid, DockPanel DP)
+        public TextBoxBehavior(RichTextBox richTextBox, DockPanel DP)
         {
             _richTextBox = richTextBox;
             //_customScrollBar = customScrollBar;
-            editorArea = grid;
             _dockPanel = DP;
 
             // Gắn sự kiện cho RichTextBox và thanh cuộn tùy chỉnh

@@ -20,13 +20,14 @@ namespace Wordpad
         private Canvas tickCanvas;
         private Canvas thumbCanvas;
         private Canvas rulerCanvas;
-        private Thumb firstLineIndentThumb;
+
+/*        private Thumb firstLineIndentThumb;
         private Thumb hangingIndentThumb;
         private Thumb paragraphIndentThumb;
         private Thumb rightIndentThumb;
         //Các đường gạch đứt khi kéo thumb
         private Line DashedLine;
-        private GlobalDashedLineAdorner _adorner;
+        private GlobalDashedLineAdorner _adorner;*/
 
 
         private double rulerLength;
@@ -37,7 +38,8 @@ namespace Wordpad
         public static double oriRulerWidth;
         double delta = 0;    //Giá trị khác biệt của kích thước trước và sau khi zoom của dockpanel
         double zoomScale = 1;
-        private bool isHangingChanged = false;      //Biến check xem hanging thumb có vừa được điều chỉnh ko
+
+/*        private bool isHangingChanged = false;      //Biến check xem hanging thumb có vừa được điều chỉnh ko
         private bool isFirstLineChanged = false;      //Biến check xem frist line thumb có vừa được điều chỉnh ko
         public bool isParagraphChanged = false;      //Biến check xem parapraph thumb có vừa được điều chỉnh ko
         //Các biến lưu vị trí của các đường gạch đứt của các thumb
@@ -50,34 +52,34 @@ namespace Wordpad
         double preParaIndent = 0;      //Giá trị khác biệt của para.textindent khi dùng hanging thumb và first line thumb.
 
         private RichTextBox richTextBox;
-        private DockPanel dockPanel;
         private DockPanel mainContainer;
         private ScrollViewer rulerScrollViewer;
-        private ScrollViewer RTBScrollViewer;
+        private ScrollViewer RTBScrollViewer;*/
+        
+        private DockPanel dockPanel;
         private ViewManagment ViewManagment;
 
         private string currentUnit = "Inches"; // Đơn vị đo hiện tại
         private readonly Dictionary<string, double> unitConversion;
 
         //Thành phần để quan lý từng phần tử trong ruler
-        private List<UIElement> rulerElements = new List<UIElement>(); // Các thành phần thuộc ruler
-        private List<UIElement> marginElements = new List<UIElement>(); // Các thành phần thuộc margins
+/*        private List<UIElement> rulerElements = new List<UIElement>(); // Các thành phần thuộc ruler
+        private List<UIElement> marginElements = new List<UIElement>(); // Các thành phần thuộc margins*/
 
 
 
-        public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, RichTextBox richTextBox, DockPanel dockPanel, DockPanel mainContainer,
-            GlobalDashedLineAdorner adorner, ScrollViewer SV, ScrollViewer SV2, ViewManagment viewManagment)
+        public Ruler(Canvas margin, Canvas tick, Canvas thumb,Canvas ruler, DockPanel dockPanel, ViewManagment viewManagment)
         {
             marginCanvas = margin;
             tickCanvas = tick;
             thumbCanvas = thumb;
             rulerCanvas = ruler;
-            this.richTextBox = richTextBox;
-            this.dockPanel = dockPanel;
+           this.dockPanel = dockPanel;
+/*            this.richTextBox = richTextBox;
             this.mainContainer = mainContainer;
             _adorner = adorner;
             this.rulerScrollViewer = SV;
-            RTBScrollViewer = SV2;
+            RTBScrollViewer = SV2;*/
 
             rulerLength = dockPanel.Width;
             unitConversion = new Dictionary<string, double>
@@ -309,11 +311,11 @@ namespace Wordpad
             thumbCanvas.Width = length;
         }
 
-        public void SetAdorner(GlobalDashedLineAdorner adorner)
+/*        public void SetAdorner(GlobalDashedLineAdorner adorner)
         {
             _adorner = adorner;
             // Nếu cần, cập nhật lại giao diện hoặc các logic khác liên quan đến Adorner
-        }
+        }*/
         public void SetViewManager(ViewManagment viewManagment)
         {
             this.ViewManagment = viewManagment;
@@ -335,7 +337,7 @@ namespace Wordpad
         }
 
         #region Unused
-
+        /*
         public void InitializeThumbs()
         {
             // Tạo Thumb cho First Line Indent - tam giác trên
@@ -806,7 +808,7 @@ namespace Wordpad
                 ApplyIndent();
             }
         }
-
+        */
         #endregion
 
 

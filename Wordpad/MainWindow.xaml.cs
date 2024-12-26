@@ -43,7 +43,7 @@ namespace Wordpad
         {
             InitializeComponent();
             // Khởi tạo ViewManagment
-            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, richTextBox, RTBContainer, mainContainer, null, rulerScrollViewer, RTBSCrollViewer, null);
+            ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, RTBContainer, null);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
             _NewManager = new NewManager(richTextBox, this);
@@ -51,7 +51,7 @@ namespace Wordpad
             _PrintManager = new PrintManager(RTBContainer, richTextBox, ruler);
             _SaveManager = new SaveManager(richTextBox);
             _SendEmailManager = new SendEmailManager(richTextBox);
-            _TextBoxBehavior = new TextBoxBehavior(richTextBox, editorArea, RTBContainer);
+            _TextBoxBehavior = new TextBoxBehavior(richTextBox, RTBContainer);
 
             //Home
             clipboardManager = new ClipboardManager(richTextBox);

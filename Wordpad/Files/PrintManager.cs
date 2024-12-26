@@ -19,7 +19,6 @@ namespace Wordpad
         private PrintPreviewDialog printPreviewDialog;
         private PageSetupDialog pageSetupDialog;
         private FlowDocument flowDocument;
-        private int currentPageNumber = 1;
         private bool printPageNumber = false;
         private DockPanel dockPanel;
         private con.RichTextBox richTextBox;
