@@ -1,23 +1,23 @@
 ```mermaid
 flowchart TD
-    A[Start Insert Object Function] --> B[Open InsertObjectWindow]
-    B --> C[Display List of Object Types]
-    C --> D[User Selects an Object Type]
-    D --> E[Show Description and Icon for Selected Object]
-    E --> F{Is Create New Selected?}
-    F -->|Yes| G[Insert Object as Icon for Selected Type]
-    G --> H[Close InsertObjectWindow and Return to Main Window]
-    F -->|No| I{Is Create From File Selected?}
-    I -->|Yes| J[Browse for File]
-    J --> K[Display File Path and File Type]
-    K --> L[Insert Object as Icon from File]
+    A[Khởi đầu phương thức Insert Object] --> B[Mở cửa sổ InsertObjectWindow]
+    B --> C[Hiển thị danh sách các loại đối tượng]
+    C --> D[Người dùng chọn một loại đối tượng]
+    D --> E[Hiển thị mô tả và biểu tượng cho đối tượng đã chọn]
+    E --> F{Có chọn "Tạo Mới"?}
+    F -->|Có| G[Chèn đối tượng dưới dạng biểu tượng cho loại đã chọn]
+    G --> H[Đóng cửa sổ InsertObjectWindow và quay lại cửa sổ chính]
+    F -->|Không| I{Có chọn "Tạo từ Tệp"?}
+    I -->|Có| J[Chọn tệp]
+    J --> K[Hiển thị đường dẫn và loại tệp]
+    K --> L[Chèn đối tượng dưới dạng biểu tượng từ tệp]
     L --> H
-    I -->|No| H
-    D --> M[User Clicks Cancel Button]
+    I -->|Không| H
+    D --> M[Người dùng nhấn nút Hủy]
     M --> H
-    H --> N[End Insert Object Function]
+    H --> N[Kết thúc phương thức Insert Object]
 
-    %% Event handling for user interactions
-    E --> O[User Double Clicks on Inserted Icon]
-    O --> P[Open Associated Application for Icon Type]
+    %% Xử lý sự kiện cho các tương tác của người dùng
+    E --> O[Người dùng nhấp đúp vào biểu tượng đã chèn]
+    O --> P[Mở ứng dụng liên kết với loại biểu tượng]
     P --> N
