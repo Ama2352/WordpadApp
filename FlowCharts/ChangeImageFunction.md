@@ -1,3 +1,6 @@
+# Flowchart for Change Image Function
+
+```mermaid
 flowchart TD
     A[Start] --> B[Check if text is selected in RichTextBox]
     B --> C{Is selection empty?}
