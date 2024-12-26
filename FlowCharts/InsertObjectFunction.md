@@ -4,10 +4,10 @@ flowchart TD
     B --> C[Hiển thị danh sách các loại đối tượng]
     C --> D[Người dùng chọn một loại đối tượng]
     D --> E[Hiển thị mô tả và biểu tượng cho đối tượng đã chọn]
-    E --> F{Có chọn "Tạo Mới"?}
+    E --> F{Có chọn Tạo Mới?}
     F -->|Có| G[Chèn đối tượng dưới dạng biểu tượng cho loại đã chọn]
     G --> H[Đóng cửa sổ InsertObjectWindow và quay lại cửa sổ chính]
-    F -->|Không| I{Có chọn "Tạo từ Tệp"?}
+    F -->|Không| I{Có chọn Tạo từ Tệp?}
     I -->|Có| J[Chọn tệp]
     J --> K[Hiển thị đường dẫn và loại tệp]
     K --> L[Chèn đối tượng dưới dạng biểu tượng từ tệp]
