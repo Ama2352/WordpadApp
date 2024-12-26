@@ -2,8 +2,8 @@
 
 ```mermaid
 flowchart TD
-    A[Start] --> B[Check if text is selected in RichTextBox]
-    B --> C{Is selection empty?}
-    C -->|Yes| D[Show warning: 'Please select an image to change.']
-    C -->|No| E[Call InsertImage method to select a new image]
-    E --> F[End]
+    A[Khởi đầu] --> B[Kiểm tra xem có văn bản nào được chọn trong RichTextBox không]
+    B --> C{Lựa chọn có trống không?}
+    C -->|Có| D[Hiển thị cảnh báo: 'Vui lòng chọn một hình ảnh để thay đổi.']
+    C -->|Không| E[Gọi phương thức InsertImage để chọn hình ảnh mới]
+    E --> F[Kết thúc]
