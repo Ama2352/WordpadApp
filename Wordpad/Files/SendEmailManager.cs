@@ -58,6 +58,8 @@ namespace Wordpad.Files
 
                     // Gửi email
                     smtpClient.Send(mail);
+                    // Giải phóng tệp đính kèm
+                    attachment.Dispose();
 
                     // Thông báo gửi email thành công
                     MessageBox.Show("Email has been sent successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);

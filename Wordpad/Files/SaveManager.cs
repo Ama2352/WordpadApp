@@ -2,6 +2,7 @@
 using Microsoft.Win32; // SaveFileDialog của WPF
 using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls; // RichTextBox của WPF
 using System.Windows.Documents; // TextRange để xử lý RichTextBox
 
@@ -84,38 +85,63 @@ namespace Wordpad
         {
             try
             {
-                if (fileStream != null)
+                // Dùng khối using để tự động giải phóng FileStream
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    fileStream.Close();
+                    TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
+                    textRange.Save(fileStream, System.Windows.DataFormats.Rtf);
                 }
-                // Mở tệp với quyền ghi
-                fileStream = new FileStream(filePath, FileMode.Create);
-
-                TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
-                textRange.Save(fileStream, System.Windows.DataFormats.Rtf);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"The file is being used by another process: {ex.Message}", "File Access Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
 
         private void SaveAsText(string filePath)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
-                textRange.Save(stream, System.Windows.DataFormats.Text);
+                // Dùng khối using để tự động giải phóng FileStream
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
+                    textRange.Save(fileStream, System.Windows.DataFormats.Text);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"The file is being used by another process: {ex.Message}", "File Access Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void SaveAsXaml(string filePath)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
-                textRange.Save(stream, System.Windows.DataFormats.Xaml);
+                // Dùng khối using để tự động giải phóng FileStream
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
+                    textRange.Save(fileStream, System.Windows.DataFormats.Xaml);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"The file is being used by another process: {ex.Message}", "File Access Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
