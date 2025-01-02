@@ -504,7 +504,7 @@ namespace Wordpad
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.MessageBox.Show("WordPad\nVersion 1.0\nDeveloped by Group 7",
+            System.Windows.MessageBox.Show("WordPad\nVersion 1.0\nDeveloped by Group 2",
                             "About",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
