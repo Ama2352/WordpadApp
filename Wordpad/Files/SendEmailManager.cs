@@ -32,6 +32,8 @@ namespace Wordpad.Files
                 string fromEmail = emailForm.FromEmail;
                 string toEmail = emailForm.ToEmail;
                 string password = emailForm.Password;
+                string body = emailForm.Body;
+                string subject = emailForm.Subject;
                 string filePath = emailForm.filePath;
 
                 try
@@ -40,8 +42,8 @@ namespace Wordpad.Files
                     MailMessage mail = new MailMessage
                     {
                         From = new MailAddress(fromEmail), // Địa chỉ email người gửi
-                        Subject = "Document from WordPad", // Tiêu đề email
-                        Body = GetRichTextBoxContentAsPlainText() // Lấy nội dung RichTextBox
+                        Subject = subject, // Tiêu đề email
+                        Body = body // Lấy nội dung RichTextBox
                     };
                     mail.To.Add(toEmail); // Thêm người nhận vào email
 
@@ -70,13 +72,6 @@ namespace Wordpad.Files
                     MessageBox.Show("An error occurred while sending the email: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
-
-        // Hàm hỗ trợ để lấy nội dung RichTextBox dưới dạng plain text
-        private string GetRichTextBoxContentAsPlainText()
-        {
-            TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
-            return textRange.Text.Trim(); // Loại bỏ khoảng trắng không cần thiết
         }
     }
 }

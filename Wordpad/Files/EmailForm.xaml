@@ -5,17 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wordpad.Files"
         mc:Ignorable="d"
-        Title="Email" Height="194" Width="629"
+        Title="Email" Height="350" Width="629"
         Icon="pack://application:,,,/Images/logo5.ico">
     <Grid Margin="0,0,0,-6">
+        <!-- From -->
         <TextBox x:Name="txtFrom" HorizontalAlignment="Left" Margin="71,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230"/>
-        <TextBox x:Name="txtTo" HorizontalAlignment="Left" Margin="360,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230"/>
-        <CheckBox x:Name="chkShowPassword" Content="Show password" HorizontalAlignment="Left" Margin="311,81,0,0" VerticalAlignment="Top" Width="109" Checked="chkShowPassword_CheckedChanged"/>
-        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="71,115,0,0" VerticalAlignment="Top" Width="40" Click="btnSend_Click"/>
-        <Label Content="From" HorizontalAlignment="Left" Margin="34,39,0,0" VerticalAlignment="Top" Width="37"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="12,75,0,0" VerticalAlignment="Top" Width="59"/>
-        <Label Content="To" HorizontalAlignment="Left" Margin="334,39,0,0" VerticalAlignment="Top" Width="22"/>
-        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="71,80,0,0" VerticalAlignment="Top" Width="230"/>
+        <Label Content="From" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="37"/>
 
+        <!-- To -->
+        <TextBox x:Name="txtTo" HorizontalAlignment="Left" Margin="360,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230"/>
+        <Label Content="To" HorizontalAlignment="Left" Margin="330,39,0,0" VerticalAlignment="Top" Width="22"/>
+
+        <!-- Password -->
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="71,80,0,0" VerticalAlignment="Top" Width="230"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="59"/>
+
+        <!-- Show Password checkbox -->
+        <CheckBox x:Name="chkShowPassword" Content="Show password" HorizontalAlignment="Left" Margin="311,81,0,0" VerticalAlignment="Top" Width="109" Checked="chkShowPassword_CheckedChanged"/>
+
+        <!-- Subject -->
+        <TextBox x:Name="txtSubject" HorizontalAlignment="Left" Margin="71,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519"/>
+        <Label Content="Subject" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="50"/>
+
+        <!-- Body -->
+        <TextBox x:Name="txtBody" HorizontalAlignment="Left" Margin="71,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519" Height="100" AcceptsReturn="True"/>
+        <Label Content="Body" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="50"/>
+
+        <!-- Send Button -->
+        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="71,270,0,0" VerticalAlignment="Top" Width="40" Click="btnSend_Click"/>
     </Grid>
 </Window>

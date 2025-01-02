@@ -19,26 +19,26 @@ namespace Wordpad
             richTextBox1 = RTX;
         }
 
-        public void SaveFile(string filePath)
+        public void SaveFile()
         {
-            string extension = Path.GetExtension(filePath).ToLower();
+            string extension = Path.GetExtension(CurrentFilePath).ToLower();
 
             switch (extension)
             {
                 case ".rtf":
-                    SaveAsRtf(filePath);
+                    SaveAsRtf();
                     break;
                 case ".txt":
-                    SaveAsText(filePath);
+                    SaveAsText();
                     break;
                 case ".xaml":
-                    SaveAsXaml(filePath);
+                    SaveAsXaml();
                     break;
                 case ".html":
-                    SaveAsHtml(filePath);
+                    SaveAsHtml();
                     break;
                 case ".docx":
-                    SaveAsDocx(filePath);
+                    SaveAsDocx();
                     break;
                 default:
                     System.Windows.MessageBox.Show("Unsupported format!", "Error!", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
@@ -50,7 +50,7 @@ namespace Wordpad
         {
             if (!string.IsNullOrEmpty(CurrentFilePath))
             {
-                SaveFile(CurrentFilePath);
+                SaveFile();
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Wordpad
             if (saveFileDialog.ShowDialog() == true)
             {
                 CurrentFilePath = saveFileDialog.FileName;
-                SaveFile(CurrentFilePath);
+                SaveFile();
             }
         }
 
@@ -81,12 +81,12 @@ namespace Wordpad
                   textRange.Save(stream, System.Windows.DataFormats.Rtf);
               }
           }*/
-        private void SaveAsRtf(string filePath)
+        private void SaveAsRtf()
         {
             try
             {
                 // Dùng khối using để tự động giải phóng FileStream
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream fileStream = new FileStream(CurrentFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
                     textRange.Save(fileStream, System.Windows.DataFormats.Rtf);
@@ -103,12 +103,12 @@ namespace Wordpad
         }
 
 
-        private void SaveAsText(string filePath)
+        private void SaveAsText()
         {
             try
             {
                 // Dùng khối using để tự động giải phóng FileStream
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream fileStream = new FileStream(CurrentFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
                     textRange.Save(fileStream, System.Windows.DataFormats.Text);
@@ -124,12 +124,12 @@ namespace Wordpad
             }
         }
 
-        private void SaveAsXaml(string filePath)
+        private void SaveAsXaml()
         {
             try
             {
                 // Dùng khối using để tự động giải phóng FileStream
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream fileStream = new FileStream(CurrentFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
                     textRange.Save(fileStream, System.Windows.DataFormats.Xaml);
@@ -145,17 +145,17 @@ namespace Wordpad
             }
         }
 
-        private void SaveAsHtml(string filePath)
+        private void SaveAsHtml()
         {
             string htmlContent = $"<html><body><p>{System.Net.WebUtility.HtmlEncode(new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd).Text).Replace("\n", "<br>")}</p></body></html>";
-            File.WriteAllText(filePath, htmlContent);
+            File.WriteAllText(CurrentFilePath, htmlContent);
         }
 
-        private void SaveAsDocx(string filePath)
+        private void SaveAsDocx()
         {
             // Tạo tệp .docx
             using (DocumentFormat.OpenXml.Packaging.WordprocessingDocument wordDocument =
-                   DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(filePath,
+                   DocumentFormat.OpenXml.Packaging.WordprocessingDocument.Create(CurrentFilePath,
                    DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
             {
                 // Thêm phần chính (Main Document Part)

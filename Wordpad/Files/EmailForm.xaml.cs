@@ -9,6 +9,8 @@ namespace Wordpad.Files
         public string FromEmail { get; private set; }
         public string ToEmail { get; private set; }
         public string Password { get; private set; }
+        public string Body { get; private set; }
+        public string Subject { get; private set; }
         public string filePath { get; private set; }
 
         public EmailForm()
@@ -34,6 +36,8 @@ namespace Wordpad.Files
             FromEmail = txtFrom.Text;
             ToEmail = txtTo.Text;
             Password = txtPassword.Password; // Get the password from PasswordBox
+            Body = txtBody.Text;
+            Subject = txtSubject.Text;
             if(!string.IsNullOrEmpty(SaveManager.CurrentFilePath))
                 filePath = SaveManager.CurrentFilePath;
 
@@ -44,7 +48,7 @@ namespace Wordpad.Files
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-            saveManager.SaveAs();
+            saveManager.Save();
             SendEmail();
         }
 
