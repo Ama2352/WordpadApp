@@ -7,10 +7,11 @@ using System.Windows.Documents; // TextRange để xử lý RichTextBox
 
 namespace Wordpad
 {
-    internal class SaveManager
+    public class SaveManager
     {
         private RichTextBox richTextBox1;
         public static string CurrentFilePath { get; set; } = string.Empty;
+        public static FileStream fileStream;
 
         public SaveManager(RichTextBox RTX)
         {
@@ -71,14 +72,34 @@ namespace Wordpad
             }
         }
 
+        /*  private void SaveAsRtf(string filePath)
+          {
+              using (FileStream stream = new FileStream(filePath, FileMode.Create))
+              {
+                  TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
+                  textRange.Save(stream, System.Windows.DataFormats.Rtf);
+              }
+          }*/
         private void SaveAsRtf(string filePath)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            try
             {
+                if (fileStream != null)
+                {
+                    fileStream.Close();
+                }
+                // Mở tệp với quyền ghi
+                fileStream = new FileStream(filePath, FileMode.Create);
+
                 TextRange textRange = new TextRange(richTextBox1.Document.ContentStart, richTextBox1.Document.ContentEnd);
-                textRange.Save(stream, System.Windows.DataFormats.Rtf);
+                textRange.Save(fileStream, System.Windows.DataFormats.Rtf);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
             }
         }
+
 
         private void SaveAsText(string filePath)
         {

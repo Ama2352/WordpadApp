@@ -7,12 +7,10 @@ namespace Wordpad
     {
         private RichTextBox richTextBox1; // RichTextBox của WPF
         private SaveManager saveManager;
-        private MainWindow mainWindow; // Thay thế MainForm bằng MainWindow (WPF)
 
-        public NewManager(RichTextBox RTX, MainWindow MW = null)
+        public NewManager(RichTextBox RTX)
         {
             richTextBox1 = RTX;
-            mainWindow = MW;
             saveManager = new SaveManager(RTX);
         }
 

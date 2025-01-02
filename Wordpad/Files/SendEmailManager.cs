@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Mail;
 using System.Windows;
 using System.Windows.Controls; // Thư viện của WPF (MessageBox, v.v.)
@@ -9,18 +10,20 @@ namespace Wordpad.Files
     internal class SendEmailManager
     {
         private readonly RichTextBox richTextBox1;
+        SaveManager saveManager;
 
         // Constructor để khởi tạo đối tượng với RichTextBox
-        public SendEmailManager(RichTextBox rtx)
+        public SendEmailManager(RichTextBox rtx, SaveManager saveManager)
         {
             richTextBox1 = rtx; // Gán RichTextBox vào biến
+            this.saveManager = saveManager;
         }
 
         // Phương thức gửi email
         public void SendEmail()
         {
             // Tạo một form để nhập thông tin gửi email
-            EmailForm emailForm = new EmailForm();
+            EmailForm emailForm = new EmailForm(saveManager);
 
             // Kiểm tra nếu người dùng nhấn OK trong EmailForm
             if (emailForm.ShowDialog() == true) // ShowDialog() trong WPF trả về bool
@@ -29,6 +32,7 @@ namespace Wordpad.Files
                 string fromEmail = emailForm.FromEmail;
                 string toEmail = emailForm.ToEmail;
                 string password = emailForm.Password;
+                string filePath = emailForm.filePath;
 
                 try
                 {
@@ -40,6 +44,9 @@ namespace Wordpad.Files
                         Body = GetRichTextBoxContentAsPlainText() // Lấy nội dung RichTextBox
                     };
                     mail.To.Add(toEmail); // Thêm người nhận vào email
+
+                    Attachment attachment = new Attachment(filePath);
+                    mail.Attachments.Add(attachment);
 
                     // Cấu hình SMTP client để gửi email (Sử dụng Gmail trong ví dụ này)
                     SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")

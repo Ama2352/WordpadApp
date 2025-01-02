@@ -5,13 +5,20 @@ namespace Wordpad.Files
 {
     public partial class EmailForm : Window
     {
+        SaveManager saveManager;
         public string FromEmail { get; private set; }
         public string ToEmail { get; private set; }
         public string Password { get; private set; }
+        public string filePath { get; private set; }
 
         public EmailForm()
         {
             InitializeComponent();
+        }
+        public EmailForm(SaveManager saveManager)
+        {
+            InitializeComponent();
+            this.saveManager = saveManager;
         }
 
         private void SendEmail()
@@ -27,6 +34,8 @@ namespace Wordpad.Files
             FromEmail = txtFrom.Text;
             ToEmail = txtTo.Text;
             Password = txtPassword.Password; // Get the password from PasswordBox
+            if(!string.IsNullOrEmpty(SaveManager.CurrentFilePath))
+                filePath = SaveManager.CurrentFilePath;
 
             // Close the form and indicate success
             this.DialogResult = true;
@@ -35,6 +44,7 @@ namespace Wordpad.Files
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
+            saveManager.SaveAs();
             SendEmail();
         }
 

@@ -46,11 +46,11 @@ namespace Wordpad
             ruler = new Ruler(marginCanvas, tickCanvas, thumbCanvas, rulerCanvas, RTBContainer, null);
             viewManagment = new ViewManagment(statusBar, statusBarItem, richTextBox, unitComboBox, RTBContainer, zoomSlider, ruler);
             //Home
-            _NewManager = new NewManager(richTextBox, this);
+            _NewManager = new NewManager(richTextBox);
             _OpenManager = new OpenManager(richTextBox);
             _PrintManager = new PrintManager(RTBContainer, richTextBox, ruler);
             _SaveManager = new SaveManager(richTextBox);
-            _SendEmailManager = new SendEmailManager(richTextBox);
+            _SendEmailManager = new SendEmailManager(richTextBox, _SaveManager);
             _TextBoxBehavior = new TextBoxBehavior(richTextBox, RTBContainer);
 
             //Home
@@ -513,11 +513,7 @@ namespace Wordpad
 
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra có cần lưu thay đổi trước khi thoát
-            if (_NewManager.ConfirmSaveChanges())
-            {
-                System.Windows.Application.Current.Shutdown(); // Thoát ứng dụng
-            }
+            this.Close();
         }
 
         private void ZoomIn_Click(object sender, RoutedEventArgs e)
