@@ -159,7 +159,7 @@ namespace Wordpad
             tickCanvas.Children.Clear();
 
             double pixelsPerUnit = unitConversion[currentUnit];
-            double totalUnits = tickCanvas.ActualWidth / pixelsPerUnit;
+            double totalUnits = tickCanvas.Width / pixelsPerUnit;
 
             double canvasCenterY = tickCanvas.Height / 2;
 
@@ -309,6 +309,7 @@ namespace Wordpad
             marginCanvas.Width = length;
             tickCanvas.Width = length;
             thumbCanvas.Width = length;
+            rulerCanvas.Width = length;
         }
 
 /*        public void SetAdorner(GlobalDashedLineAdorner adorner)

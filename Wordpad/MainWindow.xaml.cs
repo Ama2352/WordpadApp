@@ -72,7 +72,8 @@ namespace Wordpad
             if (unitComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 string selectedUnit = selectedItem.Content.ToString();
-                ruler.UpdateUnit(selectedUnit);
+                if(ruler != null)
+                    ruler.UpdateUnit(selectedUnit);
             }
         }
 
@@ -92,7 +93,8 @@ namespace Wordpad
 
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            IsTextChanged = true;
+            if(OpenManager.isOpened == false)
+                IsTextChanged = true;
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

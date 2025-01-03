@@ -10,6 +10,7 @@ namespace Wordpad
     internal class OpenManager
     {
         private RichTextBox richTextBox; // RichTextBox được tham chiếu
+        public static bool isOpened = false;
 
         public OpenManager(RichTextBox rtx)
         {
@@ -30,9 +31,10 @@ namespace Wordpad
                          "OpenDocument Text (*.odt)|*.odt",
                 Title = "Open File"
             };
-
             if (openFileDialog.ShowDialog() == true)
             {
+                isOpened = true;
+
                 string filePath = openFileDialog.FileName;
 
                 try
@@ -65,6 +67,8 @@ namespace Wordpad
 
                     // Cập nhật đường dẫn file hiện tại cho SaveManager
                     SaveManager.CurrentFilePath = filePath;
+                    isOpened = false;
+                    MainWindow.IsTextChanged = true;
                 }
                 catch (IOException ex)
                 {

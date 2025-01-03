@@ -56,6 +56,7 @@ namespace Wordpad
             {
                 SaveAs();
             }
+            MainWindow.IsTextChanged = false;
         }
 
         public void SaveAs()

@@ -902,12 +902,13 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Unit ComboBox -->
-                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="17,4,-31,28">
+                                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="0,4,-31,28">
                                     <Image Source="pack://application:,,,/Wordpad;component/Images/Unit.png" 
-                                            Width="20" Height="24" Margin="0,0,8,0">
+                                            Width="20" Height="24">
                                         <Image.ToolTip>Unit Settings</Image.ToolTip>
                                     </Image>
-                                    <ComboBox x:Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged" Height="18" Width="53">
+                                    <ComboBox x:Name="unitComboBox" SelectionChanged="UnitComboBox_SelectionChanged"  
+                                              Height="21" Width="98" SelectedIndex="0" Margin="4,0,0,0">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Height="20">

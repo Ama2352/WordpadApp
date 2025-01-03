@@ -226,6 +226,7 @@ namespace Wordpad
             ViewManagment.DPWidthOri = dockPanel.Width;
             ruler.UpdateCanvasSize(dockPanel.Width);
             ruler.DrawMargins(pageSettings.Margins.Left, pageSettings.Margins.Right);
+            ruler.DrawRuler();
         }
 
     }
