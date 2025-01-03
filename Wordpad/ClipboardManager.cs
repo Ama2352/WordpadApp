@@ -23,7 +23,7 @@ namespace Wordpad
         public ClipboardManager(RichTextBox richTextBox)
         {
             _richTextBox = richTextBox;
-            imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
+            imageDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", ".." ,"Resources", "Images");
         }
 
         // Phương thức Cắt
